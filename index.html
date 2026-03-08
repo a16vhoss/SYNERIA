@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synera — Tu talento, tu mundo, tu economía</title>
+<meta name="description" content="Synera conecta trabajadores con empleadores globales. Perfiles verificados, contratos digitales, wallet integrada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   SYNERA — WHITE LUXURY DESIGN SYSTEM
+   ═══════════════════════════════════════════ */
+@property --aurora-a{syntax:'<angle>';initial-value:0deg;inherits:false}
+@property --glow-x{syntax:'<percentage>';initial-value:50%;inherits:false}
+@property --counter{syntax:'<integer>';initial-value:0;inherits:false}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#fafbfc;
+  --bg2:#f1f5f9;
+  --card:#ffffff;
+  --text:#1e2d5f;
+  --muted:#64748b;
+  --accent:#2dd4a8;
+  --accent2:#3b9ece;
+  --border:#e2e8f0;
+  --surface:rgba(30,45,95,0.03);
+  --glass:rgba(255,255,255,0.7);
+  --glass-border:rgba(30,45,95,0.08);
+  --font-d:'Syne',sans-serif;
+  --font-b:'DM Sans',sans-serif;
+  --ease:cubic-bezier(0.76,0,0.24,1);
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --spring:linear(0,0.009,0.035 2.1%,0.141,0.281 6.7%,0.723 12.9%,0.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,0.991,0.977 51%,0.974 53.8%,0.975 57.1%,0.997 69.8%,1.003 76.9%,1);
+  --shadow-sm:0 1px 2px rgba(30,45,95,0.04),0 1px 3px rgba(30,45,95,0.06);
+  --shadow-md:0 4px 6px rgba(30,45,95,0.04),0 10px 15px rgba(30,45,95,0.06);
+  --shadow-lg:0 10px 25px rgba(30,45,95,0.06),0 20px 48px rgba(30,45,95,0.08);
+  --shadow-xl:0 25px 50px rgba(30,45,95,0.08),0 40px 80px rgba(30,45,95,0.06);
+}
+
+html{scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;cursor:none;overflow:hidden;font-weight:400;font-size:16px;line-height:1.7}
+body.loaded{overflow:auto}
+::selection{background:var(--accent);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ═══ PRELOADER ═══ */
+.pre{position:fixed;inset:0;z-index:99999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:clip-path 1.2s var(--ease)}
+.pre.done{clip-path:inset(0 0 100% 0);pointer-events:none}
+.pre__logo{font-family:var(--font-d);font-size:2rem;font-weight:800;letter-spacing:0.02em;color:var(--text)}
+.pre__logo span{color:var(--accent)}
+.pre__count{font-family:var(--font-d);font-size:clamp(4rem,12vw,9rem);font-weight:800;line-height:1;color:var(--text)}
+.pre__bar{width:min(240px,60vw);height:2px;background:var(--border);border-radius:1px;overflow:hidden}
+.pre__fill{height:100%;width:0%;background:var(--accent);border-radius:1px;transition:width 0.1s linear}
+
+/* ═══ GRAIN ═══ */
+.grain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998;opacity:0.015}
+
+/* ═══ CURSOR ═══ */
+.cur{position:fixed;top:0;left:0;width:20px;height:20px;border:1.5px solid var(--text);border-radius:50%;pointer-events:none;z-index:10000;transition:width 0.4s var(--ease-out),height 0.4s var(--ease-out),background 0.3s,border-color 0.3s,opacity 0.3s;opacity:0.4}
+.cur.h{width:56px;height:56px;border-color:var(--accent);background:rgba(45,212,168,0.1);opacity:1}
+.cur-d{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--text);border-radius:50%;pointer-events:none;z-index:10001}
+@media(hover:none){.cur,.cur-d{display:none}body,body.loaded{cursor:auto}}
+
+/* ═══ NAV ═══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 5vw;transition:background 0.5s,backdrop-filter 0.5s,box-shadow 0.5s}
+.nav.scrolled{background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border)}
+.nav__logo{font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-0.01em}
+.nav__logo span{color:var(--accent)}
+.nav__links{display:flex;gap:32px;align-items:center}
+.nav__link{font-size:0.875rem;font-weight:500;color:var(--muted);transition:color 0.3s;position:relative;letter-spacing:0.01em}
+.nav__link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--accent);transition:width 0.4s var(--ease-out)}
+.nav__link:hover{color:var(--text)}
+.nav__link:hover::after{width:100%}
+.nav__link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.nav__cta{font-size:0.875rem;font-weight:600;color:#fff;background:var(--text);padding:10px 24px;border-radius:100px;transition:transform 0.4s var(--spring),box-shadow 0.3s;letter-spacing:0.01em}
+.nav__cta:hover{transform:scale(1.04);box-shadow:0 4px 20px rgba(30,45,95,0.2)}
+.nav__cta:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+/* Mobile nav */
+.nav__burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.nav__burger span{width:24px;height:2px;background:var(--text);border-radius:1px;transition:transform 0.3s,opacity 0.3s}
+.nav__burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav__burger.open span:nth-child(2){opacity:0}
+.nav__burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:900px){
+  .nav__links{position:fixed;inset:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);flex-direction:column;justify-content:center;gap:32px;transform:translateY(-100%);transition:transform 0.6s var(--ease);z-index:99}
+  .nav__links.open{transform:translateY(0)}
+  .nav__link{font-size:1.5rem;font-weight:600;color:var(--text)}
+  .nav__burger{display:flex}
+}
+
+/* ═══ SECTION BASICS ═══ */
+section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
+.section-pad{padding:clamp(80px,12vh,160px) 5vw}
+.section-label{font-family:var(--font-d);font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-label::before{content:'';width:24px;height:1.5px;background:var(--accent);display:inline-block}
+.section-title{font-family:var(--font-d);font-size:clamp(2rem,5vw,4rem);font-weight:800;line-height:1.1;letter-spacing:-0.03em;color:var(--text);max-width:800px}
+.section-sub{font-size:1.1rem;color:var(--muted);max-width:600px;margin-top:16px;line-height:1.7}
+
+/* Scroll-driven fade-in */
+.reveal{opacity:0;transform:translateY(40px);animation:revealUp 1s var(--ease-out) forwards;animation-timeline:view();animation-range:entry 0% entry 40%}
+@keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5vw 80px;position:relative;overflow:hidden}
+.hero__aurora{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero__aurora::before,.hero__aurora::after{content:'';position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:0.15;animation:auroraFloat 15s ease-in-out infinite alternate}
+.hero__aurora::before{background:var(--accent);top:-200px;right:-100px;animation-delay:-3s}
+.hero__aurora::after{background:var(--accent2);bottom:-200px;left:-100px}
+@keyframes auroraFloat{0%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-30px) scale(1.15)}100%{transform:translate(-20px,20px) scale(0.95)}}
+
+.hero__grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(30,45,95,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(30,45,95,0.04) 1px,transparent 1px);background-size:60px 60px}
+
+.hero__content{position:relative;z-index:2;max-width:900px}
+.hero__badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;background:var(--card);border:1px solid var(--border);font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:32px;box-shadow:var(--shadow-sm)}
+.hero__badge span{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+.hero h1{font-family:var(--font-d);font-size:clamp(2.5rem,6.5vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-0.04em;color:var(--text);margin-bottom:24px}
+.hero h1 em{font-style:normal;color:var(--accent);position:relative}
+.hero__sub{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--muted);max-width:560px;margin:0 auto 40px;line-height:1.7;font-weight:400}
+
+/* Gooey route morph */
+.hero__routes{margin-bottom:48px;height:48px;display:flex;align-items:center;justify-content:center;gap:16px;font-family:var(--font-d);font-size:clamp(0.85rem,1.5vw,1.1rem);font-weight:600;color:var(--muted)}
+.hero__routes svg{width:24px;height:24px}
+.hero__route-from,.hero__route-to{transition:opacity 0.5s;min-width:120px}
+.hero__route-from{text-align:right;color:var(--text)}
+.hero__route-to{text-align:left;color:var(--accent)}
+.hero__route-arrow{display:flex;align-items:center;gap:4px;color:var(--accent)}
+
+.hero__ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:var(--text);color:#fff;font-family:var(--font-b);font-size:1rem;font-weight:600;border-radius:100px;border:none;cursor:none;transition:transform 0.4s var(--spring),box-shadow 0.4s;letter-spacing:0.01em}
+.btn-primary:hover{transform:scale(1.04);box-shadow:var(--shadow-lg)}
+.btn-primary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:var(--card);color:var(--text);font-family:var(--font-b);font-size:1rem;font-weight:600;border-radius:100px;border:1px solid var(--border);cursor:none;transition:transform 0.4s var(--spring),box-shadow 0.4s,border-color 0.3s}
+.btn-secondary:hover{transform:scale(1.04);box-shadow:var(--shadow-md);border-color:var(--accent)}
+.btn-secondary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+/* Scroll indicator */
+.hero__scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
+.hero__scroll-line{width:1px;height:40px;background:var(--border);position:relative;overflow:hidden}
+.hero__scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:50%;background:var(--accent);animation:scrollLine 2s var(--ease) infinite}
+@keyframes scrollLine{0%{top:-50%}100%{top:150%}}
+
+/* ═══ STATS STRIP ═══ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{background:var(--card);padding:clamp(32px,4vw,56px) 5vw;text-align:center}
+.stat__num{font-family:var(--font-d);font-size:clamp(2rem,4vw,3.5rem);font-weight:800;color:var(--text);line-height:1;margin-bottom:8px}
+.stat__num .accent{color:var(--accent)}
+.stat__label{font-size:0.85rem;color:var(--muted);font-weight:500;letter-spacing:0.02em}
+@media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ═══ PROBLEM ═══ */
+.problem{background:var(--bg)}
+.problem__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,64px);margin-top:clamp(40px,6vw,80px);align-items:start}
+.problem__quote{font-family:var(--font-d);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700;line-height:1.25;color:var(--text);letter-spacing:-0.02em;position:relative;padding-left:32px;border-left:3px solid var(--accent)}
+.problem__quote cite{display:block;font-size:0.85rem;color:var(--muted);font-weight:400;font-style:normal;margin-top:16px;font-family:var(--font-b)}
+.problem__points{display:flex;flex-direction:column;gap:24px}
+.problem__point{padding:24px 28px;background:var(--card);border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow-sm);transition:transform 0.4s var(--spring),box-shadow 0.3s}
+.problem__point:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.problem__point h4{font-family:var(--font-d);font-size:1.1rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.problem__point p{font-size:0.9rem;color:var(--muted);line-height:1.6}
+.problem__point-accent{color:var(--accent);font-weight:700}
+@media(max-width:768px){.problem__grid{grid-template-columns:1fr}}
+
+/* ═══ FEATURES ═══ */
+.features{background:var(--card)}
+.features__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:clamp(40px,6vw,72px)}
+.feature-card{padding:clamp(28px,3vw,40px);background:var(--bg);border:1px solid var(--border);border-radius:20px;transition:transform 0.5s var(--spring),box-shadow 0.4s;position:relative;overflow:hidden;transform-style:preserve-3d;perspective:1000px}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity 0.4s}
+.feature-card:hover{box-shadow:var(--shadow-lg)}
+.feature-card:hover::before{opacity:1}
+.feature-card__icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(45,212,168,0.1),rgba(59,158,206,0.1));display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.5rem}
+.feature-card h3{font-family:var(--font-d);font-size:1.2rem;font-weight:700;margin-bottom:10px;color:var(--text);letter-spacing:-0.01em}
+.feature-card p{font-size:0.9rem;color:var(--muted);line-height:1.65}
+@media(max-width:900px){.features__grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.features__grid{grid-template-columns:1fr}}
+
+/* ═══ SECTORS HORIZONTAL SCROLL ═══ */
+.sectors{background:var(--bg);overflow:hidden}
+.sectors__track{display:flex;gap:24px;margin-top:clamp(40px,6vw,72px);padding-bottom:24px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab}
+.sectors__track::-webkit-scrollbar{display:none}
+.sector-card{flex:0 0 clamp(280px,30vw,380px);scroll-snap-align:start;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:clamp(28px,3vw,40px);position:relative;overflow:hidden;transition:transform 0.4s var(--spring),box-shadow 0.3s}
+.sector-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.sector-card__emoji{font-size:2.5rem;margin-bottom:16px;display:block}
+.sector-card h3{font-family:var(--font-d);font-size:1.3rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.sector-card__demand{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;background:rgba(45,212,168,0.1);color:var(--accent);font-size:0.8rem;font-weight:600;margin-bottom:12px}
+.sector-card p{font-size:0.9rem;color:var(--muted);line-height:1.6}
+.sector-card__regions{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.sector-card__region{padding:4px 10px;border-radius:6px;background:var(--bg);font-size:0.75rem;color:var(--muted);font-weight:500;border:1px solid var(--border)}
+.sectors__progress{display:flex;gap:8px;justify-content:center;margin-top:24px}
+.sectors__dot{width:32px;height:3px;border-radius:2px;background:var(--border);transition:background 0.3s,width 0.3s}
+.sectors__dot.active{background:var(--accent);width:48px}
+
+/* ═══ HOW IT WORKS — STACKING CARDS ═══ */
+.how{background:var(--card)}
+.how__container{max-width:900px;margin:0 auto;margin-top:clamp(40px,6vw,72px)}
+.how__step{position:sticky;top:120px;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:clamp(32px,4vw,48px);box-shadow:var(--shadow-md);margin-bottom:24px;transition:transform 0.4s var(--spring)}
+.how__step-num{font-family:var(--font-d);font-size:0.8rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;margin-bottom:12px}
+.how__step h3{font-family:var(--font-d);font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:-0.02em}
+.how__step p{font-size:1rem;color:var(--muted);line-height:1.7;max-width:600px}
+.how__step-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:rgba(45,212,168,0.08);color:var(--accent);font-size:0.8rem;font-weight:600;margin-top:16px}
+
+/* ═══ SPOTLIGHT / X-RAY ═══ */
+.spotlight{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);overflow:hidden}
+.spotlight__base{position:relative;z-index:1;text-align:center;padding:5vw}
+.spotlight__base h2{font-family:var(--font-d);font-size:clamp(2rem,5vw,4rem);font-weight:800;color:var(--text);line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+.spotlight__base p{font-size:1.1rem;color:var(--muted);max-width:500px;margin:0 auto}
+.spotlight__reveal{position:absolute;inset:0;z-index:2;background:var(--text);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;clip-path:circle(0% at 50% 50%);transition:clip-path 0.05s linear;padding:5vw}
+.spotlight__reveal h2{font-family:var(--font-d);font-size:clamp(2rem,5vw,4rem);font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+.spotlight__reveal h2 span{color:var(--accent)}
+.spotlight__reveal p{font-size:1.1rem;color:rgba(255,255,255,0.7);max-width:500px;margin:0 auto}
+.spotlight__hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:3;font-size:0.8rem;color:var(--muted);letter-spacing:0.05em;pointer-events:none;animation:fadeInOut 3s ease-in-out infinite}
+@keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* ═══ IMPACT ═══ */
+.impact{background:var(--card)}
+.impact__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:clamp(40px,6vw,72px)}
+.impact-card{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:clamp(32px,3vw,48px);text-align:center;transition:transform 0.4s var(--spring),box-shadow 0.3s}
+.impact-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.impact-card__num{font-family:var(--font-d);font-size:clamp(2.5rem,5vw,4rem);font-weight:800;color:var(--text);line-height:1;margin-bottom:8px}
+.impact-card__num .accent{color:var(--accent)}
+.impact-card__label{font-size:1rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.impact-card__desc{font-size:0.85rem;color:var(--muted)}
+@media(max-width:768px){.impact__grid{grid-template-columns:1fr}}
+
+/* ═══ CTA SECTION ═══ */
+.cta-section{background:var(--text);color:#fff;text-align:center;padding:clamp(80px,12vh,160px) 5vw;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:-200px;right:-200px;width:500px;height:500px;border-radius:50%;background:var(--accent);filter:blur(150px);opacity:0.15}
+.cta-section h2{font-family:var(--font-d);font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:12px;position:relative;z-index:1}
+.cta-section h2 span{color:var(--accent)}
+.cta-section p{font-size:1.1rem;color:rgba(255,255,255,0.6);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
+.cta__form{display:flex;gap:12px;max-width:480px;margin:0 auto;position:relative;z-index:1}
+.cta__input{flex:1;padding:16px 24px;border-radius:100px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#fff;font-family:var(--font-b);font-size:1rem;outline:none;transition:border-color 0.3s}
+.cta__input::placeholder{color:rgba(255,255,255,0.4)}
+.cta__input:focus{border-color:var(--accent)}
+.cta__input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cta__btn{padding:16px 32px;border-radius:100px;background:var(--accent);color:var(--text);font-family:var(--font-b);font-size:1rem;font-weight:700;border:none;cursor:none;transition:transform 0.4s var(--spring),box-shadow 0.3s;white-space:nowrap}
+.cta__btn:hover{transform:scale(1.04);box-shadow:0 4px 20px rgba(45,212,168,0.3)}
+.cta__btn:focus-visible{outline:2px solid #fff;outline-offset:4px}
+@media(max-width:600px){.cta__form{flex-direction:column}}
+
+/* ═══ FOOTER ═══ */
+.footer{background:var(--bg);border-top:1px solid var(--border);padding:clamp(48px,6vw,80px) 5vw clamp(24px,3vw,40px)}
+.footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(32px,4vw,64px);margin-bottom:clamp(40px,5vw,64px)}
+.footer__brand{max-width:280px}
+.footer__logo{font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:12px}
+.footer__logo span{color:var(--accent)}
+.footer__tagline{font-size:0.9rem;color:var(--muted);line-height:1.6}
+.footer__col h4{font-family:var(--font-d);font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:16px}
+.footer__col a{display:block;font-size:0.9rem;color:var(--muted);padding:4px 0;transition:color 0.3s}
+.footer__col a:hover{color:var(--accent)}
+.footer__col a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.footer__bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);font-size:0.8rem;color:var(--muted)}
+@media(max-width:768px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}.footer__brand{grid-column:1/-1}}
+@media(max-width:500px){.footer__top{grid-template-columns:1fr}.footer__bottom{flex-direction:column;gap:8px;text-align:center}}
+
+/* ═══ GOOEY SVG FILTER ═══ */
+.gooey-defs{position:absolute;width:0;height:0}
+
+/* ═══ REDUCED MOTION ═══ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;animation:none}
+  .hero__aurora::before,.hero__aurora::after{animation:none}
+  .pre{transition:none}.pre.done{clip-path:inset(0)}
+}
+
+/* ═══ MAGNETIC BUTTON HELPER ═══ */
+.magnetic{transition:transform 0.4s var(--spring)}
+</style>
+</head>
+<body>
+
+<!-- Gooey SVG Filter -->
+<svg class="gooey-defs" aria-hidden="true">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo"/>
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- Preloader -->
+<div class="pre" id="preloader" aria-live="polite">
+  <div class="pre__logo">Synera<span>.</span></div>
+  <div class="pre__count" id="preCount">0</div>
+  <div class="pre__bar"><div class="pre__fill" id="preFill"></div></div>
+</div>
+
+<!-- Grain Overlay -->
+<canvas class="grain" id="grain" aria-hidden="true"></canvas>
+
+<!-- Custom Cursor -->
+<div class="cur" id="cursor" aria-hidden="true"></div>
+<div class="cur-d" id="cursorDot" aria-hidden="true"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav" role="navigation" aria-label="Principal">
+  <a href="/" class="nav__logo magnetic" data-magnetic>Synera<span>.</span></a>
+  <div class="nav__burger" id="burger" aria-label="Menú" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="nav__links" id="navLinks">
+    <a href="#problema" class="nav__link magnetic" data-magnetic>El Problema</a>
+    <a href="#plataforma" class="nav__link magnetic" data-magnetic>Plataforma</a>
+    <a href="#sectores" class="nav__link magnetic" data-magnetic>Sectores</a>
+    <a href="#como-funciona" class="nav__link magnetic" data-magnetic>Cómo Funciona</a>
+    <a href="#impacto" class="nav__link magnetic" data-magnetic>Impacto</a>
+    <a href="login.html" class="nav__cta magnetic" data-magnetic>Únete Ahora</a>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="hero__aurora" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="hero__content">
+    <div class="hero__badge"><span></span>Plataforma Global de Empleo</div>
+    <h1>El Futuro del Trabajo es Global.<br>Y Empieza <em>Aquí.</em></h1>
+    <p class="hero__sub">Tu talento, tu mundo, tu economía. Conectamos trabajadores verificados con empleadores que necesitan su talento — sin fronteras.</p>
+
+    <div class="hero__routes" aria-label="Rutas de empleo">
+      <span class="hero__route-from" id="routeFrom">México</span>
+      <span class="hero__route-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+      <span class="hero__route-to" id="routeTo">Suiza</span>
+    </div>
+
+    <div class="hero__ctas">
+      <a href="dashboard.html" class="btn-primary magnetic" data-magnetic>Buscar Oportunidades <span aria-hidden="true">→</span></a>
+      <a href="employer.html" class="btn-secondary magnetic" data-magnetic>Soy Empleador</a>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════ STATS STRIP ═══════════ -->
+<div class="stats" role="region" aria-label="Estadísticas clave">
+  <div class="stat reveal">
+    <div class="stat__num"><span class="counter" data-target="50">0</span><span class="accent">M</span></div>
+    <div class="stat__label">Trabajadores Migrantes</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat__num"><span class="counter" data-target="8">0</span><span class="accent">M</span></div>
+    <div class="stat__label">Empleos Sin Cubrir</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat__num">$<span class="counter" data-target="480">0</span><span class="accent">B</span></div>
+    <div class="stat__label">Mercado Global</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat__num"><span class="counter" data-target="40">0</span><span class="accent">+</span></div>
+    <div class="stat__label">Países Conectados</div>
+  </div>
+</div>
+
+<!-- ═══════════ PROBLEM ═══════════ -->
+<section class="section-pad problem" id="problema">
+  <div class="section-label reveal">El Problema</div>
+  <h2 class="section-title reveal">La Crisis que Nadie Está Resolviendo Correctamente</h2>
+  <div class="problem__grid">
+    <blockquote class="problem__quote reveal">
+      "Millones de personas tienen el talento. Miles de empresas tienen la necesidad. Pero el sistema entre ambos está roto."
+      <cite>— Insight del mercado laboral global, OIT 2025</cite>
+    </blockquote>
+    <div class="problem__points">
+      <div class="problem__point reveal">
+        <h4>Europa</h4>
+        <p>Necesita <span class="problem__point-accent">8 millones</span> de trabajadores para 2030. Sectores como construcción y salud enfrentan escasez crítica.</p>
+      </div>
+      <div class="problem__point reveal">
+        <h4>América del Norte</h4>
+        <p>Déficit del <span class="problem__point-accent">20%</span> en fuerza laboral agrícola y hotelera. La demanda supera la oferta cada trimestre.</p>
+      </div>
+      <div class="problem__point reveal">
+        <h4>América Latina</h4>
+        <p><span class="problem__point-accent">50 millones</span> de trabajadores buscan oportunidades dignas fuera de sus fronteras, sin acceso a canales formales.</p>
+      </div>
+      <div class="problem__point reveal">
+        <h4>El Problema Real</h4>
+        <p>Procesos manuales, fraude, costos excesivos. <span class="problem__point-accent">Sin tecnología</span> que conecte oferta y demanda de forma segura y escalable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FEATURES ═══════════ -->
+<section class="section-pad features" id="plataforma">
+  <div class="section-label reveal">La Plataforma</div>
+  <h2 class="section-title reveal">Todo lo que Necesitas. En un Solo Lugar.</h2>
+  <p class="section-sub reveal">Tecnología de clase mundial diseñada para conectar talento con oportunidad — de forma segura, rápida y verificada.</p>
+  <div class="features__grid">
+    <div class="feature-card reveal" data-tilt>
+      <div class="feature-card__icon">⚡</div>
+      <h3>Empleos en Tiempo Real</h3>
+      <p>Ofertas verificadas de +40 países, actualizadas al instante con inteligencia artificial que prioriza tu perfil.</p>
+    </div>
+    <div class="feature-card reveal" data-tilt>
+      <div class="feature-card__icon">🛡️</div>
+      <h3>Perfiles Verificados</h3>
+      <p>Verificación de identidad, experiencia y certificaciones con tecnología blockchain. Confianza desde el primer contacto.</p>
+    </div>
+    <div class="feature-card reveal" data-tilt>
+      <div class="feature-card__icon">📄</div>
+      <h3>Contratos Digitales</h3>
+      <p>Contratos inteligentes con firma electrónica legal. Transparencia total en términos, salario y beneficios.</p>
+    </div>
+    <div class="feature-card reveal" data-tilt>
+      <div class="feature-card__icon">💳</div>
+      <h3>Wallet Integrada</h3>
+      <p>Recibe pagos, envía remesas y administra tus finanzas desde cualquier lugar. Sin comisiones ocultas.</p>
+    </div>
+    <div class="feature-card reveal" data-tilt>
+      <div class="feature-card__icon">🌐</div>
+      <h3>Multilingüe</h3>
+      <p>Plataforma disponible en 12 idiomas con traducción automática en tiempo real para comunicación sin barreras.</p>
+    </div>
+    <div class="feature-card reveal" data-tilt>
+      <div class="feature-card__icon">🏗️</div>
+      <h3>Ecosistema Completo</h3>
+      <p>Desde la búsqueda hasta la integración: visa, vivienda, capacitación y soporte continuo en tu destino.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTORS ═══════════ -->
+<section class="section-pad sectors" id="sectores">
+  <div class="section-label reveal">Sectores</div>
+  <h2 class="section-title reveal">Donde el Talento se Encuentra con la Demanda</h2>
+  <p class="section-sub reveal">Cinco industrias con escasez crítica de mano de obra. Synera conecta el talento exacto con la necesidad correcta.</p>
+  <div class="sectors__track" id="sectorsTrack">
+    <div class="sector-card">
+      <span class="sector-card__emoji">🏗️</span>
+      <h3>Construcción</h3>
+      <div class="sector-card__demand">↑ Alta Demanda</div>
+      <p>Europa y Medio Oriente necesitan 3.2M de trabajadores de construcción para 2028. Salarios competitivos y contratos estables.</p>
+      <div class="sector-card__regions">
+        <span class="sector-card__region">Alemania</span>
+        <span class="sector-card__region">EAU</span>
+        <span class="sector-card__region">Canadá</span>
+        <span class="sector-card__region">Australia</span>
+      </div>
+    </div>
+    <div class="sector-card">
+      <span class="sector-card__emoji">🏨</span>
+      <h3>Hotelería</h3>
+      <div class="sector-card__demand">↑ Alta Demanda</div>
+      <p>La industria turística global enfrenta un déficit del 15%. Oportunidades en hoteles, restaurantes y servicios premium.</p>
+      <div class="sector-card__regions">
+        <span class="sector-card__region">Suiza</span>
+        <span class="sector-card__region">España</span>
+        <span class="sector-card__region">Qatar</span>
+        <span class="sector-card__region">Canadá</span>
+      </div>
+    </div>
+    <div class="sector-card">
+      <span class="sector-card__emoji">🌾</span>
+      <h3>Agricultura</h3>
+      <div class="sector-card__demand">↑ Crítica</div>
+      <p>Norteamérica y Europa dependen de trabajadores migrantes para el 40% de su producción agrícola. Programas estacionales y permanentes.</p>
+      <div class="sector-card__regions">
+        <span class="sector-card__region">EE.UU.</span>
+        <span class="sector-card__region">Francia</span>
+        <span class="sector-card__region">Australia</span>
+        <span class="sector-card__region">Italia</span>
+      </div>
+    </div>
+    <div class="sector-card">
+      <span class="sector-card__emoji">🏥</span>
+      <h3>Salud</h3>
+      <div class="sector-card__demand">↑ Urgente</div>
+      <p>El sector salud necesita 18M de profesionales adicionales globalmente. Enfermería, cuidado de mayores y asistencia médica.</p>
+      <div class="sector-card__regions">
+        <span class="sector-card__region">Reino Unido</span>
+        <span class="sector-card__region">Alemania</span>
+        <span class="sector-card__region">Japón</span>
+        <span class="sector-card__region">Canadá</span>
+      </div>
+    </div>
+    <div class="sector-card">
+      <span class="sector-card__emoji">🛒</span>
+      <h3>Comercio</h3>
+      <div class="sector-card__demand">↑ En Crecimiento</div>
+      <p>Retail, logística y e-commerce demandan millones de trabajadores. Roles operativos y de gestión con movilidad internacional.</p>
+      <div class="sector-card__regions">
+        <span class="sector-card__region">Países Bajos</span>
+        <span class="sector-card__region">EAU</span>
+        <span class="sector-card__region">Chile</span>
+        <span class="sector-card__region">Singapur</span>
+      </div>
+    </div>
+  </div>
+  <div class="sectors__progress" id="sectorsProgress" aria-hidden="true">
+    <div class="sectors__dot active"></div>
+    <div class="sectors__dot"></div>
+    <div class="sectors__dot"></div>
+    <div class="sectors__dot"></div>
+    <div class="sectors__dot"></div>
+  </div>
+</section>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section class="section-pad how" id="como-funciona">
+  <div class="section-label reveal">Cómo Funciona</div>
+  <h2 class="section-title reveal">De tu Talento al Mundo. En 5 Pasos.</h2>
+  <p class="section-sub reveal">Un proceso diseñado para ser simple, seguro y completamente digital.</p>
+  <div class="how__container">
+    <div class="how__step" style="top:100px">
+      <div class="how__step-num">01</div>
+      <h3>Perfil Verificado</h3>
+      <p>Crea tu perfil profesional con verificación de identidad, experiencia laboral y certificaciones. Tu identidad digital segura y confiable.</p>
+      <div class="how__step-tag">🛡️ Verificación Blockchain</div>
+    </div>
+    <div class="how__step" style="top:120px">
+      <div class="how__step-num">02</div>
+      <h3>AI Matching</h3>
+      <p>Nuestra inteligencia artificial analiza tu perfil, habilidades e idiomas para conectarte con las oportunidades perfectas en tiempo real.</p>
+      <div class="how__step-tag">🤖 Algoritmo Propietario</div>
+    </div>
+    <div class="how__step" style="top:140px">
+      <div class="how__step-num">03</div>
+      <h3>Contratos Digitales</h3>
+      <p>Revisa y firma contratos digitales con protección legal completa. Términos claros, salario garantizado, beneficios transparentes.</p>
+      <div class="how__step-tag">📄 Firma Electrónica Legal</div>
+    </div>
+    <div class="how__step" style="top:160px">
+      <div class="how__step-num">04</div>
+      <h3>Wallet Integrada</h3>
+      <p>Recibe tu salario, envía remesas a tu familia y gestiona tus finanzas globales desde una sola plataforma sin comisiones ocultas.</p>
+      <div class="how__step-tag">💳 Fintech Integrado</div>
+    </div>
+    <div class="how__step" style="top:180px">
+      <div class="how__step-num">05</div>
+      <h3>Ecosistema Completo</h3>
+      <p>Soporte integral: gestión de visa, alojamiento, capacitación en idioma y cultura, y asistencia continua en tu país de destino.</p>
+      <div class="how__step-tag">🌍 Soporte 360°</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SPOTLIGHT / X-RAY ═══════════ -->
+<section class="spotlight" id="spotlight">
+  <div class="spotlight__base">
+    <h2>Un Mercado de $480 Mil Millones.<br>Sin una Solución Real.</h2>
+    <p>Mueve tu cursor para revelar la oportunidad que Synera está capturando.</p>
+  </div>
+  <div class="spotlight__reveal" id="spotlightReveal" aria-hidden="true">
+    <div>
+      <h2>Synera es <span>la Solución.</span><br>$47M ARR Proyectado Año 3.</h2>
+      <p>12,000 perfiles verificados. 340 empresas conectadas. 47 contratos firmados. La tracción es real.</p>
+    </div>
+  </div>
+  <div class="spotlight__hint">↔ Mueve el cursor</div>
+</section>
+
+<!-- ═══════════ IMPACT ═══════════ -->
+<section class="section-pad impact" id="impacto">
+  <div class="section-label reveal">Impacto</div>
+  <h2 class="section-title reveal">Tracción que Habla por Sí Misma</h2>
+  <p class="section-sub reveal">Números reales de una plataforma que ya está transformando el mercado laboral global.</p>
+  <div class="impact__grid">
+    <div class="impact-card reveal">
+      <div class="impact-card__num"><span class="counter" data-target="12000">0</span><span class="accent">+</span></div>
+      <div class="impact-card__label">Perfiles Verificados</div>
+      <div class="impact-card__desc">Trabajadores listos con identidad y experiencia confirmada</div>
+    </div>
+    <div class="impact-card reveal">
+      <div class="impact-card__num"><span class="counter" data-target="340">0</span><span class="accent">+</span></div>
+      <div class="impact-card__label">Empresas Conectadas</div>
+      <div class="impact-card__desc">Empleadores verificados en +40 países buscando talento</div>
+    </div>
+    <div class="impact-card reveal">
+      <div class="impact-card__num"><span class="counter" data-target="89">0</span></div>
+      <div class="impact-card__label">NPS Score</div>
+      <div class="impact-card__desc">Satisfacción excepcional entre usuarios activos</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section class="cta-section">
+  <h2>Tu Talento es tu <span>Mundo.</span></h2>
+  <p>Únete a miles de trabajadores y empresas que ya están construyendo el futuro del empleo global.</p>
+  <form class="cta__form" onsubmit="event.preventDefault();this.querySelector('button').textContent='¡Listo! ✓'">
+    <input type="email" class="cta__input" placeholder="tu@email.com" aria-label="Tu correo electrónico" required>
+    <button type="submit" class="cta__btn magnetic" data-magnetic>Suscribirse</button>
+  </form>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <div class="footer__logo">Synera<span>.</span></div>
+      <p class="footer__tagline">Tu talento, tu mundo, tu economía. Conectamos el futuro del trabajo global con tecnología, confianza y propósito.</p>
+    </div>
+    <div class="footer__col">
+      <h4>Plataforma</h4>
+      <a href="dashboard.html">Buscar Empleos</a>
+      <a href="employer.html">Para Empresas</a>
+      <a href="login.html">Iniciar Sesión</a>
+      <a href="login.html">Crear Cuenta</a>
+    </div>
+    <div class="footer__col">
+      <h4>Sectores</h4>
+      <a href="#sectores">Construcción</a>
+      <a href="#sectores">Hotelería</a>
+      <a href="#sectores">Agricultura</a>
+      <a href="#sectores">Salud</a>
+      <a href="#sectores">Comercio</a>
+    </div>
+    <div class="footer__col">
+      <h4>Compañía</h4>
+      <a href="#">Sobre Nosotros</a>
+      <a href="#">Blog</a>
+      <a href="#">Prensa</a>
+      <a href="#">Contacto</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>&copy; 2026 Synera. Todos los derechos reservados.</span>
+    <span>Hecho con propósito desde LATAM para el mundo.</span>
+  </div>
+</footer>
+
+<!-- Lenis Smooth Scroll -->
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════
+   SYNERA — INTERACTIVE ENGINE
+   ═══════════════════════════════════════════ */
+(function(){
+'use strict';
+
+// ─── Preloader ───
+const preCount=document.getElementById('preCount');
+const preFill=document.getElementById('preFill');
+const preloader=document.getElementById('preloader');
+let count=0;
+const preInt=setInterval(()=>{
+  count+=Math.floor(Math.random()*8)+2;
+  if(count>=100)count=100;
+  preCount.textContent=count;
+  preFill.style.width=count+'%';
+  if(count>=100){
+    clearInterval(preInt);
+    setTimeout(()=>{
+      preloader.classList.add('done');
+      document.body.classList.add('loaded');
+      initLenis();
+    },400);
+  }
+},50);
+
+// ─── Lenis Smooth Scroll ───
+let lenis;
+function initLenis(){
+  try{
+    lenis=new Lenis({duration:1.1,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),orientation:'vertical',smoothWheel:true});
+    function raf(time){lenis.raf(time);requestAnimationFrame(raf)}
+    requestAnimationFrame(raf);
+  }catch(e){/* fallback to native scroll */}
+}
+
+// ─── Grain Canvas ───
+const grainCanvas=document.getElementById('grain');
+const gCtx=grainCanvas.getContext('2d');
+function resizeGrain(){grainCanvas.width=window.innerWidth;grainCanvas.height=window.innerHeight}
+resizeGrain();
+window.addEventListener('resize',resizeGrain);
+function renderGrain(){
+  const w=grainCanvas.width,h=grainCanvas.height;
+  const img=gCtx.createImageData(w,h);
+  const d=img.data;
+  for(let i=0;i<d.length;i+=4){
+    const v=Math.random()*255;
+    d[i]=d[i+1]=d[i+2]=v;
+    d[i+3]=255;
+  }
+  gCtx.putImageData(img,0,0);
+}
+renderGrain();
+setInterval(renderGrain,120);
+
+// ─── Custom Cursor with Spring Physics ───
+const cur=document.getElementById('cursor');
+const dot=document.getElementById('cursorDot');
+let mx=window.innerWidth/2,my=window.innerHeight/2;
+let cx=mx,cy=my,dx=mx,dy=my;
+let vx=0,vy=0;
+
+const prefersTouch=window.matchMedia('(hover:none)').matches;
+if(!prefersTouch){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+
+  // Spring physics for outer ring
+  const stiffness=0.12,damping=0.75;
+  function updateCursor(){
+    const ax=(mx-cx)*stiffness;
+    const ay=(my-cy)*stiffness;
+    vx=(vx+ax)*damping;
+    vy=(vy+ay)*damping;
+    cx+=vx;cy+=vy;
+    // Dot follows directly
+    dx+=(mx-dx)*0.35;
+    dy+=(my-dy)*0.35;
+    cur.style.transform=`translate3d(${cx-cur.offsetWidth/2}px,${cy-cur.offsetHeight/2}px,0)`;
+    dot.style.transform=`translate3d(${dx-2.5}px,${dy-2.5}px,0)`;
+    requestAnimationFrame(updateCursor);
+  }
+  updateCursor();
+
+  // Hover states
+  document.querySelectorAll('a,button,[data-tilt],.sector-card,.problem__point,.impact-card,.how__step').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cur.classList.add('h'));
+    el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+  });
+}
+
+// ─── Magnetic Buttons ───
+document.querySelectorAll('[data-magnetic]').forEach(el=>{
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const x=e.clientX-r.left-r.width/2;
+    const y=e.clientY-r.top-r.height/2;
+    el.style.transform=`translate(${x*0.2}px,${y*0.2}px)`;
+  });
+  el.addEventListener('mouseleave',()=>{
+    el.style.transform='';
+  });
+});
+
+// ─── Nav Scroll & Burger ───
+const nav=document.getElementById('nav');
+const burger=document.getElementById('burger');
+const navLinks=document.getElementById('navLinks');
+
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>80);
+},{passive:true});
+
+burger.addEventListener('click',()=>{
+  burger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+burger.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();burger.click()}});
+
+// Close mobile nav on link click
+navLinks.querySelectorAll('.nav__link').forEach(l=>{
+  l.addEventListener('click',()=>{
+    burger.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
+// ─── Hero Route Morphing ───
+const routes=[
+  ['México','Suiza'],['Colombia','Alemania'],['Perú','Canadá'],
+  ['Venezuela','España'],['Argentina','Australia'],['Guatemala','Qatar'],
+  ['Ecuador','Países Bajos'],['Honduras','Reino Unido']
+];
+const routeFrom=document.getElementById('routeFrom');
+const routeTo=document.getElementById('routeTo');
+let routeIdx=0;
+setInterval(()=>{
+  routeIdx=(routeIdx+1)%routes.length;
+  routeFrom.style.opacity='0';
+  routeTo.style.opacity='0';
+  setTimeout(()=>{
+    routeFrom.textContent=routes[routeIdx][0];
+    routeTo.textContent=routes[routeIdx][1];
+    routeFrom.style.opacity='1';
+    routeTo.style.opacity='1';
+  },400);
+},3000);
+
+// ─── Counter Animation (IntersectionObserver) ───
+const counters=document.querySelectorAll('.counter');
+const counterObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el=entry.target;
+      const target=parseInt(el.dataset.target);
+      const duration=2000;
+      const start=performance.now();
+      function update(now){
+        const elapsed=now-start;
+        const progress=Math.min(elapsed/duration,1);
+        // Ease out cubic
+        const eased=1-Math.pow(1-progress,3);
+        el.textContent=Math.floor(eased*target).toLocaleString('es');
+        if(progress<1)requestAnimationFrame(update);
+        else el.textContent=target.toLocaleString('es');
+      }
+      requestAnimationFrame(update);
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.3});
+counters.forEach(c=>counterObserver.observe(c));
+
+// ─── 3D Tilt on Feature Cards ───
+document.querySelectorAll('[data-tilt]').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-0.5;
+    const y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)';
+  });
+});
+
+// ─── Sectors Horizontal Scroll Progress ───
+const sectorsTrack=document.getElementById('sectorsTrack');
+const sectorsDots=document.querySelectorAll('.sectors__dot');
+if(sectorsTrack){
+  sectorsTrack.addEventListener('scroll',()=>{
+    const scrollPercent=sectorsTrack.scrollLeft/(sectorsTrack.scrollWidth-sectorsTrack.clientWidth);
+    const activeIdx=Math.round(scrollPercent*(sectorsDots.length-1));
+    sectorsDots.forEach((d,i)=>d.classList.toggle('active',i===activeIdx));
+  },{passive:true});
+}
+
+// ─── Spotlight / X-Ray Reveal ───
+const spotlight=document.getElementById('spotlight');
+const spotlightReveal=document.getElementById('spotlightReveal');
+if(spotlight&&spotlightReveal){
+  spotlight.addEventListener('mousemove',e=>{
+    const r=spotlight.getBoundingClientRect();
+    const x=e.clientX-r.left;
+    const y=e.clientY-r.top;
+    const maxRadius=Math.max(r.width,r.height)*0.35;
+    spotlightReveal.style.clipPath=`circle(${maxRadius}px at ${x}px ${y}px)`;
+  });
+  spotlight.addEventListener('mouseleave',()=>{
+    spotlightReveal.style.clipPath='circle(0% at 50% 50%)';
+  });
+}
+
+// ─── Scroll-driven Reveal Fallback (for browsers without animation-timeline) ───
+if(!CSS.supports('animation-timeline','view()')){
+  const revealObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.style.opacity='1';
+        entry.target.style.transform='translateY(0)';
+        entry.target.style.transition='opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)';
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+}
+
+})();
+</script>
+</body>
+</html>
