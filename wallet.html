@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synera — Wallet & Contratos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fafbfc;--card:#ffffff;
+  --text:#1e2d5f;--muted:#64748b;--accent:#2dd4a8;--accent2:#3b9ece;
+  --border:#e2e8f0;
+  --success:#10b981;--warning:#f59e0b;--danger:#ef4444;
+  --font-d:'Syne',sans-serif;--font-b:'General Sans',sans-serif;
+  --ease:cubic-bezier(0.76,0,0.24,1);--ease-out:cubic-bezier(0.16,1,0.3,1);
+  --spring:linear(0,0.009,0.035 2.1%,0.141,0.281 6.7%,0.723 12.9%,0.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,0.991,0.977 51%,0.974 53.8%,0.975 57.1%,0.997 69.8%,1.003 76.9%,1);
+  --sidebar-w:260px;
+}
+html{scrollbar-width:thin;scrollbar-color:var(--border) var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;cursor:none;font-weight:400;font-size:15px;line-height:1.6}
+::selection{background:var(--accent);color:#fff}
+a{color:inherit;text-decoration:none}
+button{cursor:none;font-family:var(--font-b)}
+img{display:block;max-width:100%}
+
+/* ═══ CURSOR ═══ */
+.cur{position:fixed;top:0;left:0;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.3);border-radius:50%;pointer-events:none;z-index:10000;transition:width 0.4s var(--ease-out),height 0.4s var(--ease-out),background 0.3s,border-color 0.3s}
+.cur.h{width:48px;height:48px;border-color:var(--accent);background:rgba(45,212,168,0.1)}
+.cur-d{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--text);border-radius:50%;pointer-events:none;z-index:10001}
+@media(hover:none){.cur,.cur-d{display:none}body{cursor:auto}}
+
+/* ═══ SKELETON SHIMMER ═══ */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--border) 25%,#f0f4f8 50%,var(--border) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite linear;border-radius:8px;height:20px;margin-bottom:8px}
+.skeleton-show .skeleton{display:none}
+
+/* ═══ TOP NAV ═══ */
+.topnav{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:100;height:64px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;transition:left 0.3s var(--ease)}
+.topnav__search{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 16px;min-width:280px;transition:border-color 0.3s}
+.topnav__search:focus-within{border-color:var(--accent)}
+.topnav__search svg{flex-shrink:0;color:var(--muted)}
+.topnav__search input{border:none;background:transparent;font-family:var(--font-b);font-size:14px;color:var(--text);outline:none;width:100%}
+.topnav__search input::placeholder{color:var(--muted)}
+.topnav__right{display:flex;align-items:center;gap:20px}
+.topnav__notif{position:relative;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;transition:border-color 0.3s}
+.topnav__notif:hover{border-color:var(--accent)}
+.topnav__notif .badge{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid var(--card)}
+.topnav__user{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:12px;border:1px solid var(--border);background:var(--card);transition:border-color 0.3s}
+.topnav__user:hover{border-color:var(--accent)}
+.topnav__avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:13px;font-weight:700}
+.topnav__name{font-size:13px;font-weight:500;color:var(--text)}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);z-index:110;display:flex;flex-direction:column;transition:transform 0.3s var(--ease)}
+.sidebar__logo{padding:20px 24px;font-family:var(--font-d);font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)}
+.sidebar__logo span{color:var(--accent)}
+.sidebar__nav{flex:1;padding:16px 12px;overflow-y:auto}
+.sidebar__section{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:16px 12px 8px;font-weight:600}
+.sidebar__link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:500;color:var(--muted);transition:all 0.2s;margin-bottom:2px}
+.sidebar__link:hover{background:var(--bg);color:var(--text)}
+.sidebar__link.active{background:rgba(45,212,168,0.1);color:var(--accent);font-weight:600}
+.sidebar__link svg{flex-shrink:0;width:20px;height:20px}
+.sidebar__link .count{margin-left:auto;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:600}
+.sidebar__bottom{padding:16px;border-top:1px solid var(--border)}
+.sidebar__upgrade{display:flex;align-items:center;gap:10px;padding:12px;background:linear-gradient(135deg,rgba(45,212,168,0.08),rgba(59,158,206,0.08));border:1px solid rgba(45,212,168,0.2);border-radius:12px;font-size:13px;color:var(--text);font-weight:500}
+.sidebar__upgrade svg{color:var(--accent);flex-shrink:0}
+
+/* ═══ MAIN CONTENT ═══ */
+.main{margin-left:var(--sidebar-w);padding-top:64px;min-height:100vh;transition:margin-left 0.3s var(--ease)}
+.page{padding:32px}
+.page__header{margin-bottom:28px}
+.page__title{font-family:var(--font-d);font-size:1.8rem;font-weight:800;color:var(--text);margin-bottom:4px}
+.page__sub{font-size:14px;color:var(--muted)}
+
+/* ═══ TABS ═══ */
+.tabs{display:flex;gap:4px;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:28px;width:fit-content;border:1px solid var(--border)}
+.tab{padding:10px 24px;border-radius:10px;font-family:var(--font-d);font-size:14px;font-weight:600;color:var(--muted);background:transparent;border:none;transition:all 0.3s var(--ease)}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn 0.4s var(--ease-out)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ BALANCE CARD ═══ */
+.balance-card{background:var(--card);border-radius:20px;padding:32px;position:relative;overflow:hidden;border:2px solid transparent;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(135deg,var(--accent),var(--accent2));background-origin:border-box;background-clip:padding-box,border-box;margin-bottom:28px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px}
+.balance-card__info{}
+.balance-card__label{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em}
+.balance-card__amount{font-family:var(--font-d);font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--text);line-height:1.1;margin-bottom:4px}
+.balance-card__equiv{font-size:14px;color:var(--muted);margin-bottom:20px}
+.balance-card__actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-family:var(--font-d);font-size:13px;font-weight:700;border-radius:10px;border:none;transition:transform 0.3s var(--spring),box-shadow 0.3s}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,212,168,0.3)}
+.btn--outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn--outline:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn--sm{padding:8px 16px;font-size:12px;border-radius:8px}
+.btn--danger{background:var(--danger);color:#fff}
+.btn--danger:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,0.3)}
+.btn--block{width:100%;justify-content:center}
+.balance-card__chart{width:180px;height:60px}
+.balance-card__chart svg{width:100%;height:100%}
+
+/* ═══ QUICK ACTIONS ═══ */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.qaction{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all 0.3s var(--ease);cursor:none}
+.qaction:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.06)}
+.qaction__icon{width:48px;height:48px;border-radius:12px;background:rgba(45,212,168,0.1);display:grid;place-items:center;margin:0 auto 12px;color:var(--accent);transition:background 0.3s}
+.qaction:hover .qaction__icon{background:var(--accent);color:#fff}
+.qaction__label{font-family:var(--font-d);font-size:13px;font-weight:600;color:var(--text)}
+
+/* ═══ TRANSACTIONS ═══ */
+.section-title{font-family:var(--font-d);font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.section-title .filter-btns{display:flex;gap:4px}
+.filter-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--border);transition:all 0.2s}
+.filter-btn:hover,.filter-btn.active{color:var(--accent);border-color:var(--accent);background:rgba(45,212,168,0.06)}
+.tx-list{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:28px}
+.tx{display:grid;grid-template-columns:44px 1fr auto auto;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);transition:background 0.2s}
+.tx:last-child{border-bottom:none}
+.tx:hover{background:var(--bg)}
+.tx__icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;font-weight:700}
+.tx__icon--in{background:rgba(16,185,129,0.1);color:var(--success)}
+.tx__icon--out{background:rgba(239,68,68,0.1);color:var(--danger)}
+.tx__icon--swap{background:rgba(59,158,206,0.1);color:var(--accent2)}
+.tx__icon--bonus{background:rgba(245,158,11,0.1);color:var(--warning)}
+.tx__info{}
+.tx__desc{font-size:14px;font-weight:500;color:var(--text)}
+.tx__date{font-size:12px;color:var(--muted);margin-top:2px}
+.tx__amount{font-family:var(--font-d);font-size:14px;font-weight:700;text-align:right}
+.tx__amount--pos{color:var(--success)}
+.tx__amount--neg{color:var(--text)}
+.tx__amount--swap{color:var(--accent2)}
+.tx__status{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;text-align:center;white-space:nowrap}
+.tx__status--done{background:rgba(16,185,129,0.1);color:var(--success)}
+.tx__status--pending{background:rgba(245,158,11,0.1);color:var(--warning)}
+
+/* ═══ CARDS & ACCOUNTS ═══ */
+.cards-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+.virtual-card{background:linear-gradient(135deg,#1e2d5f,#2a4080);border-radius:16px;padding:28px;color:#fff;position:relative;overflow:hidden;aspect-ratio:1.6/1;display:flex;flex-direction:column;justify-content:space-between}
+.virtual-card::before{content:'';position:absolute;top:-30%;right:-20%;width:200px;height:200px;background:radial-gradient(circle,rgba(45,212,168,0.3),transparent 70%);pointer-events:none}
+.virtual-card__logo{font-family:var(--font-d);font-size:1.1rem;font-weight:800}
+.virtual-card__logo span{color:var(--accent)}
+.virtual-card__chip{width:36px;height:28px;border-radius:6px;background:linear-gradient(135deg,#d4a853,#f0d080);margin:12px 0}
+.virtual-card__number{font-family:var(--font-d);font-size:1rem;font-weight:600;letter-spacing:0.15em}
+.virtual-card__bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.virtual-card__holder{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.7}
+.virtual-card__name{font-size:13px;font-weight:600;margin-top:2px}
+.virtual-card__expiry{text-align:right}
+.virtual-card__expiry-label{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.7}
+.virtual-card__expiry-val{font-size:13px;font-weight:600;margin-top:2px}
+.accounts-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.account-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.account-item:last-child{border-bottom:none}
+.account-item__icon{width:40px;height:40px;border-radius:10px;background:var(--bg);display:grid;place-items:center;font-size:18px}
+.account-item__info{flex:1}
+.account-item__name{font-size:14px;font-weight:500}
+.account-item__detail{font-size:12px;color:var(--muted)}
+.account-item__status{font-size:11px;color:var(--success);font-weight:600}
+
+/* ═══ FINANCIAL STATS ═══ */
+.fin-stats{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:16px;margin-bottom:28px}
+.fin-stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.fin-stat__label{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+.fin-stat__value{font-family:var(--font-d);font-size:1.4rem;font-weight:800;color:var(--text)}
+.fin-stat__sub{font-size:11px;color:var(--success);margin-top:4px;font-weight:600}
+.mini-chart{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;min-width:200px}
+.mini-chart__title{font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:500}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px}
+.bar{flex:1;border-radius:4px 4px 0 0;background:rgba(45,212,168,0.2);position:relative;transition:height 0.6s var(--spring)}
+.bar.current{background:var(--accent)}
+.bar__label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted);white-space:nowrap}
+
+/* ═══ CONTRATOS TAB ═══ */
+.contract-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.cstat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.cstat__num{font-family:var(--font-d);font-size:2rem;font-weight:800;color:var(--text)}
+.cstat__label{font-size:13px;color:var(--muted);margin-top:4px}
+.cstat--active .cstat__num{color:var(--success)}
+.cstat--pending .cstat__num{color:var(--warning)}
+
+.contract-card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:16px;overflow:hidden;transition:box-shadow 0.3s}
+.contract-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.06)}
+.contract-card__header{padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;cursor:none}
+.contract-card__left{flex:1}
+.contract-card__badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em}
+.badge--activo{background:rgba(16,185,129,0.1);color:var(--success)}
+.badge--completado{background:rgba(100,116,139,0.1);color:var(--muted)}
+.badge--pendiente{background:rgba(245,158,11,0.1);color:var(--warning)}
+.badge--expirado{background:rgba(239,68,68,0.1);color:var(--danger)}
+.contract-card__employer{font-family:var(--font-d);font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.contract-card__position{font-size:14px;color:var(--accent2);font-weight:500;margin-bottom:8px}
+.contract-card__meta{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted)}
+.contract-card__meta span{display:flex;align-items:center;gap:4px}
+.contract-card__actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.contract-card__detail{max-height:0;overflow:hidden;transition:max-height 0.5s var(--ease)}
+.contract-card.expanded .contract-card__detail{max-height:600px}
+.contract-card__detail-inner{padding:0 24px 24px;border-top:1px solid var(--border);margin:0 24px}
+.contract-card__detail-inner{margin:0;padding:20px 24px;border-top:1px solid var(--border)}
+.detail-section{margin-bottom:16px}
+.detail-section__title{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em}
+.detail-section__text{font-size:13px;color:var(--muted);line-height:1.7}
+.benefits-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.benefits-list li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.benefits-list li::before{content:'✓';color:var(--success);font-weight:700}
+.blockchain-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(45,212,168,0.06);border:1px solid rgba(45,212,168,0.2);border-radius:8px;font-size:12px;color:var(--accent);font-weight:600;font-family:monospace}
+
+/* ═══ MODAL ═══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(30,45,95,0.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:none;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s var(--ease)}
+.modal-overlay.show{display:flex;opacity:1}
+.modal{background:var(--card);border-radius:20px;width:min(500px,90vw);max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.12);transform:translateY(20px);transition:transform 0.4s var(--spring);padding:32px}
+.modal-overlay.show .modal{transform:translateY(0)}
+.modal__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.modal__title{font-family:var(--font-d);font-size:1.3rem;font-weight:700}
+.modal__close{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;transition:border-color 0.3s;font-size:18px;color:var(--muted)}
+.modal__close:hover{border-color:var(--danger);color:var(--danger)}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:10px;font-family:var(--font-b);font-size:14px;color:var(--text);background:var(--bg);transition:border-color 0.3s;outline:none}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent)}
+.form-group input:focus-visible,.form-group select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.conversion-display{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px}
+.conversion-display__rate{font-size:13px;color:var(--muted);margin-bottom:8px}
+.conversion-display__fee{font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+.conversion-display__savings{font-size:12px;color:var(--accent);font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.conversion-display__result{font-family:var(--font-d);font-size:1.2rem;font-weight:700;color:var(--success);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.payment-methods{display:flex;gap:10px;margin-bottom:18px}
+.payment-method{flex:1;padding:12px;border:1px solid var(--border);border-radius:10px;text-align:center;font-size:13px;font-weight:500;color:var(--muted);transition:all 0.2s;background:var(--card)}
+.payment-method.selected{border-color:var(--accent);color:var(--accent);background:rgba(45,212,168,0.04)}
+.payment-method:hover{border-color:var(--accent)}
+
+/* SUCCESS ANIMATION */
+.success-anim{display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 0;text-align:center}
+.success-anim.show{display:flex}
+.success-check{width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.1);display:grid;place-items:center;margin-bottom:20px;animation:popIn 0.5s var(--spring)}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.success-check svg{color:var(--success)}
+.success-anim__title{font-family:var(--font-d);font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.success-anim__sub{font-size:14px;color:var(--muted)}
+.confetti{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(200px) rotate(720deg);opacity:0}}
+
+/* ═══ SIGNATURE MODAL ═══ */
+.signature-canvas{border:2px dashed var(--border);border-radius:12px;width:100%;height:200px;cursor:crosshair;touch-action:none;margin-bottom:16px;background:var(--bg)}
+.signature-actions{display:flex;gap:12px}
+
+/* ═══ MOBILE ═══ */
+.mobile-tabs{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);z-index:120;padding:8px 16px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.mobile-tabs__inner{display:flex;justify-content:space-around}
+.mobile-tab{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;border:none;background:transparent;font-size:10px;font-weight:500;color:var(--muted);transition:color 0.2s}
+.mobile-tab.active{color:var(--accent)}
+.mobile-tab svg{width:22px;height:22px}
+
+.menu-toggle{display:none;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--card);place-items:center;color:var(--text);font-size:20px}
+
+@media(max-width:1024px){
+  .fin-stats{grid-template-columns:repeat(2,1fr)}
+  .cards-section{grid-template-columns:1fr}
+  .quick-actions{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .topnav{left:0}
+  .main{margin-left:0}
+  .menu-toggle{display:grid}
+  .mobile-tabs{display:block}
+  .main{padding-bottom:80px}
+  .topnav__search{min-width:0;flex:1}
+  .topnav__name{display:none}
+  .balance-card{grid-template-columns:1fr}
+  .balance-card__chart{width:100%;height:50px}
+  .quick-actions{grid-template-columns:repeat(2,1fr)}
+  .fin-stats{grid-template-columns:1fr}
+  .contract-stats{grid-template-columns:1fr}
+  .contract-card__header{flex-direction:column}
+  .contract-card__actions{flex-direction:row}
+  .benefits-list{grid-template-columns:1fr}
+  .tx{grid-template-columns:44px 1fr auto}
+  .tx__status{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;animation-iteration-count:1!important}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cur" id="cur"></div>
+<div class="cur-d" id="curD"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__logo" data-h>Synera<span>.</span></div>
+  <nav class="sidebar__nav">
+    <div class="sidebar__section">Principal</div>
+    <a href="#" class="sidebar__link" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Dashboard
+    </a>
+    <a href="#" class="sidebar__link" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      Empleos
+      <span class="count">12</span>
+    </a>
+    <a href="#" class="sidebar__link" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Red
+    </a>
+    <a href="#" class="sidebar__link active" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Wallet
+    </a>
+    <a href="#" class="sidebar__link" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Documentos
+    </a>
+    <div class="sidebar__section">Soporte</div>
+    <a href="#" class="sidebar__link" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Ayuda
+    </a>
+    <a href="#" class="sidebar__link" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.32 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Configuración
+    </a>
+  </nav>
+  <div class="sidebar__bottom">
+    <div class="sidebar__upgrade" data-h>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Synera Premium
+    </div>
+  </div>
+</aside>
+
+<!-- TOP NAV -->
+<header class="topnav" id="topnav">
+  <div style="display:flex;align-items:center;gap:16px">
+    <button class="menu-toggle" id="menuToggle" data-h>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topnav__search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Buscar transacciones, contratos..." data-h>
+    </div>
+  </div>
+  <div class="topnav__right">
+    <button class="topnav__notif" data-h>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <div class="badge"></div>
+    </button>
+    <div class="topnav__user" data-h>
+      <div class="topnav__avatar">CR</div>
+      <span class="topnav__name">Carlos Ramírez</span>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <div class="page">
+    <div class="page__header">
+      <h1 class="page__title">Wallet & Contratos</h1>
+      <p class="page__sub">Gestiona tus finanzas, envía remesas y firma contratos digitalmente.</p>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" data-tab="wallet" data-h>Wallet</button>
+      <button class="tab" data-tab="contratos" data-h>Contratos</button>
+    </div>
+
+    <!-- ═══════════════════════════════ WALLET TAB ═══════════════════════════════ -->
+    <div class="tab-content active" id="tab-wallet">
+
+      <!-- BALANCE CARD -->
+      <div class="balance-card">
+        <div class="balance-card__info">
+          <div class="balance-card__label">Balance Total</div>
+          <div class="balance-card__amount" id="balanceAmount">$0.00 <span style="font-size:0.5em;font-weight:600;color:var(--muted)">USD</span></div>
+          <div class="balance-card__equiv">&asymp; &euro;4,520.00 EUR</div>
+          <div class="balance-card__actions">
+            <button class="btn btn--primary" data-h id="btnEnviar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+              Enviar Dinero
+            </button>
+            <button class="btn btn--outline" data-h>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+              Recibir
+            </button>
+          </div>
+        </div>
+        <div class="balance-card__chart">
+          <svg viewBox="0 0 180 60" fill="none">
+            <defs>
+              <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2dd4a8" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#2dd4a8" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 50 Q20 45 40 38 T80 28 T120 22 T160 15 T180 10" stroke="#2dd4a8" stroke-width="2" fill="none"/>
+            <path d="M0 50 Q20 45 40 38 T80 28 T120 22 T160 15 T180 10 V60 H0Z" fill="url(#sparkGrad)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="quick-actions">
+        <div class="qaction" data-h id="qaSendRemesa">
+          <div class="qaction__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </div>
+          <div class="qaction__label">Enviar Remesa</div>
+        </div>
+        <div class="qaction" data-h>
+          <div class="qaction__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <div class="qaction__label">Cambio de Divisa</div>
+        </div>
+        <div class="qaction" data-h>
+          <div class="qaction__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="qaction__label">Microseguros</div>
+        </div>
+        <div class="qaction" data-h>
+          <div class="qaction__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <div class="qaction__label">Recargar</div>
+        </div>
+      </div>
+
+      <!-- TRANSACCIONES RECIENTES -->
+      <div class="section-title">
+        Transacciones Recientes
+        <div class="filter-btns">
+          <button class="filter-btn active" data-filter="all" data-h>Todas</button>
+          <button class="filter-btn" data-filter="in" data-h>Ingresos</button>
+          <button class="filter-btn" data-filter="out" data-h>Enviadas</button>
+        </div>
+      </div>
+      <div class="tx-list" id="txList">
+        <div class="tx" data-type="in">
+          <div class="tx__icon tx__icon--in">&darr;</div>
+          <div class="tx__info">
+            <div class="tx__desc">Pago - Constructora Alpine S.A.</div>
+            <div class="tx__date">1 Mar 2026</div>
+          </div>
+          <div class="tx__amount tx__amount--pos">+$3,200.00</div>
+          <div class="tx__status tx__status--done">Completado</div>
+        </div>
+        <div class="tx" data-type="out">
+          <div class="tx__icon tx__icon--out">&uarr;</div>
+          <div class="tx__info">
+            <div class="tx__desc">Remesa a María Ramírez (México)</div>
+            <div class="tx__date">28 Feb 2026</div>
+          </div>
+          <div class="tx__amount tx__amount--neg">-$500.00</div>
+          <div class="tx__status tx__status--done">Completado</div>
+        </div>
+        <div class="tx" data-type="out">
+          <div class="tx__icon tx__icon--out">&uarr;</div>
+          <div class="tx__info">
+            <div class="tx__desc">Remesa a familia (Colombia)</div>
+            <div class="tx__date">25 Feb 2026</div>
+          </div>
+          <div class="tx__amount tx__amount--neg">-$300.00</div>
+          <div class="tx__status tx__status--done">Completado</div>
+        </div>
+        <div class="tx" data-type="in">
+          <div class="tx__icon tx__icon--in">&darr;</div>
+          <div class="tx__info">
+            <div class="tx__desc">Pago - Constructora Alpine S.A.</div>
+            <div class="tx__date">1 Feb 2026</div>
+          </div>
+          <div class="tx__amount tx__amount--pos">+$3,200.00</div>
+          <div class="tx__status tx__status--done">Completado</div>
+        </div>
+        <div class="tx" data-type="out">
+          <div class="tx__icon tx__icon--swap">&rarr;</div>
+          <div class="tx__info">
+            <div class="tx__desc">Cambio USD &rarr; EUR</div>
+            <div class="tx__date">28 Ene 2026</div>
+          </div>
+          <div class="tx__amount tx__amount--swap">-$1,000.00 &rarr; &euro;935.00</div>
+          <div class="tx__status tx__status--done">Completado</div>
+        </div>
+        <div class="tx" data-type="in">
+          <div class="tx__icon tx__icon--bonus">&star;</div>
+          <div class="tx__info">
+            <div class="tx__desc">Bono de bienvenida</div>
+            <div class="tx__date">15 Ene 2026</div>
+          </div>
+          <div class="tx__amount tx__amount--pos">+$50.00</div>
+          <div class="tx__status tx__status--done">Completado</div>
+        </div>
+      </div>
+
+      <!-- TARJETAS / CUENTAS -->
+      <div class="section-title">Tarjetas & Cuentas</div>
+      <div class="cards-section">
+        <div>
+          <div class="virtual-card">
+            <div>
+              <div class="virtual-card__logo">Synera<span>.</span></div>
+              <div class="virtual-card__chip"></div>
+            </div>
+            <div class="virtual-card__number">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4829</div>
+            <div class="virtual-card__bottom">
+              <div>
+                <div class="virtual-card__holder">Titular</div>
+                <div class="virtual-card__name">Carlos Ramírez</div>
+              </div>
+              <div class="virtual-card__expiry">
+                <div class="virtual-card__expiry-label">Válida hasta</div>
+                <div class="virtual-card__expiry-val">12/28</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;text-align:center">
+            <button class="btn btn--outline btn--sm" data-h>Solicitar Tarjeta Física</button>
+          </div>
+        </div>
+        <div class="accounts-panel">
+          <div class="section-title" style="margin-bottom:12px;font-size:0.95rem">Cuentas Conectadas</div>
+          <div class="account-item">
+            <div class="account-item__icon">&#x1F3E6;</div>
+            <div class="account-item__info">
+              <div class="account-item__name">Banco Santander</div>
+              <div class="account-item__detail">****7823 - Cuenta corriente</div>
+            </div>
+            <div class="account-item__status">Conectada</div>
+          </div>
+          <div class="account-item">
+            <div class="account-item__icon">&#x1F3E6;</div>
+            <div class="account-item__info">
+              <div class="account-item__name">UBS Switzerland</div>
+              <div class="account-item__detail">****4501 - Cuenta de ahorro</div>
+            </div>
+            <div class="account-item__status">Conectada</div>
+          </div>
+          <div style="margin-top:12px">
+            <button class="btn btn--outline btn--sm btn--block" data-h>+ Agregar cuenta bancaria</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTADISTICAS FINANCIERAS -->
+      <div class="section-title">Estadísticas Financieras</div>
+      <div class="fin-stats">
+        <div class="fin-stat">
+          <div class="fin-stat__label">Ganado este mes</div>
+          <div class="fin-stat__value">$3,200</div>
+          <div class="fin-stat__sub">+0% vs mes anterior</div>
+        </div>
+        <div class="fin-stat">
+          <div class="fin-stat__label">Remesas enviadas</div>
+          <div class="fin-stat__value">$800</div>
+          <div class="fin-stat__sub" style="color:var(--muted)">2 transferencias</div>
+        </div>
+        <div class="fin-stat">
+          <div class="fin-stat__label">Ahorrado en comisiones</div>
+          <div class="fin-stat__value" style="color:var(--success)">$120</div>
+          <div class="fin-stat__sub">vs servicios tradicionales</div>
+        </div>
+        <div class="mini-chart">
+          <div class="mini-chart__title">Ingresos mensuales</div>
+          <div class="bar-chart" id="barChart">
+            <div class="bar" style="height:40%"><span class="bar__label">Oct</span></div>
+            <div class="bar" style="height:55%"><span class="bar__label">Nov</span></div>
+            <div class="bar" style="height:50%"><span class="bar__label">Dic</span></div>
+            <div class="bar" style="height:70%"><span class="bar__label">Ene</span></div>
+            <div class="bar" style="height:75%"><span class="bar__label">Feb</span></div>
+            <div class="bar current" style="height:75%"><span class="bar__label">Mar</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tab-wallet -->
+
+    <!-- ═══════════════════════════════ CONTRATOS TAB ═══════════════════════════════ -->
+    <div class="tab-content" id="tab-contratos">
+
+      <!-- OVERVIEW STATS -->
+      <div class="contract-stats">
+        <div class="cstat cstat--active">
+          <div class="cstat__num">1</div>
+          <div class="cstat__label">Contratos Activos</div>
+        </div>
+        <div class="cstat">
+          <div class="cstat__num">2</div>
+          <div class="cstat__label">Contratos Completados</div>
+        </div>
+        <div class="cstat cstat--pending">
+          <div class="cstat__num">1</div>
+          <div class="cstat__label">Pendientes de Firma</div>
+        </div>
+      </div>
+
+      <!-- CONTRACT LIST -->
+      <div class="section-title">Mis Contratos</div>
+
+      <!-- Activo -->
+      <div class="contract-card" id="contract-1">
+        <div class="contract-card__header" onclick="toggleContract('contract-1')">
+          <div class="contract-card__left">
+            <span class="contract-card__badge badge--activo">Activo</span>
+            <div class="contract-card__employer">Constructora Alpine S.A.</div>
+            <div class="contract-card__position">Ayudante de Construcción</div>
+            <div class="contract-card__meta">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Zurich, Suiza</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 01 Ene 2026 — 31 Dic 2026</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> $3,200/mes</span>
+            </div>
+          </div>
+          <div class="contract-card__actions">
+            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-1')">Ver Contrato</button>
+          </div>
+        </div>
+        <div class="contract-card__detail">
+          <div class="contract-card__detail-inner">
+            <div class="detail-section">
+              <div class="detail-section__title">Términos del Contrato</div>
+              <div class="detail-section__text">
+                El presente contrato establece las condiciones laborales entre Constructora Alpine S.A. (empleador) y Carlos Ramírez (trabajador) para desempeñar funciones como Ayudante de Construcción en las instalaciones ubicadas en Zurich, Suiza. El contrato tiene vigencia desde el 1 de enero de 2026 hasta el 31 de diciembre de 2026, con posibilidad de renovación. El salario mensual bruto acordado es de $3,200 USD, pagadero los primeros cinco días de cada mes.
+              </div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section__title">Beneficios</div>
+              <ul class="benefits-list">
+                <li>Seguro de salud completo</li>
+                <li>Alojamiento proporcionado</li>
+                <li>Transporte al lugar de trabajo</li>
+                <li>2 vuelos anuales al país de origen</li>
+                <li>Formación profesional continua</li>
+                <li>Bono de rendimiento trimestral</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section__title">Verificación Blockchain</div>
+              <div class="blockchain-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Verificado en Blockchain
+              </div>
+              <div style="font-family:monospace;font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all">
+                0x7a3b...f29d4e8c1a6b...83ef
+              </div>
+            </div>
+            <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completado -->
+      <div class="contract-card" id="contract-2">
+        <div class="contract-card__header" onclick="toggleContract('contract-2')">
+          <div class="contract-card__left">
+            <span class="contract-card__badge badge--completado">Completado</span>
+            <div class="contract-card__employer">Hotel Mediterráneo</div>
+            <div class="contract-card__position">Recepcionista</div>
+            <div class="contract-card__meta">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Barcelona, España</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 01 Jun 2025 — 31 Dic 2025</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> $2,200/mes</span>
+            </div>
+          </div>
+          <div class="contract-card__actions">
+            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-2')">Ver Contrato</button>
+          </div>
+        </div>
+        <div class="contract-card__detail">
+          <div class="contract-card__detail-inner">
+            <div class="detail-section">
+              <div class="detail-section__title">Términos del Contrato</div>
+              <div class="detail-section__text">
+                Contrato temporal para el puesto de Recepcionista en Hotel Mediterráneo, Barcelona. Periodo: junio a diciembre de 2025. Salario mensual de $2,200 USD. Contrato completado satisfactoriamente con evaluación positiva del empleador.
+              </div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section__title">Beneficios</div>
+              <ul class="benefits-list">
+                <li>Seguro de salud básico</li>
+                <li>Comidas durante turno</li>
+                <li>Descuento en alojamiento</li>
+                <li>Curso de idiomas incluido</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section__title">Verificación Blockchain</div>
+              <div class="blockchain-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Verificado en Blockchain
+              </div>
+              <div style="font-family:monospace;font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all">
+                0x4c8e...a72b1d9f3e5c...91ab
+              </div>
+            </div>
+            <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pendiente Firma -->
+      <div class="contract-card" id="contract-3">
+        <div class="contract-card__header" onclick="toggleContract('contract-3')">
+          <div class="contract-card__left">
+            <span class="contract-card__badge badge--pendiente">Pendiente Firma</span>
+            <div class="contract-card__employer">Finca Stuttgart</div>
+            <div class="contract-card__position">Recolector</div>
+            <div class="contract-card__meta">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Stuttgart, Alemania</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 01 Abr 2026 — 31 Oct 2026</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> $2,800/mes</span>
+            </div>
+          </div>
+          <div class="contract-card__actions">
+            <button class="btn btn--primary btn--sm" data-h id="btnFirmar" onclick="event.stopPropagation();openSignatureModal('contract-3')">Firmar Digitalmente</button>
+            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-3')">Ver Contrato</button>
+          </div>
+        </div>
+        <div class="contract-card__detail">
+          <div class="contract-card__detail-inner">
+            <div class="detail-section">
+              <div class="detail-section__title">Términos del Contrato</div>
+              <div class="detail-section__text">
+                Contrato de temporada para labores de recolección agrícola en Finca Stuttgart, Alemania. Periodo: abril a octubre de 2026. Salario mensual de $2,800 USD. Incluye alojamiento en las instalaciones de la finca y transporte desde el aeropuerto. Se requiere disponibilidad para trabajo de lunes a sábado con horario variable según temporada de cosecha.
+              </div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section__title">Beneficios</div>
+              <ul class="benefits-list">
+                <li>Alojamiento incluido</li>
+                <li>3 comidas diarias</li>
+                <li>Seguro de salud completo</li>
+                <li>Transporte aeropuerto</li>
+                <li>Bono de productividad</li>
+                <li>Certificado de experiencia</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section__title">Firma Digital</div>
+              <div style="padding:20px;border:2px dashed var(--border);border-radius:12px;text-align:center;color:var(--muted);font-size:14px">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto 8px;display:block;color:var(--warning)"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                Pendiente de firma digital
+              </div>
+            </div>
+            <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tab-contratos -->
+
+  </div>
+</main>
+
+<!-- MOBILE BOTTOM TABS -->
+<div class="mobile-tabs">
+  <div class="mobile-tabs__inner">
+    <button class="mobile-tab" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </button>
+    <button class="mobile-tab" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      Empleos
+    </button>
+    <button class="mobile-tab active" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Wallet
+    </button>
+    <button class="mobile-tab" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Red
+    </button>
+    <button class="mobile-tab" data-h>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9"/></svg>
+      Más
+    </button>
+  </div>
+</div>
+
+<!-- ═══ ENVIAR REMESA MODAL ═══ -->
+<div class="modal-overlay" id="remesaModal">
+  <div class="modal">
+    <div id="remesaForm">
+      <div class="modal__header">
+        <div class="modal__title">Enviar Remesa</div>
+        <button class="modal__close" data-h onclick="closeModal('remesaModal')">&times;</button>
+      </div>
+      <div class="form-group">
+        <label for="recipientName">Nombre del destinatario</label>
+        <input type="text" id="recipientName" placeholder="Ej: María Ramírez" data-h>
+      </div>
+      <div class="form-group">
+        <label for="recipientCountry">País del destinatario</label>
+        <select id="recipientCountry" data-h>
+          <option value="">Seleccionar país...</option>
+          <option value="MXN" data-rate="17.2">México</option>
+          <option value="COP" data-rate="4150">Colombia</option>
+          <option value="PEN" data-rate="3.72">Perú</option>
+          <option value="HNL" data-rate="24.8">Honduras</option>
+          <option value="USD_EC" data-rate="1">Ecuador (USD)</option>
+          <option value="VES" data-rate="36.5">Venezuela</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sendAmount">Monto en USD</label>
+        <input type="number" id="sendAmount" placeholder="500.00" min="1" data-h>
+      </div>
+      <div class="conversion-display" id="conversionDisplay" style="display:none">
+        <div class="conversion-display__rate" id="convRate">Tasa de cambio: --</div>
+        <div class="conversion-display__fee">
+          <span>Comisión Synera:</span>
+          <span id="feeAmount">$0.00 (0.5%)</span>
+        </div>
+        <div class="conversion-display__savings">Synera cobra 0.5% vs 6-8% de Western Union</div>
+        <div class="conversion-display__result" id="recipientGets">El destinatario recibe: --</div>
+      </div>
+      <div class="form-group">
+        <label>Método de pago</label>
+        <div class="payment-methods">
+          <div class="payment-method selected" data-h onclick="selectPayment(this)">Balance Wallet</div>
+          <div class="payment-method" data-h onclick="selectPayment(this)">Transferencia Bancaria</div>
+        </div>
+      </div>
+      <button class="btn btn--primary btn--block" data-h id="btnEnviarRemesa" onclick="sendRemesa()">Enviar Ahora</button>
+    </div>
+    <div class="success-anim" id="remesaSuccess">
+      <div class="success-check">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-anim__title">Remesa Enviada</div>
+      <div class="success-anim__sub" id="successDetail">Tu dinero está en camino.</div>
+      <button class="btn btn--outline" style="margin-top:20px" data-h onclick="closeModal('remesaModal')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FIRMA DIGITAL MODAL ═══ -->
+<div class="modal-overlay" id="signatureModal">
+  <div class="modal">
+    <div id="signForm">
+      <div class="modal__header">
+        <div class="modal__title">Firma Digital</div>
+        <button class="modal__close" data-h onclick="closeModal('signatureModal')">&times;</button>
+      </div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Dibuja tu firma en el área de abajo para firmar el contrato con Finca Stuttgart.</p>
+      <canvas class="signature-canvas" id="signatureCanvas" width="436" height="200"></canvas>
+      <div class="signature-actions">
+        <button class="btn btn--outline" data-h onclick="clearSignature()">Limpiar</button>
+        <button class="btn btn--primary" style="flex:1" data-h onclick="submitSignature()">Firmar Contrato</button>
+      </div>
+    </div>
+    <div class="success-anim" id="signatureSuccess">
+      <div class="success-check">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-anim__title">Contrato Firmado</div>
+      <div class="success-anim__sub">El contrato con Finca Stuttgart ha sido firmado exitosamente y verificado en blockchain.</div>
+      <button class="btn btn--outline" style="margin-top:20px" data-h onclick="closeModal('signatureModal')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══ CUSTOM CURSOR ═══ */
+const cur = document.getElementById('cur');
+const curD = document.getElementById('curD');
+let mx=0,my=0,cx=0,cy=0,dx=0,dy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+function animCur(){
+  cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;
+  dx+=(mx-dx)*0.35;dy+=(my-dy)*0.35;
+  cur.style.transform=`translate(${cx-10}px,${cy-10}px)`;
+  curD.style.transform=`translate(${dx-2.5}px,${dy-2.5}px)`;
+  requestAnimationFrame(animCur);
+}
+animCur();
+document.querySelectorAll('[data-h]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('h'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+});
+
+/* ═══ SIDEBAR MOBILE TOGGLE ═══ */
+const sidebar=document.getElementById('sidebar');
+const menuToggle=document.getElementById('menuToggle');
+menuToggle.addEventListener('click',()=>sidebar.classList.toggle('open'));
+
+/* ═══ TAB SWITCHING ═══ */
+const tabs=document.querySelectorAll('.tab');
+const tabContents=document.querySelectorAll('.tab-content');
+tabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    tabs.forEach(t=>t.classList.remove('active'));
+    tabContents.forEach(tc=>tc.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ═══ BALANCE COUNTER ANIMATION ═══ */
+function animateBalance(){
+  const el=document.getElementById('balanceAmount');
+  const target=4850;
+  const duration=1500;
+  const start=performance.now();
+  function tick(now){
+    const elapsed=now-start;
+    const progress=Math.min(elapsed/duration,1);
+    const eased=1-Math.pow(1-progress,3);
+    const current=Math.floor(eased*target*100)/100;
+    el.innerHTML='$'+current.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' <span style="font-size:0.5em;font-weight:600;color:var(--muted)">USD</span>';
+    if(progress<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+setTimeout(animateBalance,300);
+
+/* ═══ TRANSACTION FILTER ═══ */
+const filterBtns=document.querySelectorAll('.filter-btn');
+const txItems=document.querySelectorAll('.tx');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter=btn.dataset.filter;
+    txItems.forEach(tx=>{
+      if(filter==='all'||tx.dataset.type===filter){
+        tx.style.display='';
+      }else{
+        tx.style.display='none';
+      }
+    });
+  });
+});
+
+/* ═══ CONTRACT EXPAND/COLLAPSE ═══ */
+window.toggleContract=function(id){
+  document.getElementById(id).classList.toggle('expanded');
+};
+
+/* ═══ MODAL HELPERS ═══ */
+function openModal(id){
+  const m=document.getElementById(id);
+  m.style.display='flex';
+  requestAnimationFrame(()=>m.classList.add('show'));
+}
+function closeModal(id){
+  const m=document.getElementById(id);
+  m.classList.remove('show');
+  setTimeout(()=>{
+    m.style.display='none';
+    // Reset forms
+    if(id==='remesaModal'){
+      document.getElementById('remesaForm').style.display='';
+      document.getElementById('remesaSuccess').classList.remove('show');
+      document.getElementById('recipientName').value='';
+      document.getElementById('recipientCountry').value='';
+      document.getElementById('sendAmount').value='';
+      document.getElementById('conversionDisplay').style.display='none';
+    }
+    if(id==='signatureModal'){
+      document.getElementById('signForm').style.display='';
+      document.getElementById('signatureSuccess').classList.remove('show');
+      clearSignature();
+    }
+  },300);
+}
+window.closeModal=closeModal;
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{
+    if(e.target===o) closeModal(o.id);
+  });
+});
+
+/* ═══ ENVIAR REMESA ═══ */
+document.getElementById('btnEnviar').addEventListener('click',()=>openModal('remesaModal'));
+document.getElementById('qaSendRemesa').addEventListener('click',()=>openModal('remesaModal'));
+
+const rates={MXN:17.2,COP:4150,PEN:3.72,HNL:24.8,USD_EC:1,VES:36.5};
+const currNames={MXN:'MXN',COP:'COP',PEN:'PEN',HNL:'HNL',USD_EC:'USD',VES:'VES'};
+
+function updateConversion(){
+  const country=document.getElementById('recipientCountry').value;
+  const amount=parseFloat(document.getElementById('sendAmount').value)||0;
+  const display=document.getElementById('conversionDisplay');
+  if(!country||!amount){display.style.display='none';return;}
+  display.style.display='';
+  const rate=rates[country];
+  const fee=amount*0.005;
+  const netAmount=amount-fee;
+  const received=netAmount*rate;
+  const curr=currNames[country];
+  document.getElementById('convRate').textContent=`Tasa de cambio: 1 USD = ${rate.toLocaleString()} ${curr}`;
+  document.getElementById('feeAmount').textContent=`$${fee.toFixed(2)} (0.5%)`;
+  document.getElementById('recipientGets').textContent=`El destinatario recibe: ${received.toLocaleString('es',{minimumFractionDigits:2,maximumFractionDigits:2})} ${curr}`;
+}
+document.getElementById('recipientCountry').addEventListener('change',updateConversion);
+document.getElementById('sendAmount').addEventListener('input',updateConversion);
+
+window.selectPayment=function(el){
+  el.parentElement.querySelectorAll('.payment-method').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+};
+
+window.sendRemesa=function(){
+  const name=document.getElementById('recipientName').value;
+  const country=document.getElementById('recipientCountry').value;
+  const amount=parseFloat(document.getElementById('sendAmount').value);
+  if(!name||!country||!amount){alert('Por favor completa todos los campos.');return;}
+
+  // Save to localStorage
+  const txs=JSON.parse(localStorage.getItem('synera_transactions')||'[]');
+  txs.unshift({type:'out',desc:`Remesa a ${name}`,date:new Date().toISOString(),amount:-amount,status:'Completado'});
+  localStorage.setItem('synera_transactions',JSON.stringify(txs));
+
+  // Show success
+  document.getElementById('remesaForm').style.display='none';
+  document.getElementById('remesaSuccess').classList.add('show');
+  document.getElementById('successDetail').textContent=`$${amount.toFixed(2)} enviados a ${name}.`;
+
+  // Confetti
+  spawnConfetti(document.getElementById('remesaSuccess'));
+};
+
+function spawnConfetti(container){
+  const colors=['#2dd4a8','#3b9ece','#f59e0b','#ef4444','#10b981','#1e2d5f'];
+  for(let i=0;i<20;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.cssText=`position:absolute;left:${Math.random()*100}%;top:30%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*0.5}s;animation-duration:${1+Math.random()}s`;
+    container.style.position='relative';
+    container.appendChild(c);
+    setTimeout(()=>c.remove(),2000);
+  }
+}
+
+/* ═══ SIGNATURE PAD ═══ */
+window.openSignatureModal=function(contractId){
+  window._signContractId=contractId;
+  openModal('signatureModal');
+  initSignaturePad();
+};
+document.getElementById('btnFirmar')&&document.getElementById('btnFirmar').addEventListener('click',function(e){
+  e.stopPropagation();
+  window.openSignatureModal('contract-3');
+});
+
+let sigCanvas,sigCtx,sigDrawing=false;
+function initSignaturePad(){
+  sigCanvas=document.getElementById('signatureCanvas');
+  sigCtx=sigCanvas.getContext('2d');
+  // Set canvas size
+  const rect=sigCanvas.getBoundingClientRect();
+  sigCanvas.width=rect.width;
+  sigCanvas.height=rect.height;
+  sigCtx.strokeStyle='#1e2d5f';
+  sigCtx.lineWidth=2.5;
+  sigCtx.lineCap='round';
+  sigCtx.lineJoin='round';
+  // Mouse events
+  sigCanvas.addEventListener('mousedown',sigStart);
+  sigCanvas.addEventListener('mousemove',sigMove);
+  sigCanvas.addEventListener('mouseup',sigEnd);
+  sigCanvas.addEventListener('mouseleave',sigEnd);
+  // Touch events
+  sigCanvas.addEventListener('touchstart',e=>{e.preventDefault();sigStart(e.touches[0]);},{passive:false});
+  sigCanvas.addEventListener('touchmove',e=>{e.preventDefault();sigMove(e.touches[0]);},{passive:false});
+  sigCanvas.addEventListener('touchend',sigEnd);
+}
+function sigStart(e){
+  sigDrawing=true;
+  const r=sigCanvas.getBoundingClientRect();
+  sigCtx.beginPath();
+  sigCtx.moveTo(e.clientX-r.left,e.clientY-r.top);
+}
+function sigMove(e){
+  if(!sigDrawing)return;
+  const r=sigCanvas.getBoundingClientRect();
+  sigCtx.lineTo(e.clientX-r.left,e.clientY-r.top);
+  sigCtx.stroke();
+}
+function sigEnd(){sigDrawing=false}
+window.clearSignature=function(){
+  if(sigCtx){
+    sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
+  }
+};
+window.submitSignature=function(){
+  // Check if canvas has content
+  const pixels=sigCtx.getImageData(0,0,sigCanvas.width,sigCanvas.height).data;
+  let drawn=false;
+  for(let i=3;i<pixels.length;i+=4){if(pixels[i]>0){drawn=true;break;}}
+  if(!drawn){alert('Por favor dibuja tu firma.');return;}
+
+  // Save contract status
+  const contracts=JSON.parse(localStorage.getItem('synera_contracts')||'{}');
+  contracts[window._signContractId]='activo';
+  localStorage.setItem('synera_contracts',JSON.stringify(contracts));
+
+  // Update UI
+  const card=document.getElementById(window._signContractId);
+  if(card){
+    const badge=card.querySelector('.contract-card__badge');
+    badge.className='contract-card__badge badge--activo';
+    badge.textContent='Activo';
+    const signBtn=card.querySelector('#btnFirmar');
+    if(signBtn)signBtn.remove();
+  }
+
+  // Show success
+  document.getElementById('signForm').style.display='none';
+  document.getElementById('signatureSuccess').classList.add('show');
+  spawnConfetti(document.getElementById('signatureSuccess'));
+};
+
+/* ═══ LOCAL STORAGE INIT ═══ */
+function loadFromStorage(){
+  const contracts=JSON.parse(localStorage.getItem('synera_contracts')||'{}');
+  Object.keys(contracts).forEach(id=>{
+    const card=document.getElementById(id);
+    if(card&&contracts[id]==='activo'){
+      const badge=card.querySelector('.contract-card__badge');
+      if(badge&&badge.textContent.trim()==='Pendiente Firma'){
+        badge.className='contract-card__badge badge--activo';
+        badge.textContent='Activo';
+        const signBtn=card.querySelector('#btnFirmar');
+        if(signBtn)signBtn.remove();
+      }
+    }
+  });
+}
+loadFromStorage();
+
+/* ═══ KEYBOARD: ESC closes modals ═══ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id));
+  }
+});
+
+})();
+</script>
+</body>
+</html>

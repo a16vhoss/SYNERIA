@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synera — Mi Perfil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fafbfc;--card:#ffffff;
+  --text:#1e2d5f;--accent:#2dd4a8;--accent2:#3b9ece;
+  --muted:#64748b;--border:#e2e8f0;
+  --font-d:'Syne',sans-serif;--font-b:'General Sans',sans-serif;
+  --ease:cubic-bezier(0.76,0,0.24,1);--ease-out:cubic-bezier(0.16,1,0.3,1);
+  --spring:linear(0,0.009,0.035 2.1%,0.141,0.281 6.7%,0.723 12.9%,0.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,0.991,0.977 51%,0.974 53.8%,0.975 57.1%,0.997 69.8%,1.003 76.9%,1);
+}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--border) var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;cursor:none;font-weight:400;font-size:16px;line-height:1.7}
+::selection{background:var(--accent);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ═══ CURSOR ═══ */
+.cur{position:fixed;top:0;left:0;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.25);border-radius:50%;pointer-events:none;z-index:10000;transition:width 0.4s var(--ease-out),height 0.4s var(--ease-out),background 0.3s,border-color 0.3s}
+.cur.h{width:56px;height:56px;border-color:var(--accent);background:rgba(45,212,168,0.08)}
+.cur-d{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--text);border-radius:50%;pointer-events:none;z-index:10001}
+@media(hover:none){.cur,.cur-d{display:none}body{cursor:auto}}
+
+/* ═══ NAV ═══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s}
+.nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+.nav__logo{font-family:var(--font-d);font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:6px;color:var(--text)}
+.nav__logo span{color:var(--accent)}
+.nav__search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:8px 16px;width:320px;transition:border-color 0.3s}
+.nav__search:focus-within{border-color:var(--accent)}
+.nav__search input{border:none;background:transparent;outline:none;font-family:var(--font-b);font-size:14px;color:var(--text);width:100%}
+.nav__search input::placeholder{color:var(--muted)}
+.nav__right{display:flex;align-items:center;gap:16px}
+.nav__icon{width:40px;height:40px;border-radius:12px;border:1px solid var(--border);display:grid;place-items:center;cursor:none;transition:border-color 0.3s,background 0.3s;background:var(--card);position:relative}
+.nav__icon:hover{border-color:var(--accent);background:rgba(45,212,168,0.04)}
+.nav__icon .badge{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--card)}
+.nav__avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:none}
+
+/* ═══ APP LAYOUT ═══ */
+.app{display:flex;margin-top:73px;min-height:calc(100vh - 73px)}
+
+/* ═══ SIDEBAR NAV ═══ */
+.side{width:260px;background:var(--card);border-right:1px solid var(--border);padding:24px 0;flex-shrink:0;position:sticky;top:73px;height:calc(100vh - 73px);overflow-y:auto}
+.side__section{padding:0 16px;margin-bottom:24px}
+.side__label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 12px;margin-bottom:8px}
+.side__link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-size:14px;font-weight:500;color:var(--muted);transition:all 0.3s;cursor:none;margin-bottom:2px}
+.side__link:hover{background:rgba(45,212,168,0.04);color:var(--text)}
+.side__link.active{background:rgba(45,212,168,0.08);color:var(--accent);font-weight:600}
+.side__link svg{width:20px;height:20px;flex-shrink:0}
+
+/* ═══ MAIN CONTENT ═══ */
+.main{flex:1;padding:32px 40px;max-width:960px}
+
+/* ═══ PROFILE HEADER ═══ */
+.profile-header{display:flex;gap:28px;align-items:center;flex-wrap:wrap;margin-bottom:32px}
+.profile-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:2.4rem;font-weight:800;flex-shrink:0;position:relative}
+.profile-avatar__badge{position:absolute;bottom:2px;right:2px;width:28px;height:28px;border-radius:50%;background:var(--card);border:2px solid var(--border);display:grid;place-items:center;font-size:14px}
+.profile-info{flex:1;min-width:200px}
+.profile-name{font-family:var(--font-d);font-size:1.8rem;font-weight:800;line-height:1.2}
+.profile-role{font-size:14px;color:var(--muted);margin-bottom:4px}
+.profile-location{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.profile-location svg{width:16px;height:16px}
+.verification{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600}
+.verification--pending{background:rgba(250,204,21,0.12);color:#b45309}
+.verification--verified{background:rgba(45,212,168,0.1);color:#0d9b76}
+.profile-actions{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;font-family:var(--font-d);font-size:14px;font-weight:700;border-radius:14px;cursor:none;transition:transform 0.3s var(--spring),box-shadow 0.3s,background 0.3s,border-color 0.3s;border:none}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(45,212,168,0.3)}
+.btn--outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn--outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn--small{padding:10px 18px;font-size:13px;border-radius:10px}
+
+/* Progress bar */
+.progress-wrap{width:200px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:6px}
+.progress-label span:first-child{color:var(--muted)}
+.progress-label span:last-child{color:var(--accent)}
+.progress-bar{height:6px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width 0.6s var(--ease-out)}
+
+/* ═══ TABS ═══ */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:32px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 20px;font-size:14px;font-weight:600;color:var(--muted);cursor:none;border-bottom:2px solid transparent;transition:color 0.3s,border-color 0.3s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-b)}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:4px}
+
+/* ═══ TAB PANELS ═══ */
+.tab-panel{display:none;animation:fadeIn 0.3s var(--ease-out)}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ FORM STYLES ═══ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-group{margin-bottom:0}
+.form-group--full{grid-column:1/-1}
+.form-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.form-input,.form-select,.form-textarea{width:100%;padding:11px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--font-b);font-size:14px;color:var(--text);background:var(--card);transition:border-color 0.3s;outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-input:focus-visible,.form-select:focus-visible,.form-textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.form-textarea{min-height:100px;resize:vertical}
+.form-select{cursor:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+
+/* ═══ TAGS ═══ */
+.tags-container{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.tag-item{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:500;background:rgba(45,212,168,0.08);color:var(--accent);border:1px solid rgba(45,212,168,0.15);transition:all 0.3s}
+.tag-item__level{font-size:11px;color:var(--muted);font-weight:400}
+.tag-item__remove{width:16px;height:16px;border-radius:50%;background:rgba(45,212,168,0.15);display:grid;place-items:center;cursor:none;font-size:10px;line-height:1;transition:background 0.3s;border:none;color:var(--accent);font-weight:700}
+.tag-item__remove:hover{background:rgba(239,68,68,0.15);color:#dc2626}
+.tag-add{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:500;background:var(--bg);color:var(--muted);border:1.5px dashed var(--border);cursor:none;transition:border-color 0.3s,color 0.3s;font-family:var(--font-b)}
+.tag-add:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ═══ CHECKBOXES ═══ */
+.checkbox-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.checkbox-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:12px;cursor:none;transition:border-color 0.3s,background 0.3s;font-size:14px}
+.checkbox-item:hover{border-color:var(--accent)}
+.checkbox-item.checked{border-color:var(--accent);background:rgba(45,212,168,0.04)}
+.checkbox-item__box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);display:grid;place-items:center;flex-shrink:0;transition:all 0.3s}
+.checkbox-item.checked .checkbox-item__box{background:var(--accent);border-color:var(--accent)}
+.checkbox-item__check{color:#fff;font-size:12px;opacity:0;transition:opacity 0.2s}
+.checkbox-item.checked .checkbox-item__check{opacity:1}
+
+/* ═══ MULTI SELECT ═══ */
+.multi-select{display:flex;flex-wrap:wrap;gap:8px}
+.multi-chip{padding:8px 16px;border-radius:100px;font-size:13px;font-weight:500;border:1.5px solid var(--border);cursor:none;transition:all 0.3s;background:var(--card);color:var(--muted)}
+.multi-chip:hover{border-color:var(--accent)}
+.multi-chip.selected{background:rgba(45,212,168,0.08);color:var(--accent);border-color:var(--accent)}
+
+/* ═══ EXPERIENCE / EDUCATION CARDS ═══ */
+.exp-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;transition:box-shadow 0.3s,border-color 0.3s}
+.exp-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.04);border-color:rgba(45,212,168,0.2)}
+.exp-card__header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.exp-card__title{font-family:var(--font-d);font-size:1.05rem;font-weight:700}
+.exp-card__actions{display:flex;gap:8px}
+.exp-card__action{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:grid;place-items:center;cursor:none;transition:border-color 0.3s;font-size:14px}
+.exp-card__action:hover{border-color:var(--accent)}
+.exp-card__company{font-size:14px;color:var(--accent);font-weight:500;margin-bottom:4px}
+.exp-card__period{font-size:13px;color:var(--muted);margin-bottom:8px}
+.exp-card__desc{font-size:14px;color:var(--muted);line-height:1.6}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;border:2px dashed var(--border);border-radius:16px;background:transparent;color:var(--muted);font-family:var(--font-d);font-size:14px;font-weight:600;cursor:none;transition:border-color 0.3s,color 0.3s}
+.add-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ═══ DOCUMENTS TAB ═══ */
+.doc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.doc-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;transition:border-color 0.3s,box-shadow 0.3s}
+.doc-card:hover{border-color:rgba(45,212,168,0.2);box-shadow:0 4px 20px rgba(0,0,0,0.04)}
+.doc-card__icon{font-size:36px;margin-bottom:12px}
+.doc-card__name{font-family:var(--font-d);font-size:14px;font-weight:700;margin-bottom:4px}
+.doc-card__status{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;margin-bottom:12px}
+.doc-card__status--uploaded{background:rgba(45,212,168,0.1);color:#0d9b76}
+.doc-card__status--pending{background:rgba(250,204,21,0.12);color:#b45309}
+.doc-card__status--verified{background:rgba(59,158,206,0.1);color:#2563eb}
+.doc-card__blockchain{font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:4px;margin-top:8px}
+.doc-card__blockchain svg{width:14px;height:14px}
+.doc-upload-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;background:var(--bg);border:1.5px solid var(--border);color:var(--muted);cursor:none;transition:all 0.3s;font-family:var(--font-b)}
+.doc-upload-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ═══ SAVE BAR ═══ */
+.save-bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--border);padding:16px 40px;display:flex;justify-content:flex-end;gap:12px;margin:32px -40px -32px;z-index:10}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .side{width:220px}
+  .main{padding:24px 28px}
+  .checkbox-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav__search{display:none}
+  .app{flex-direction:column}
+  .side{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:12px 0;overflow-x:auto}
+  .side__section{display:flex;gap:4px;padding:0 16px;margin-bottom:0}
+  .side__label{display:none}
+  .side__link{white-space:nowrap;padding:8px 14px;font-size:13px;margin-bottom:0}
+  .main{padding:20px 5vw}
+  .profile-header{flex-direction:column;align-items:flex-start}
+  .profile-actions{align-items:flex-start}
+  .progress-wrap{width:100%}
+  .form-grid{grid-template-columns:1fr}
+  .checkbox-grid{grid-template-columns:1fr 1fr}
+  .doc-grid{grid-template-columns:1fr}
+  .save-bar{margin:24px -5vw -20px;padding:16px 5vw}
+}
+@media(max-width:480px){
+  .checkbox-grid{grid-template-columns:1fr}
+  .tabs{gap:0}
+  .tab{padding:10px 14px;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cur" id="cur"></div>
+<div class="cur-d" id="curD"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="dashboard.html" class="nav__logo" data-h>Synera<span>.</span></a>
+  <div class="nav__search" data-h>
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/></svg>
+    <input type="text" placeholder="Buscar empleos, sectores, países...">
+  </div>
+  <div class="nav__right">
+    <div class="nav__icon" data-h title="Notificaciones">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 16.5c.83 0 1.5-.67 1.5-1.5h-3c0 .83.67 1.5 1.5 1.5zM15 12l-1.5-2V6.5a4.5 4.5 0 0 0-9 0V10L3 12v1h12v-1z"/></svg>
+      <div class="badge"></div>
+    </div>
+    <div class="nav__avatar" data-h id="navAvatar">SR</div>
+  </div>
+</nav>
+
+<!-- APP LAYOUT -->
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="side">
+    <div class="side__section">
+      <div class="side__label">Principal</div>
+      <a href="dashboard.html" class="side__link" data-h>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="side__link" data-h>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/></svg>
+        Empleos
+      </a>
+      <a href="#" class="side__link" data-h>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Aplicaciones
+      </a>
+      <a href="#" class="side__link" data-h>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Mensajes
+      </a>
+    </div>
+    <div class="side__section">
+      <div class="side__label">Cuenta</div>
+      <a href="profile.html" class="side__link active" data-h>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Mi Perfil
+      </a>
+      <a href="#" class="side__link" data-h>
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configuración
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar">
+        SR
+        <div class="profile-avatar__badge" id="verificationIcon">&#9888;&#65039;</div>
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name" id="profileName">Sofia Ramírez</h1>
+        <div class="profile-role">Trabajadora</div>
+        <div class="profile-location">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="profileLocation">Bogotá, Colombia &#127464;&#127476;</span>
+        </div>
+        <div class="verification verification--pending" id="verificationBadge">
+          &#9888;&#65039; Verificación Pendiente
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn btn--primary btn--small" data-h>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
+          Actualizar Currículum
+        </button>
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Perfil completo</span>
+            <span id="progressPct">78%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:78%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" data-tab="personal" data-h>Información Personal</button>
+      <button class="tab" role="tab" data-tab="experience" data-h>Experiencia</button>
+      <button class="tab" role="tab" data-tab="education" data-h>Educación</button>
+      <button class="tab" role="tab" data-tab="documents" data-h>Documentos</button>
+      <button class="tab" role="tab" data-tab="settings" data-h>Configuración</button>
+    </div>
+
+    <!-- ═══ TAB: PERSONAL ═══ -->
+    <div class="tab-panel active" id="panel-personal">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="fname">Nombre completo</label>
+          <input class="form-input" type="text" id="fname" value="Sofia Ramírez">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="femail">Email</label>
+          <input class="form-input" type="email" id="femail" value="sofia.ramirez@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fphone">Teléfono</label>
+          <input class="form-input" type="tel" id="fphone" value="+57 310 456 7890">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fcountry">País</label>
+          <select class="form-select" id="fcountry">
+            <option>Colombia</option><option>México</option><option>Argentina</option><option>Perú</option><option>Chile</option><option>Ecuador</option><option>Venezuela</option><option>Guatemala</option><option>Honduras</option><option>El Salvador</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fcity">Ciudad</label>
+          <input class="form-input" type="text" id="fcity" value="Bogotá">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fdob">Fecha de nacimiento</label>
+          <input class="form-input" type="date" id="fdob" value="1995-06-15">
+        </div>
+        <div class="form-group form-group--full">
+          <label class="form-label" for="fbio">Bio / Descripción</label>
+          <textarea class="form-textarea" id="fbio">Profesional con experiencia en múltiples sectores, buscando oportunidades laborales internacionales. Apasionada por aprender nuevas habilidades y contribuir en equipos multiculturales.</textarea>
+        </div>
+
+        <!-- IDIOMAS -->
+        <div class="form-group form-group--full">
+          <label class="form-label">Idiomas</label>
+          <div class="tags-container" id="langTags">
+            <div class="tag-item" data-lang="Español">
+              Español <span class="tag-item__level">(Nativo)</span>
+              <button class="tag-item__remove" data-h>&times;</button>
+            </div>
+            <div class="tag-item" data-lang="Inglés">
+              Inglés <span class="tag-item__level">(Intermedio)</span>
+              <button class="tag-item__remove" data-h>&times;</button>
+            </div>
+            <div class="tag-item" data-lang="Alemán">
+              Alemán <span class="tag-item__level">(Básico)</span>
+              <button class="tag-item__remove" data-h>&times;</button>
+            </div>
+          </div>
+          <button class="tag-add" id="addLangBtn" data-h>+ Agregar idioma</button>
+        </div>
+
+        <!-- HABILIDADES -->
+        <div class="form-group form-group--full">
+          <label class="form-label">Habilidades</label>
+          <div class="tags-container" id="skillTags">
+            <div class="tag-item" data-skill="Soldadura">Soldadura <button class="tag-item__remove" data-h>&times;</button></div>
+            <div class="tag-item" data-skill="Construcción">Construcción <button class="tag-item__remove" data-h>&times;</button></div>
+            <div class="tag-item" data-skill="Trabajo en equipo">Trabajo en equipo <button class="tag-item__remove" data-h>&times;</button></div>
+            <div class="tag-item" data-skill="Manejo de maquinaria">Manejo de maquinaria <button class="tag-item__remove" data-h>&times;</button></div>
+            <div class="tag-item" data-skill="Seguridad laboral">Seguridad laboral <button class="tag-item__remove" data-h>&times;</button></div>
+          </div>
+          <button class="tag-add" id="addSkillBtn" data-h>+ Agregar habilidad</button>
+        </div>
+
+        <!-- SECTORES -->
+        <div class="form-group form-group--full">
+          <label class="form-label">Sectores de interés</label>
+          <div class="checkbox-grid" id="sectorCheckboxes">
+            <div class="checkbox-item checked" data-sector="Construcción" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Construcción
+            </div>
+            <div class="checkbox-item" data-sector="Hotelería" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Hotelería
+            </div>
+            <div class="checkbox-item checked" data-sector="Agricultura" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Agricultura
+            </div>
+            <div class="checkbox-item" data-sector="Salud" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Salud
+            </div>
+            <div class="checkbox-item" data-sector="Comercio" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Comercio
+            </div>
+            <div class="checkbox-item" data-sector="Tecnología" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Tecnología
+            </div>
+          </div>
+        </div>
+
+        <!-- PAÍSES DESEADOS -->
+        <div class="form-group form-group--full">
+          <label class="form-label">Países deseados</label>
+          <div class="multi-select" id="countrySelect">
+            <button class="multi-chip selected" data-country="Alemania" data-h>&#127465;&#127466; Alemania</button>
+            <button class="multi-chip selected" data-country="Suiza" data-h>&#127464;&#127469; Suiza</button>
+            <button class="multi-chip" data-country="España" data-h>&#127466;&#127480; España</button>
+            <button class="multi-chip selected" data-country="Canadá" data-h>&#127464;&#127462; Canadá</button>
+            <button class="multi-chip" data-country="Australia" data-h>&#127462;&#127482; Australia</button>
+            <button class="multi-chip" data-country="Francia" data-h>&#127467;&#127479; Francia</button>
+            <button class="multi-chip" data-country="Países Bajos" data-h>&#127475;&#127473; Países Bajos</button>
+            <button class="multi-chip" data-country="Portugal" data-h>&#127477;&#127481; Portugal</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-bar">
+        <button class="btn btn--outline btn--small" data-h>Cancelar</button>
+        <button class="btn btn--primary btn--small" id="savePersonal" data-h>Guardar Cambios</button>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: EXPERIENCE ═══ -->
+    <div class="tab-panel" id="panel-experience">
+      <div id="expList">
+        <div class="exp-card" data-exp-id="1">
+          <div class="exp-card__header">
+            <div>
+              <div class="exp-card__title">Ayudante de Construcción</div>
+              <div class="exp-card__company">Constructora Nacional S.A.</div>
+              <div class="exp-card__period">Enero 2022 — Presente</div>
+            </div>
+            <div class="exp-card__actions">
+              <button class="exp-card__action edit-exp" data-h title="Editar">&#9998;</button>
+              <button class="exp-card__action delete-exp" data-h title="Eliminar">&#128465;</button>
+            </div>
+          </div>
+          <div class="exp-card__desc">Apoyo en la ejecución de obras de construcción residencial, preparación de materiales, manejo de herramientas y cumplimiento de normas de seguridad.</div>
+        </div>
+
+        <div class="exp-card" data-exp-id="2">
+          <div class="exp-card__header">
+            <div>
+              <div class="exp-card__title">Desarrolladora de Software</div>
+              <div class="exp-card__company">Empresa de Tecnología Global</div>
+              <div class="exp-card__period">Marzo 2020 — Diciembre 2021</div>
+            </div>
+            <div class="exp-card__actions">
+              <button class="exp-card__action edit-exp" data-h title="Editar">&#9998;</button>
+              <button class="exp-card__action delete-exp" data-h title="Eliminar">&#128465;</button>
+            </div>
+          </div>
+          <div class="exp-card__desc">Desarrollo de aplicaciones web y móviles, trabajo en equipo ágil, implementación de APIs REST y mantenimiento de bases de datos.</div>
+        </div>
+
+        <div class="exp-card" data-exp-id="3">
+          <div class="exp-card__header">
+            <div>
+              <div class="exp-card__title">Asistente Administrativa</div>
+              <div class="exp-card__company">Oficina Municipal de Bogotá</div>
+              <div class="exp-card__period">Junio 2018 — Febrero 2020</div>
+            </div>
+            <div class="exp-card__actions">
+              <button class="exp-card__action edit-exp" data-h title="Editar">&#9998;</button>
+              <button class="exp-card__action delete-exp" data-h title="Eliminar">&#128465;</button>
+            </div>
+          </div>
+          <div class="exp-card__desc">Gestión de documentos, atención al público, coordinación de agendas y apoyo en procesos administrativos.</div>
+        </div>
+      </div>
+      <button class="add-btn" id="addExpBtn" data-h>+ Agregar Experiencia</button>
+    </div>
+
+    <!-- ═══ TAB: EDUCATION ═══ -->
+    <div class="tab-panel" id="panel-education">
+      <div id="eduList">
+        <div class="exp-card" data-edu-id="1">
+          <div class="exp-card__header">
+            <div>
+              <div class="exp-card__title">Ingeniería de Sistemas</div>
+              <div class="exp-card__company">Universidad Nacional de Colombia</div>
+              <div class="exp-card__period">2014 — 2019</div>
+            </div>
+            <div class="exp-card__actions">
+              <button class="exp-card__action edit-edu" data-h title="Editar">&#9998;</button>
+              <button class="exp-card__action delete-edu" data-h title="Eliminar">&#128465;</button>
+            </div>
+          </div>
+          <div class="exp-card__desc">Título profesional en Ingeniería de Sistemas con énfasis en desarrollo de software y gestión de proyectos tecnológicos.</div>
+        </div>
+
+        <div class="exp-card" data-edu-id="2">
+          <div class="exp-card__header">
+            <div>
+              <div class="exp-card__title">Certificación en Seguridad Laboral</div>
+              <div class="exp-card__company">SENA</div>
+              <div class="exp-card__period">2021</div>
+            </div>
+            <div class="exp-card__actions">
+              <button class="exp-card__action edit-edu" data-h title="Editar">&#9998;</button>
+              <button class="exp-card__action delete-edu" data-h title="Eliminar">&#128465;</button>
+            </div>
+          </div>
+          <div class="exp-card__desc">Certificación profesional en normativas de seguridad laboral para el sector de la construcción.</div>
+        </div>
+      </div>
+      <button class="add-btn" id="addEduBtn" data-h>+ Agregar Educación</button>
+    </div>
+
+    <!-- ═══ TAB: DOCUMENTS ═══ -->
+    <div class="tab-panel" id="panel-documents">
+      <div class="doc-grid">
+        <div class="doc-card">
+          <div class="doc-card__icon">&#128274;</div>
+          <div class="doc-card__name">Pasaporte</div>
+          <div class="doc-card__status doc-card__status--uploaded">&#10003; Subido</div>
+          <br>
+          <button class="doc-upload-btn" data-h>Actualizar archivo</button>
+          <div class="doc-card__blockchain">
+            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
+            Blockchain: verificado
+          </div>
+        </div>
+        <div class="doc-card">
+          <div class="doc-card__icon">&#128196;</div>
+          <div class="doc-card__name">Currículum (CV)</div>
+          <div class="doc-card__status doc-card__status--uploaded">&#10003; Subido</div>
+          <br>
+          <button class="doc-upload-btn" data-h>Actualizar archivo</button>
+          <div class="doc-card__blockchain">
+            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
+            Blockchain: pendiente
+          </div>
+        </div>
+        <div class="doc-card">
+          <div class="doc-card__icon">&#127891;</div>
+          <div class="doc-card__name">Certificaciones</div>
+          <div class="doc-card__status doc-card__status--verified">&#128737; Verificado</div>
+          <br>
+          <button class="doc-upload-btn" data-h>Actualizar archivo</button>
+          <div class="doc-card__blockchain">
+            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
+            Blockchain: verificado
+          </div>
+        </div>
+        <div class="doc-card">
+          <div class="doc-card__icon">&#128247;</div>
+          <div class="doc-card__name">Foto de Perfil</div>
+          <div class="doc-card__status doc-card__status--pending">&#9888;&#65039; Pendiente</div>
+          <br>
+          <button class="doc-upload-btn" data-h>Subir archivo</button>
+          <div class="doc-card__blockchain">
+            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
+            Blockchain: no registrado
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: SETTINGS ═══ -->
+    <div class="tab-panel" id="panel-settings">
+      <div class="form-grid">
+        <div class="form-group form-group--full">
+          <label class="form-label">Notificaciones por email</label>
+          <div class="checkbox-grid" style="grid-template-columns:1fr 1fr">
+            <div class="checkbox-item checked" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Nuevos empleos compatibles
+            </div>
+            <div class="checkbox-item checked" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Estado de aplicaciones
+            </div>
+            <div class="checkbox-item" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Newsletter semanal
+            </div>
+            <div class="checkbox-item checked" data-h>
+              <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
+              Mensajes de empresas
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="flang">Idioma de la plataforma</label>
+          <select class="form-select" id="flang">
+            <option selected>Español</option><option>English</option><option>Deutsch</option><option>Français</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fvisibility">Visibilidad del perfil</label>
+          <select class="form-select" id="fvisibility">
+            <option selected>Público para empresas</option><option>Solo con enlace</option><option>Privado</option>
+          </select>
+        </div>
+      </div>
+      <div class="save-bar">
+        <button class="btn btn--outline btn--small" data-h>Cancelar</button>
+        <button class="btn btn--primary btn--small" id="saveSettings" data-h>Guardar Configuración</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  /* ── Default profile data ── */
+  const defaultProfile={
+    name:'Sofia Ramírez',email:'sofia.ramirez@email.com',phone:'+57 310 456 7890',
+    country:'Colombia',city:'Bogotá',dob:'1995-06-15',
+    bio:'Profesional con experiencia en múltiples sectores, buscando oportunidades laborales internacionales. Apasionada por aprender nuevas habilidades y contribuir en equipos multiculturales.',
+    languages:[{name:'Español',level:'Nativo'},{name:'Inglés',level:'Intermedio'},{name:'Alemán',level:'Básico'}],
+    skills:['Soldadura','Construcción','Trabajo en equipo','Manejo de maquinaria','Seguridad laboral'],
+    sectors:['Construcción','Agricultura'],
+    countries:['Alemania','Suiza','Canadá'],
+    verified:false
+  };
+
+  /* ── Load / Save ── */
+  function loadProfile(){
+    try{return JSON.parse(localStorage.getItem('synera_profile'))||{...defaultProfile}}catch(e){return{...defaultProfile}}
+  }
+  function saveProfile(data){
+    try{localStorage.setItem('synera_profile',JSON.stringify(data))}catch(e){}
+  }
+
+  let profile=loadProfile();
+
+  /* ── Populate form ── */
+  function populateForm(){
+    document.getElementById('fname').value=profile.name||'';
+    document.getElementById('femail').value=profile.email||'';
+    document.getElementById('fphone').value=profile.phone||'';
+    document.getElementById('fcity').value=profile.city||'';
+    document.getElementById('fdob').value=profile.dob||'';
+    document.getElementById('fbio').value=profile.bio||'';
+    const countrySelect=document.getElementById('fcountry');
+    for(let o of countrySelect.options){if(o.text===profile.country){o.selected=true;break}}
+
+    // Update header
+    document.getElementById('profileName').textContent=profile.name;
+    updateAvatar(profile.name);
+
+    // Languages
+    renderLangTags();
+    // Skills
+    renderSkillTags();
+    // Sectors
+    document.querySelectorAll('#sectorCheckboxes .checkbox-item').forEach(el=>{
+      const s=el.dataset.sector;
+      el.classList.toggle('checked',(profile.sectors||[]).includes(s));
+    });
+    // Countries
+    document.querySelectorAll('#countrySelect .multi-chip').forEach(el=>{
+      el.classList.toggle('selected',(profile.countries||[]).includes(el.dataset.country));
+    });
+    // Verification
+    const badge=document.getElementById('verificationBadge');
+    const icon=document.getElementById('verificationIcon');
+    if(profile.verified){
+      badge.className='verification verification--verified';
+      badge.innerHTML='&#10003; Verificado';
+      icon.textContent='&#10003;';
+    }else{
+      badge.className='verification verification--pending';
+      badge.innerHTML='&#9888;&#65039; Verificación Pendiente';
+      icon.textContent='&#9888;';
+    }
+
+    updateCompletion();
+  }
+
+  function updateAvatar(name){
+    const parts=(name||'').split(' ');
+    const initials=(parts[0]?parts[0][0]:'')+(parts[1]?parts[1][0]:'');
+    document.getElementById('profileAvatar').childNodes[0].textContent=initials.toUpperCase();
+    document.getElementById('navAvatar').textContent=initials.toUpperCase();
+  }
+
+  /* ── Profile completion ── */
+  function updateCompletion(){
+    let total=9,filled=0;
+    if(profile.name)filled++;
+    if(profile.email)filled++;
+    if(profile.phone)filled++;
+    if(profile.city)filled++;
+    if(profile.dob)filled++;
+    if(profile.bio)filled++;
+    if((profile.languages||[]).length>0)filled++;
+    if((profile.skills||[]).length>0)filled++;
+    if((profile.sectors||[]).length>0)filled++;
+    const pct=Math.round((filled/total)*100);
+    document.getElementById('progressPct').textContent=pct+'%';
+    document.getElementById('progressFill').style.width=pct+'%';
+  }
+
+  /* ── Render language tags ── */
+  function renderLangTags(){
+    const container=document.getElementById('langTags');
+    container.innerHTML='';
+    (profile.languages||[]).forEach(l=>{
+      const div=document.createElement('div');
+      div.className='tag-item';
+      div.dataset.lang=l.name;
+      div.innerHTML=`${l.name} <span class="tag-item__level">(${l.level})</span><button class="tag-item__remove" data-h>&times;</button>`;
+      div.querySelector('.tag-item__remove').addEventListener('click',()=>{
+        profile.languages=profile.languages.filter(x=>x.name!==l.name);
+        renderLangTags();
+      });
+      container.appendChild(div);
+    });
+  }
+
+  /* ── Render skill tags ── */
+  function renderSkillTags(){
+    const container=document.getElementById('skillTags');
+    container.innerHTML='';
+    (profile.skills||[]).forEach(s=>{
+      const div=document.createElement('div');
+      div.className='tag-item';
+      div.dataset.skill=s;
+      div.innerHTML=`${s} <button class="tag-item__remove" data-h>&times;</button>`;
+      div.querySelector('.tag-item__remove').addEventListener('click',()=>{
+        profile.skills=profile.skills.filter(x=>x!==s);
+        renderSkillTags();
+      });
+      container.appendChild(div);
+    });
+  }
+
+  /* ── Add language ── */
+  document.getElementById('addLangBtn').addEventListener('click',()=>{
+    const name=prompt('Nombre del idioma:');
+    if(!name)return;
+    const level=prompt('Nivel (Nativo, Avanzado, Intermedio, Básico):');
+    if(!level)return;
+    if(!profile.languages)profile.languages=[];
+    profile.languages.push({name,level});
+    renderLangTags();
+  });
+
+  /* ── Add skill ── */
+  document.getElementById('addSkillBtn').addEventListener('click',()=>{
+    const skill=prompt('Nueva habilidad:');
+    if(!skill)return;
+    if(!profile.skills)profile.skills=[];
+    profile.skills.push(skill);
+    renderSkillTags();
+  });
+
+  /* ── Sector checkboxes ── */
+  document.querySelectorAll('#sectorCheckboxes .checkbox-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      el.classList.toggle('checked');
+    });
+  });
+
+  /* ── Country multi-select ── */
+  document.querySelectorAll('#countrySelect .multi-chip').forEach(el=>{
+    el.addEventListener('click',()=>{
+      el.classList.toggle('selected');
+    });
+  });
+
+  /* ── Settings checkboxes ── */
+  document.querySelectorAll('#panel-settings .checkbox-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      el.classList.toggle('checked');
+    });
+  });
+
+  /* ── Save personal info ── */
+  document.getElementById('savePersonal').addEventListener('click',()=>{
+    profile.name=document.getElementById('fname').value;
+    profile.email=document.getElementById('femail').value;
+    profile.phone=document.getElementById('fphone').value;
+    profile.country=document.getElementById('fcountry').value;
+    profile.city=document.getElementById('fcity').value;
+    profile.dob=document.getElementById('fdob').value;
+    profile.bio=document.getElementById('fbio').value;
+
+    // Collect sectors
+    profile.sectors=[];
+    document.querySelectorAll('#sectorCheckboxes .checkbox-item.checked').forEach(el=>{
+      profile.sectors.push(el.dataset.sector);
+    });
+
+    // Collect countries
+    profile.countries=[];
+    document.querySelectorAll('#countrySelect .multi-chip.selected').forEach(el=>{
+      profile.countries.push(el.dataset.country);
+    });
+
+    saveProfile(profile);
+    document.getElementById('profileName').textContent=profile.name;
+    updateAvatar(profile.name);
+    updateCompletion();
+    showSaveConfirm();
+  });
+
+  /* ── Save settings ── */
+  document.getElementById('saveSettings').addEventListener('click',()=>{
+    saveProfile(profile);
+    showSaveConfirm();
+  });
+
+  function showSaveConfirm(){
+    const el=document.createElement('div');
+    el.textContent='Cambios guardados';
+    Object.assign(el.style,{position:'fixed',bottom:'24px',right:'24px',background:'var(--accent)',color:'#fff',padding:'12px 24px',borderRadius:'12px',fontFamily:'var(--font-d)',fontWeight:'700',fontSize:'14px',zIndex:'9999',animation:'fadeIn 0.3s var(--ease-out)'});
+    document.body.appendChild(el);
+    setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity 0.3s';setTimeout(()=>el.remove(),300)},2500);
+  }
+
+  /* ── Tabs ── */
+  const tabs=document.querySelectorAll('.tab');
+  const panels=document.querySelectorAll('.tab-panel');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      panels.forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ── Experience CRUD ── */
+  document.getElementById('addExpBtn').addEventListener('click',()=>{
+    const title=prompt('Puesto:');
+    if(!title)return;
+    const company=prompt('Empresa:');
+    const period=prompt('Periodo (ej: 2020 — 2022):');
+    const desc=prompt('Descripción:');
+    const list=document.getElementById('expList');
+    const id=Date.now();
+    const card=document.createElement('div');
+    card.className='exp-card';
+    card.dataset.expId=id;
+    card.innerHTML=`<div class="exp-card__header"><div><div class="exp-card__title">${title}</div><div class="exp-card__company">${company||''}</div><div class="exp-card__period">${period||''}</div></div><div class="exp-card__actions"><button class="exp-card__action edit-exp" data-h title="Editar">&#9998;</button><button class="exp-card__action delete-exp" data-h title="Eliminar">&#128465;</button></div></div><div class="exp-card__desc">${desc||''}</div>`;
+    list.appendChild(card);
+    bindExpActions();
+  });
+
+  function bindExpActions(){
+    document.querySelectorAll('.delete-exp').forEach(btn=>{
+      btn.onclick=()=>{btn.closest('.exp-card').remove()};
+    });
+    document.querySelectorAll('.edit-exp').forEach(btn=>{
+      btn.onclick=()=>{
+        const card=btn.closest('.exp-card');
+        const t=prompt('Puesto:',card.querySelector('.exp-card__title').textContent);
+        if(t)card.querySelector('.exp-card__title').textContent=t;
+        const c=prompt('Empresa:',card.querySelector('.exp-card__company').textContent);
+        if(c)card.querySelector('.exp-card__company').textContent=c;
+      };
+    });
+  }
+  bindExpActions();
+
+  /* ── Education CRUD ── */
+  document.getElementById('addEduBtn').addEventListener('click',()=>{
+    const title=prompt('Título / Programa:');
+    if(!title)return;
+    const inst=prompt('Institución:');
+    const period=prompt('Periodo:');
+    const desc=prompt('Descripción:');
+    const list=document.getElementById('eduList');
+    const card=document.createElement('div');
+    card.className='exp-card';
+    card.innerHTML=`<div class="exp-card__header"><div><div class="exp-card__title">${title}</div><div class="exp-card__company">${inst||''}</div><div class="exp-card__period">${period||''}</div></div><div class="exp-card__actions"><button class="exp-card__action edit-edu" data-h title="Editar">&#9998;</button><button class="exp-card__action delete-edu" data-h title="Eliminar">&#128465;</button></div></div><div class="exp-card__desc">${desc||''}</div>`;
+    list.appendChild(card);
+    bindEduActions();
+  });
+
+  function bindEduActions(){
+    document.querySelectorAll('.delete-edu').forEach(btn=>{
+      btn.onclick=()=>{btn.closest('.exp-card').remove()};
+    });
+    document.querySelectorAll('.edit-edu').forEach(btn=>{
+      btn.onclick=()=>{
+        const card=btn.closest('.exp-card');
+        const t=prompt('Título:',card.querySelector('.exp-card__title').textContent);
+        if(t)card.querySelector('.exp-card__title').textContent=t;
+        const c=prompt('Institución:',card.querySelector('.exp-card__company').textContent);
+        if(c)card.querySelector('.exp-card__company').textContent=c;
+      };
+    });
+  }
+  bindEduActions();
+
+  /* ── Cursor ── */
+  const cur=document.getElementById('cur'),curD=document.getElementById('curD');
+  let mx=0,my=0,cx=0,cy=0,dx=0,dy=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  (function loop(){
+    cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;
+    dx+=(mx-dx)*0.35;dy+=(my-dy)*0.35;
+    cur.style.transform=`translate(${cx-10}px,${cy-10}px)`;
+    curD.style.transform=`translate(${dx-2.5}px,${dy-2.5}px)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('[data-h]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cur.classList.add('h'));
+    el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+  });
+
+  /* ── Nav scroll ── */
+  window.addEventListener('scroll',()=>{
+    document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);
+  },{passive:true});
+
+  /* ── Init ── */
+  populateForm();
+
+})();
+</script>
+</body>
+</html>

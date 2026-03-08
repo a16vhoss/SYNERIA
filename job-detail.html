@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synera — Ayudante de Construcción Senior</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fafbfc;--card:#ffffff;
+  --text:#1e2d5f;--accent:#2dd4a8;--accent2:#3b9ece;
+  --muted:#64748b;--border:#e2e8f0;
+  --font-d:'Syne',sans-serif;--font-b:'General Sans',sans-serif;
+  --ease:cubic-bezier(0.76,0,0.24,1);--ease-out:cubic-bezier(0.16,1,0.3,1);
+  --spring:linear(0,0.009,0.035 2.1%,0.141,0.281 6.7%,0.723 12.9%,0.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,0.991,0.977 51%,0.974 53.8%,0.975 57.1%,0.997 69.8%,1.003 76.9%,1);
+}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--border) var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;cursor:none;font-weight:400;font-size:16px;line-height:1.7}
+::selection{background:var(--accent);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ═══ CURSOR ═══ */
+.cur{position:fixed;top:0;left:0;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.25);border-radius:50%;pointer-events:none;z-index:10000;mix-blend-mode:normal;transition:width 0.4s var(--ease-out),height 0.4s var(--ease-out),background 0.3s,border-color 0.3s}
+.cur.h{width:56px;height:56px;border-color:var(--accent);background:rgba(45,212,168,0.08)}
+.cur-d{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--text);border-radius:50%;pointer-events:none;z-index:10001}
+@media(hover:none){.cur,.cur-d{display:none}body{cursor:auto}}
+
+/* ═══ NAV ═══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s}
+.nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+.nav__logo{font-family:var(--font-d);font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:6px;color:var(--text)}
+.nav__logo span{color:var(--accent)}
+.nav__search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:8px 16px;width:320px;transition:border-color 0.3s}
+.nav__search:focus-within{border-color:var(--accent)}
+.nav__search input{border:none;background:transparent;outline:none;font-family:var(--font-b);font-size:14px;color:var(--text);width:100%}
+.nav__search input::placeholder{color:var(--muted)}
+.nav__right{display:flex;align-items:center;gap:16px}
+.nav__icon{width:40px;height:40px;border-radius:12px;border:1px solid var(--border);display:grid;place-items:center;cursor:none;transition:border-color 0.3s,background 0.3s;background:var(--card);position:relative}
+.nav__icon:hover{border-color:var(--accent);background:rgba(45,212,168,0.04)}
+.nav__icon .badge{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--card)}
+.nav__avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:none}
+
+/* ═══ BACK BUTTON ═══ */
+.back-bar{padding:16px 5vw;margin-top:73px;display:flex;align-items:center;gap:16px}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);font-weight:500;transition:color 0.3s;cursor:none}
+.back-link:hover{color:var(--accent)}
+.back-link svg{width:18px;height:18px}
+
+/* ═══ JOB HEADER ═══ */
+.job-header{padding:0 5vw 32px;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.job-header__logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#1e2d5f,#3b9ece);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:2rem;font-weight:800;flex-shrink:0}
+.job-header__info{flex:1;min-width:280px}
+.job-header__company{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.job-header__title{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:8px}
+.job-header__meta{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:13px;color:var(--muted);margin-bottom:16px}
+.job-header__meta svg{width:16px;height:16px;flex-shrink:0}
+.job-header__meta-item{display:flex;align-items:center;gap:4px}
+.job-header__tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tag{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.02em}
+.tag--green{background:rgba(45,212,168,0.1);color:#0d9b76}
+.tag--red{background:rgba(239,68,68,0.08);color:#dc2626}
+.tag--blue{background:rgba(59,158,206,0.1);color:#2563eb}
+.tag--purple{background:rgba(139,92,246,0.1);color:#7c3aed}
+.job-header__salary{font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:var(--accent);margin-bottom:16px}
+.job-header__actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;font-family:var(--font-d);font-size:14px;font-weight:700;border-radius:14px;cursor:none;transition:transform 0.3s var(--spring),box-shadow 0.3s,background 0.3s,border-color 0.3s;border:none}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(45,212,168,0.3)}
+.btn--outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn--outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.btn--outline.active{border-color:var(--accent);color:var(--accent);background:rgba(45,212,168,0.04)}
+.btn--small{padding:10px 20px;font-size:13px;border-radius:10px}
+
+/* ═══ TWO COLUMN LAYOUT ═══ */
+.job-layout{display:grid;grid-template-columns:1fr 380px;gap:32px;padding:0 5vw 80px;align-items:start}
+
+/* ═══ LEFT CONTENT ═══ */
+.job-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;transition:box-shadow 0.3s}
+.job-section:hover{box-shadow:0 4px 24px rgba(0,0,0,0.04)}
+.job-section__title{font-family:var(--font-d);font-size:1.25rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.job-section__title svg{width:22px;height:22px;color:var(--accent)}
+.job-section p{color:var(--muted);line-height:1.8;margin-bottom:12px}
+.job-section ul{list-style:none;padding:0}
+.job-section ul li{padding:8px 0;padding-left:28px;position:relative;color:var(--muted);line-height:1.6}
+.job-section ul li::before{content:'';position:absolute;left:0;top:16px;width:8px;height:8px;border-radius:50%;background:rgba(45,212,168,0.3);border:2px solid var(--accent)}
+
+/* Benefits Grid */
+.benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.benefit-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:border-color 0.3s,transform 0.3s var(--spring)}
+.benefit-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.benefit-card__icon{font-size:28px;margin-bottom:8px}
+.benefit-card__label{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--text)}
+.benefit-card__desc{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* Timeline */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.timeline__step{position:relative;margin-bottom:28px}
+.timeline__step:last-child{margin-bottom:0}
+.timeline__dot{position:absolute;left:-32px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--card);border:2px solid var(--accent);display:grid;place-items:center}
+.timeline__dot span{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.timeline__step-title{font-family:var(--font-d);font-size:15px;font-weight:700;margin-bottom:4px}
+.timeline__step-desc{font-size:13px;color:var(--muted)}
+
+/* ═══ RIGHT SIDEBAR ═══ */
+.sidebar{position:sticky;top:90px}
+.sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px;transition:box-shadow 0.3s}
+.sidebar-card:hover{box-shadow:0 4px 24px rgba(0,0,0,0.04)}
+.sidebar-card__title{font-family:var(--font-d);font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sidebar-card__row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(226,232,240,0.5)}
+.sidebar-card__row:last-child{border-bottom:none}
+.sidebar-card__label{font-size:13px;color:var(--muted)}
+.sidebar-card__value{font-size:13px;font-weight:600;color:var(--text);text-align:right}
+
+/* Company card */
+.company-brief{text-align:center}
+.company-brief__logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#1e2d5f,#3b9ece);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:1.4rem;font-weight:800;margin:0 auto 12px}
+.company-brief__name{font-family:var(--font-d);font-weight:700;margin-bottom:4px}
+.company-brief__desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.company-brief__stats{display:flex;justify-content:center;gap:24px;margin-bottom:16px;font-size:13px}
+.company-brief__stat{text-align:center}
+.company-brief__stat strong{display:block;font-family:var(--font-d);font-weight:700;color:var(--text)}
+.company-brief__stat span{color:var(--muted);font-size:12px}
+
+/* Similar jobs */
+.similar-job{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:14px;margin-bottom:10px;transition:border-color 0.3s,transform 0.3s var(--spring);cursor:none}
+.similar-job:hover{border-color:var(--accent);transform:translateX(4px)}
+.similar-job__logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:14px;font-weight:700;flex-shrink:0}
+.similar-job__info{flex:1;min-width:0}
+.similar-job__title{font-family:var(--font-d);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.similar-job__meta{font-size:11px;color:var(--muted)}
+
+/* ═══ MODAL ═══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(30,45,95,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:var(--card);border-radius:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:36px;transform:translateY(20px) scale(0.97);transition:transform 0.4s var(--spring);box-shadow:0 24px 80px rgba(0,0,0,0.15)}
+.modal-overlay.active .modal{transform:translateY(0) scale(1)}
+.modal__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.modal__title{font-family:var(--font-d);font-size:1.3rem;font-weight:700}
+.modal__close{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--bg);display:grid;place-items:center;cursor:none;transition:border-color 0.3s}
+.modal__close:hover{border-color:var(--accent)}
+.modal__field{margin-bottom:20px}
+.modal__label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.modal__input,.modal__textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--font-b);font-size:14px;color:var(--text);background:var(--bg);transition:border-color 0.3s;outline:none}
+.modal__input:focus,.modal__textarea:focus{border-color:var(--accent)}
+.modal__input:focus-visible,.modal__textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.modal__textarea{min-height:100px;resize:vertical}
+
+/* Upload area */
+.upload-area{border:2px dashed var(--border);border-radius:16px;padding:32px;text-align:center;transition:border-color 0.3s,background 0.3s;cursor:none}
+.upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:rgba(45,212,168,0.03)}
+.upload-area__icon{font-size:36px;margin-bottom:8px;color:var(--muted)}
+.upload-area__text{font-size:14px;color:var(--muted)}
+.upload-area__text strong{color:var(--accent);cursor:none}
+.upload-area__file{margin-top:12px;display:none;font-size:13px;font-weight:600;color:var(--accent)}
+
+/* Success */
+.modal__success{display:none;text-align:center;padding:40px 0}
+.modal__success.active{display:block;animation:fadeScaleIn 0.5s var(--spring)}
+.modal__success__icon{width:80px;height:80px;border-radius:50%;background:rgba(45,212,168,0.1);display:grid;place-items:center;margin:0 auto 20px;font-size:40px}
+.modal__success__title{font-family:var(--font-d);font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.modal__success__text{font-size:14px;color:var(--muted)}
+.modal__form.hidden{display:none}
+@keyframes fadeScaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+
+/* ═══ SCROLL SPY ═══ */
+.job-section[data-section]{scroll-margin-top:100px}
+.section-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.section-nav__link{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--border);transition:all 0.3s;cursor:none}
+.section-nav__link.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ═══ SHARE TOOLTIP ═══ */
+.share-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(0.9);background:var(--text);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s var(--spring)}
+.share-tooltip.show{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .job-layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .benefits-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav__search{display:none}
+  .job-header{flex-direction:column;align-items:flex-start}
+  .job-header__logo{width:60px;height:60px;border-radius:16px;font-size:1.5rem}
+  .benefits-grid{grid-template-columns:1fr 1fr}
+  .job-header__actions{width:100%}
+  .job-header__actions .btn{flex:1;justify-content:center}
+  .modal{padding:24px;border-radius:20px}
+}
+@media(max-width:480px){
+  .benefits-grid{grid-template-columns:1fr}
+  .section-nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .section-nav::-webkit-scrollbar{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cur" id="cur"></div>
+<div class="cur-d" id="curD"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="dashboard.html" class="nav__logo" data-h>Synera<span>.</span></a>
+  <div class="nav__search" data-h>
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/></svg>
+    <input type="text" placeholder="Buscar empleos, sectores, países...">
+  </div>
+  <div class="nav__right">
+    <div class="nav__icon" data-h title="Notificaciones">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 16.5c.83 0 1.5-.67 1.5-1.5h-3c0 .83.67 1.5 1.5 1.5zM15 12l-1.5-2V6.5a4.5 4.5 0 0 0-9 0V10L3 12v1h12v-1z"/></svg>
+      <div class="badge"></div>
+    </div>
+    <div class="nav__avatar" data-h>SR</div>
+  </div>
+</nav>
+
+<!-- BACK BAR -->
+<div class="back-bar">
+  <a href="dashboard.html" class="back-link" data-h>
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    Volver a empleos
+  </a>
+</div>
+
+<!-- JOB HEADER -->
+<div class="job-header">
+  <div class="job-header__logo" data-h>C</div>
+  <div class="job-header__info">
+    <div class="job-header__company">Constructora Alpine S.A.</div>
+    <h1 class="job-header__title">Ayudante de Construcción Senior</h1>
+    <div class="job-header__meta">
+      <span class="job-header__meta-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Zurich, Suiza &#127464;&#127469;
+      </span>
+      <span class="job-header__meta-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Hace 3 días
+      </span>
+    </div>
+    <div class="job-header__tags">
+      <span class="tag tag--green">Jornada Completa</span>
+      <span class="tag tag--red">Urgente</span>
+      <span class="tag tag--blue">Visa Sponsorship</span>
+      <span class="tag tag--purple">Alojamiento Incluido</span>
+    </div>
+    <div class="job-header__salary">$3,200/mes + beneficios</div>
+    <div class="job-header__actions">
+      <button class="btn btn--primary" id="applyBtn" data-h>
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Aplicar Ahora
+      </button>
+      <button class="btn btn--outline" id="bookmarkBtn" data-h>
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Guardar
+      </button>
+      <button class="btn btn--outline" id="shareBtn" data-h style="position:relative">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+        Compartir
+        <span class="share-tooltip" id="shareTooltip">Enlace copiado</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION NAV (scroll spy) -->
+<div style="padding:0 5vw">
+  <div class="section-nav" id="sectionNav">
+    <a href="#sec-desc" class="section-nav__link active" data-h data-spy="sec-desc">Descripción</a>
+    <a href="#sec-resp" class="section-nav__link" data-h data-spy="sec-resp">Responsabilidades</a>
+    <a href="#sec-req" class="section-nav__link" data-h data-spy="sec-req">Requisitos</a>
+    <a href="#sec-ben" class="section-nav__link" data-h data-spy="sec-ben">Beneficios</a>
+    <a href="#sec-proc" class="section-nav__link" data-h data-spy="sec-proc">Proceso</a>
+  </div>
+</div>
+
+<!-- TWO COLUMN -->
+<div class="job-layout">
+  <!-- LEFT -->
+  <div class="job-left">
+    <div class="job-section" id="sec-desc" data-section>
+      <h2 class="job-section__title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        Descripción del Puesto
+      </h2>
+      <p>Estamos buscando un Ayudante de Construcción Senior experimentado para unirse a nuestro equipo en Zurich, Suiza. Constructora Alpine S.A. es una empresa líder en el sector de la construcción, especializada en proyectos residenciales y comerciales de alta calidad en toda la región de habla alemana.</p>
+      <p>El candidato ideal tendrá experiencia sólida en obras de construcción, capacidad para trabajar en equipo multicultural y disposición para aprender nuevas técnicas de construcción europeas. Ofrecemos un entorno de trabajo seguro, equipamiento moderno y un paquete completo de beneficios que incluye alojamiento y patrocinio de visa.</p>
+    </div>
+
+    <div class="job-section" id="sec-resp" data-section>
+      <h2 class="job-section__title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Responsabilidades
+      </h2>
+      <ul>
+        <li>Asistir en la ejecución de obras de construcción residencial y comercial siguiendo planos y especificaciones técnicas</li>
+        <li>Preparar y mantener el área de trabajo, incluyendo montaje y desmontaje de andamios y estructuras temporales</li>
+        <li>Operar herramientas manuales y eléctricas de construcción de manera segura y eficiente</li>
+        <li>Colaborar con el equipo de supervisión para garantizar el cumplimiento de plazos y estándares de calidad</li>
+        <li>Cumplir con todas las normativas de seguridad laboral suizas y protocolos de la empresa</li>
+        <li>Participar en capacitaciones continuas sobre nuevas técnicas constructivas y normativas locales</li>
+      </ul>
+    </div>
+
+    <div class="job-section" id="sec-req" data-section>
+      <h2 class="job-section__title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+        Requisitos
+      </h2>
+      <ul>
+        <li>Mínimo 3 años de experiencia comprobable en construcción civil o similar</li>
+        <li>Certificaciones vigentes en seguridad laboral y manejo de maquinaria pesada</li>
+        <li>Capacidad física para realizar trabajos de alta demanda en condiciones variadas</li>
+        <li>Nivel básico de alemán o inglés (se ofrece curso de idioma incluido)</li>
+        <li>Pasaporte vigente y disponibilidad para reubicación inmediata</li>
+        <li>Disposición para trabajar en equipo multicultural y adaptarse a nuevos entornos</li>
+      </ul>
+    </div>
+
+    <div class="job-section" id="sec-ben" data-section>
+      <h2 class="job-section__title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Beneficios
+      </h2>
+      <div class="benefits-grid">
+        <div class="benefit-card" data-h>
+          <div class="benefit-card__icon">&#127758;</div>
+          <div class="benefit-card__label">Visa Sponsorship</div>
+          <div class="benefit-card__desc">Patrocinio completo de visa de trabajo</div>
+        </div>
+        <div class="benefit-card" data-h>
+          <div class="benefit-card__icon">&#127968;</div>
+          <div class="benefit-card__label">Alojamiento</div>
+          <div class="benefit-card__desc">Vivienda amueblada incluida</div>
+        </div>
+        <div class="benefit-card" data-h>
+          <div class="benefit-card__icon">&#128153;</div>
+          <div class="benefit-card__label">Seguro Médico</div>
+          <div class="benefit-card__desc">Cobertura médica completa suiza</div>
+        </div>
+        <div class="benefit-card" data-h>
+          <div class="benefit-card__icon">&#9992;&#65039;</div>
+          <div class="benefit-card__label">Vuelo de Ida</div>
+          <div class="benefit-card__desc">Boleto aéreo al destino cubierto</div>
+        </div>
+        <div class="benefit-card" data-h>
+          <div class="benefit-card__icon">&#127891;</div>
+          <div class="benefit-card__label">Capacitación</div>
+          <div class="benefit-card__desc">Formación continua y certificaciones</div>
+        </div>
+        <div class="benefit-card" data-h>
+          <div class="benefit-card__icon">&#128176;</div>
+          <div class="benefit-card__label">Salario Competitivo</div>
+          <div class="benefit-card__desc">$3,200/mes + bonificaciones</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="job-section" id="sec-proc" data-section>
+      <h2 class="job-section__title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+        Proceso de Aplicación
+      </h2>
+      <div class="timeline">
+        <div class="timeline__step">
+          <div class="timeline__dot"><span></span></div>
+          <div class="timeline__step-title">1. Enviar CV</div>
+          <div class="timeline__step-desc">Sube tu currículum actualizado y carta de motivación a través de nuestra plataforma.</div>
+        </div>
+        <div class="timeline__step">
+          <div class="timeline__dot"><span></span></div>
+          <div class="timeline__step-title">2. Entrevista Virtual</div>
+          <div class="timeline__step-desc">Participa en una videollamada con el equipo de recursos humanos y supervisores de obra.</div>
+        </div>
+        <div class="timeline__step">
+          <div class="timeline__dot"><span></span></div>
+          <div class="timeline__step-title">3. Verificación</div>
+          <div class="timeline__step-desc">Validamos tus documentos, certificaciones y experiencia laboral mediante blockchain.</div>
+        </div>
+        <div class="timeline__step">
+          <div class="timeline__dot"><span></span></div>
+          <div class="timeline__step-title">4. Contrato Digital</div>
+          <div class="timeline__step-desc">Firma tu contrato digitalmente y comienza el proceso de visa y reubicación.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card__title">Resumen del Empleo</div>
+      <div class="sidebar-card__row">
+        <span class="sidebar-card__label">Sector</span>
+        <span class="sidebar-card__value">Construcción</span>
+      </div>
+      <div class="sidebar-card__row">
+        <span class="sidebar-card__label">Tipo</span>
+        <span class="sidebar-card__value">Jornada Completa</span>
+      </div>
+      <div class="sidebar-card__row">
+        <span class="sidebar-card__label">Experiencia</span>
+        <span class="sidebar-card__value">3+ años</span>
+      </div>
+      <div class="sidebar-card__row">
+        <span class="sidebar-card__label">Idiomas</span>
+        <span class="sidebar-card__value">Alemán / Inglés básico</span>
+      </div>
+      <div class="sidebar-card__row">
+        <span class="sidebar-card__label">Fecha de inicio</span>
+        <span class="sidebar-card__value">Abril 2026</span>
+      </div>
+      <div class="sidebar-card__row">
+        <span class="sidebar-card__label">Duración</span>
+        <span class="sidebar-card__value">12 meses (renovable)</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card__title">Sobre la Empresa</div>
+      <div class="company-brief">
+        <div class="company-brief__logo">C</div>
+        <div class="company-brief__name">Constructora Alpine S.A.</div>
+        <div class="company-brief__desc">Empresa líder en construcción residencial y comercial en Suiza, con más de 25 años de experiencia en proyectos de alta calidad.</div>
+        <div class="company-brief__stats">
+          <div class="company-brief__stat">
+            <strong>340+</strong>
+            <span>Empleados</span>
+          </div>
+          <div class="company-brief__stat">
+            <strong>4.7/5</strong>
+            <span>Rating</span>
+          </div>
+        </div>
+        <a href="#" class="btn btn--outline btn--small" data-h style="width:100%;justify-content:center">Ver perfil de empresa</a>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card__title">Empleos Similares</div>
+      <a href="job-detail.html" class="similar-job" data-h>
+        <div class="similar-job__logo" style="background:linear-gradient(135deg,#2dd4a8,#3b9ece)">H</div>
+        <div class="similar-job__info">
+          <div class="similar-job__title">Operador de Maquinaria</div>
+          <div class="similar-job__meta">Hochtief AG &middot; Munich, Alemania</div>
+        </div>
+      </a>
+      <a href="job-detail.html" class="similar-job" data-h>
+        <div class="similar-job__logo" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">V</div>
+        <div class="similar-job__info">
+          <div class="similar-job__title">Electricista Industrial</div>
+          <div class="similar-job__meta">Vinci SA &middot; Lyon, Francia</div>
+        </div>
+      </a>
+      <a href="job-detail.html" class="similar-job" data-h>
+        <div class="similar-job__logo" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">S</div>
+        <div class="similar-job__info">
+          <div class="similar-job__title">Soldador Certificado</div>
+          <div class="similar-job__meta">Skanska AB &middot; Estocolmo, Suecia</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- APPLICATION MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal__header">
+      <h2 class="modal__title" id="modalTitle">Aplicar al puesto</h2>
+      <button class="modal__close" id="modalClose" data-h aria-label="Cerrar">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="modal__form" id="modalForm">
+      <div class="modal__field">
+        <label class="modal__label">Currículum (CV)</label>
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-area__icon">&#128196;</div>
+          <div class="upload-area__text">Arrastra tu archivo aquí o <strong>selecciona</strong></div>
+          <div class="upload-area__file" id="uploadFileName"></div>
+          <input type="file" id="fileInput" accept=".pdf,.doc,.docx" style="display:none">
+        </div>
+      </div>
+
+      <div class="modal__field">
+        <label class="modal__label" for="coverLetter">Carta de presentación</label>
+        <textarea class="modal__textarea" id="coverLetter" placeholder="Escribe una breve carta de presentación..."></textarea>
+      </div>
+
+      <div class="modal__field">
+        <label class="modal__label" for="motivation">¿Por qué quieres este empleo?</label>
+        <textarea class="modal__textarea" id="motivation" placeholder="Cuéntanos tu motivación para este puesto..." style="min-height:80px"></textarea>
+      </div>
+
+      <div class="modal__field">
+        <label class="modal__label" for="availability">Disponibilidad</label>
+        <input class="modal__input" type="date" id="availability">
+      </div>
+
+      <button class="btn btn--primary" id="submitApp" data-h style="width:100%;justify-content:center;margin-top:8px">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Enviar Aplicación
+      </button>
+    </div>
+
+    <div class="modal__success" id="modalSuccess">
+      <div class="modal__success__icon">&#10003;</div>
+      <div class="modal__success__title">¡Aplicación enviada!</div>
+      <div class="modal__success__text">Tu aplicación ha sido recibida. Te contactaremos pronto con los próximos pasos.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ── Cursor ── */
+  const cur=document.getElementById('cur'),curD=document.getElementById('curD');
+  let mx=0,my=0,cx=0,cy=0,dx=0,dy=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  (function loop(){
+    cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;
+    dx+=(mx-dx)*0.35;dy+=(my-dy)*0.35;
+    cur.style.transform=`translate(${cx-10}px,${cy-10}px)`;
+    curD.style.transform=`translate(${dx-2.5}px,${dy-2.5}px)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('[data-h]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cur.classList.add('h'));
+    el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+  });
+
+  /* ── Nav scroll ── */
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled',window.scrollY>10);
+  },{passive:true});
+
+  /* ── Scroll Spy ── */
+  const sections=document.querySelectorAll('[data-section]');
+  const spyLinks=document.querySelectorAll('[data-spy]');
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        spyLinks.forEach(l=>l.classList.remove('active'));
+        const link=document.querySelector(`[data-spy="${entry.target.id}"]`);
+        if(link)link.classList.add('active');
+      }
+    });
+  },{rootMargin:'-100px 0px -60% 0px',threshold:0});
+  sections.forEach(s=>observer.observe(s));
+
+  spyLinks.forEach(link=>{
+    link.addEventListener('click',e=>{
+      e.preventDefault();
+      const target=document.getElementById(link.dataset.spy);
+      if(target)target.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  /* ── Bookmark toggle ── */
+  const bookmarkBtn=document.getElementById('bookmarkBtn');
+  let bookmarked=false;
+  bookmarkBtn.addEventListener('click',()=>{
+    bookmarked=!bookmarked;
+    bookmarkBtn.classList.toggle('active',bookmarked);
+    const svg=bookmarkBtn.querySelector('svg');
+    svg.setAttribute('fill',bookmarked?'currentColor':'none');
+    bookmarkBtn.childNodes[bookmarkBtn.childNodes.length-1].textContent=bookmarked?' Guardado':' Guardar';
+    try{
+      const saved=JSON.parse(localStorage.getItem('synera_bookmarks')||'[]');
+      if(bookmarked){saved.push('job-alpine-01')}else{const i=saved.indexOf('job-alpine-01');if(i>-1)saved.splice(i,1)}
+      localStorage.setItem('synera_bookmarks',JSON.stringify(saved));
+    }catch(e){}
+  });
+
+  /* ── Share button ── */
+  const shareBtn=document.getElementById('shareBtn');
+  const shareTooltip=document.getElementById('shareTooltip');
+  shareBtn.addEventListener('click',()=>{
+    navigator.clipboard.writeText(window.location.href).then(()=>{
+      shareTooltip.classList.add('show');
+      setTimeout(()=>shareTooltip.classList.remove('show'),2000);
+    }).catch(()=>{});
+  });
+
+  /* ── Application Modal ── */
+  const overlay=document.getElementById('modalOverlay');
+  const modalForm=document.getElementById('modalForm');
+  const modalSuccess=document.getElementById('modalSuccess');
+  const applyBtn=document.getElementById('applyBtn');
+  const modalClose=document.getElementById('modalClose');
+
+  function openModal(){
+    overlay.classList.add('active');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    overlay.classList.remove('active');
+    document.body.style.overflow='';
+    setTimeout(()=>{
+      modalForm.classList.remove('hidden');
+      modalSuccess.classList.remove('active');
+    },300);
+  }
+
+  applyBtn.addEventListener('click',openModal);
+  modalClose.addEventListener('click',closeModal);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+  /* ── Upload area ── */
+  const uploadArea=document.getElementById('uploadArea');
+  const fileInput=document.getElementById('fileInput');
+  const uploadFileName=document.getElementById('uploadFileName');
+
+  uploadArea.addEventListener('click',()=>fileInput.click());
+  uploadArea.addEventListener('dragover',e=>{e.preventDefault();uploadArea.classList.add('dragover')});
+  uploadArea.addEventListener('dragleave',()=>uploadArea.classList.remove('dragover'));
+  uploadArea.addEventListener('drop',e=>{
+    e.preventDefault();uploadArea.classList.remove('dragover');
+    if(e.dataTransfer.files.length){handleFile(e.dataTransfer.files[0])}
+  });
+  fileInput.addEventListener('change',()=>{if(fileInput.files.length)handleFile(fileInput.files[0])});
+
+  function handleFile(file){
+    uploadFileName.textContent=file.name;
+    uploadFileName.style.display='block';
+  }
+
+  /* ── Submit application ── */
+  document.getElementById('submitApp').addEventListener('click',()=>{
+    modalForm.classList.add('hidden');
+    modalSuccess.classList.add('active');
+    try{
+      const app={
+        jobId:'job-alpine-01',
+        coverLetter:document.getElementById('coverLetter').value,
+        motivation:document.getElementById('motivation').value,
+        availability:document.getElementById('availability').value,
+        date:new Date().toISOString()
+      };
+      const apps=JSON.parse(localStorage.getItem('synera_applications')||'[]');
+      apps.push(app);
+      localStorage.setItem('synera_applications',JSON.stringify(apps));
+    }catch(e){}
+  });
+
+  /* ── Read job data from URL params ── */
+  const params=new URLSearchParams(window.location.search);
+  const jobId=params.get('id');
+  if(jobId){
+    try{
+      const jobs=JSON.parse(localStorage.getItem('synera_jobs')||'[]');
+      const job=jobs.find(j=>j.id===jobId);
+      if(job){
+        document.querySelector('.job-header__title').textContent=job.title||'';
+        document.querySelector('.job-header__company').textContent=job.company||'';
+        if(job.salary)document.querySelector('.job-header__salary').textContent=job.salary;
+      }
+    }catch(e){}
+  }
+
+  /* ── Load bookmark state ── */
+  try{
+    const saved=JSON.parse(localStorage.getItem('synera_bookmarks')||'[]');
+    if(saved.includes('job-alpine-01')){
+      bookmarked=true;
+      bookmarkBtn.classList.add('active');
+      bookmarkBtn.querySelector('svg').setAttribute('fill','currentColor');
+      bookmarkBtn.childNodes[bookmarkBtn.childNodes.length-1].textContent=' Guardado';
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
