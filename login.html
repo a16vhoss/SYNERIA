@@ -796,12 +796,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     // Mock login
     setTimeout(() => {
       const remember = document.getElementById('rememberMe').checked;
-      const userData = { email, role: 'user', loggedIn: true };
-      if (remember) {
-        localStorage.setItem('synera_user', JSON.stringify(userData));
-      } else {
-        sessionStorage.setItem('synera_user', JSON.stringify(userData));
-      }
+      const name = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const userData = { name, email, role: 'user', loggedIn: true };
+      localStorage.setItem('synera_user', JSON.stringify(userData));
+      sessionStorage.setItem('synera_user', JSON.stringify(userData));
       window.location.href = 'dashboard.html';
     }, 1500);
   });
@@ -855,6 +853,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     setTimeout(() => {
       const userData = { name, email, role: selectedRole, country, loggedIn: true };
       localStorage.setItem('synera_user', JSON.stringify(userData));
+      sessionStorage.setItem('synera_user', JSON.stringify(userData));
 
       if (selectedRole === 'worker') {
         window.location.href = 'profile.html';
