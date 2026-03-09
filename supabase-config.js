@@ -7,13 +7,23 @@ const SUPABASE_URL = 'https://ophcddxrcjcntwvhvpuzy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9waGNkZHhyY2pjbnR3aHZwdXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjU1NzIsImV4cCI6MjA4ODYwMTU3Mn0.aPm_enMTEnzomByecAVuZNV-BlH83gjO6lE9UHa7768';
 
 // Initialize Supabase client (loaded via CDN UMD build in each HTML file)
-// <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 // <script src="supabase-config.js"></script>
+
+// The UMD build sets `var supabase = {...}` as a global.
+// We need to grab createClient before overwriting the variable.
+const _sb = window.supabase;
 let supabase;
-if (window.supabase && window.supabase.createClient) {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-} else {
-  console.error('Supabase JS library not loaded. Make sure the CDN script is included before supabase-config.js');
+try {
+  const createFn = _sb?.createClient || _sb?.default?.createClient;
+  if (createFn) {
+    supabase = createFn(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    console.error('Supabase createClient not found. Available keys:', _sb ? Object.keys(_sb) : 'window.supabase is undefined');
+    supabase = null;
+  }
+} catch(e) {
+  console.error('Supabase init error:', e);
   supabase = null;
 }
 
