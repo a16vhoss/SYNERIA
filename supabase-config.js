@@ -7,15 +7,31 @@
 const SUPABASE_URL = 'https://ophcddxrcjcntwvhvpuzy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9waGNkZHhyY2pjbnR3aHZwdXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjU1NzIsImV4cCI6MjA4ODYwMTU3Mn0.aPm_enMTEnzomByecAVuZNV-BlH83gjO6lE9UHa7768';
 
-/* ── Try to init Supabase client ── */
-const _sb = window.supabase;
+/* ── Try to init Supabase client (non-blocking) ── */
 let supabase = null;
-const SUPABASE_READY = (function() {
+let SUPABASE_READY = false;
+
+// Try to init if CDN already loaded
+(function() {
   try {
+    const _sb = window.supabase;
     const fn = _sb?.createClient || _sb?.default?.createClient;
-    if (fn) { supabase = fn(SUPABASE_URL, SUPABASE_ANON_KEY); return true; }
-  } catch(e) { console.warn('Supabase init failed, using local mode:', e); }
-  return false;
+    if (fn) { supabase = fn(SUPABASE_URL, SUPABASE_ANON_KEY); SUPABASE_READY = true; console.log('Supabase: connected'); return; }
+  } catch(e) {}
+  console.log('Supabase: using local mode (offline-capable)');
+  // Try to load dynamically in background — won't block anything
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  s.async = true;
+  s.onload = function() {
+    try {
+      const _sb2 = window.supabase;
+      const fn2 = _sb2?.createClient || _sb2?.default?.createClient;
+      if (fn2) { supabase = fn2(SUPABASE_URL, SUPABASE_ANON_KEY); SUPABASE_READY = true; console.log('Supabase: connected (late load)'); }
+    } catch(e) { console.warn('Supabase late init failed:', e); }
+  };
+  s.onerror = function() { console.log('Supabase CDN unavailable — continuing offline'); };
+  document.head.appendChild(s);
 })();
 
 /* ═══════════════════════════════════════════
