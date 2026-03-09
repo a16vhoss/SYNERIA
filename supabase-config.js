@@ -6,10 +6,16 @@
 const SUPABASE_URL = 'https://ophcddxrcjcntwvhvpuzy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9waGNkZHhyY2pjbnR3aHZwdXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjU1NzIsImV4cCI6MjA4ODYwMTU3Mn0.aPm_enMTEnzomByecAVuZNV-BlH83gjO6lE9UHa7768';
 
-// Initialize Supabase client (loaded via CDN in each HTML file)
-// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+// Initialize Supabase client (loaded via CDN UMD build in each HTML file)
+// <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 // <script src="supabase-config.js"></script>
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase;
+if (window.supabase && window.supabase.createClient) {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} else {
+  console.error('Supabase JS library not loaded. Make sure the CDN script is included before supabase-config.js');
+  supabase = null;
+}
 
 /* ═══ AUTH HELPERS ═══ */
 const SyneraAuth = {
