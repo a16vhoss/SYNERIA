@@ -1415,7 +1415,7 @@ renderResults();
 // ======== GLOBAL SEARCH (topbar) — real-time filter ========
 const globalSearchInput = document.getElementById('globalSearch');
 let globalSearchTimer = null;
-globalSearchInput.addEventListener('input',(e)=>{
+if (globalSearchInput) globalSearchInput.addEventListener('input',(e)=>{
 clearTimeout(globalSearchTimer);
 globalSearchTimer = setTimeout(()=>{
   const q = e.target.value.trim().toLowerCase();
@@ -1427,7 +1427,7 @@ globalSearchTimer = setTimeout(()=>{
   }
 },300);
 });
-globalSearchInput.addEventListener('keyup',(e)=>{
+if (globalSearchInput) globalSearchInput.addEventListener('keyup',(e)=>{
 if(e.key==='Enter'){
   document.getElementById('jobSearchInput').value = e.target.value;
   switchTab('empleos');
