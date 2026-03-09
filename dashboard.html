@@ -1339,17 +1339,19 @@ entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obser
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 }
 
-// ======== HAMBURGER / SIDEBAR ========
+// ======== HAMBURGER / SIDEBAR (legacy — elements may not exist) ========
 const hamburger = document.getElementById('hamburger');
 const sidebar = document.getElementById('sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
-function toggleSidebar(){
-sidebar.classList.toggle('open');
-hamburger.classList.toggle('active');
-sidebarOverlay.classList.toggle('show');
+if (hamburger && sidebar) {
+  function toggleSidebar(){
+    sidebar.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    if (sidebarOverlay) sidebarOverlay.classList.toggle('show');
+  }
+  hamburger.addEventListener('click',toggleSidebar);
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click',toggleSidebar);
 }
-hamburger.addEventListener('click',toggleSidebar);
-sidebarOverlay.addEventListener('click',toggleSidebar);
 
 // ======== NOTIFICATIONS DROPDOWN ========
 const notifBtn = document.getElementById('notifBtn');
@@ -1357,19 +1359,23 @@ const notifDrop = document.getElementById('notifDropdown');
 const userBtn = document.getElementById('userBtn');
 const userDropdown = document.getElementById('userDropdown');
 
-notifBtn.addEventListener('click',(e)=>{
-e.stopPropagation();
-notifDrop.classList.toggle('open');
-userDropdown.classList.remove('open');
-});
-userBtn.addEventListener('click',(e)=>{
-e.stopPropagation();
-userDropdown.classList.toggle('open');
-notifDrop.classList.remove('open');
-});
+if (notifBtn && notifDrop) {
+  notifBtn.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    notifDrop.classList.toggle('open');
+    if (userDropdown) userDropdown.classList.remove('open');
+  });
+}
+if (userBtn && userDropdown) {
+  userBtn.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    userDropdown.classList.toggle('open');
+    if (notifDrop) notifDrop.classList.remove('open');
+  });
+}
 document.addEventListener('click',()=>{
-notifDrop.classList.remove('open');
-userDropdown.classList.remove('open');
+  if (notifDrop) notifDrop.classList.remove('open');
+  if (userDropdown) userDropdown.classList.remove('open');
 });
 
 // ======== TABS ========
