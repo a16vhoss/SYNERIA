@@ -275,6 +275,8 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 /* ═══ MAGNETIC BUTTON HELPER ═══ */
 .magnetic{transition:transform 0.4s var(--spring)}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 </head>
 <body>
 
@@ -305,17 +307,16 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 <!-- Navigation -->
 <nav class="nav" id="nav" role="navigation" aria-label="Principal">
-  <a href="/" class="nav__logo magnetic" data-magnetic>Synera<span>.</span></a>
-  <div class="nav__burger" id="burger" aria-label="Menú" role="button" tabindex="0">
+  <a href="synera.html" class="nav__logo magnetic" data-magnetic>Synera<span>.</span></a>
+  <div class="nav__burger" id="burger" aria-label="Menu" role="button" tabindex="0">
     <span></span><span></span><span></span>
   </div>
   <div class="nav__links" id="navLinks">
-    <a href="#problema" class="nav__link magnetic" data-magnetic>El Problema</a>
     <a href="#plataforma" class="nav__link magnetic" data-magnetic>Plataforma</a>
-    <a href="#sectores" class="nav__link magnetic" data-magnetic>Sectores</a>
-    <a href="#como-funciona" class="nav__link magnetic" data-magnetic>Cómo Funciona</a>
-    <a href="#impacto" class="nav__link magnetic" data-magnetic>Impacto</a>
-    <a href="login.html" class="nav__cta magnetic" data-magnetic>Únete Ahora</a>
+    <a href="#sectores" class="nav__link magnetic" data-magnetic>Empleos</a>
+    <a href="#como-funciona" class="nav__link magnetic" data-magnetic>Trabajadores</a>
+    <a href="#impacto" class="nav__link magnetic" data-magnetic>Empleadores</a>
+    <a href="login.html" class="nav__cta magnetic" data-magnetic id="navCta">Iniciar Sesion</a>
   </div>
 </nav>
 
@@ -337,8 +338,8 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
     </div>
 
     <div class="hero__ctas">
-      <a href="dashboard.html" class="btn-primary magnetic" data-magnetic>Buscar Oportunidades <span aria-hidden="true">→</span></a>
-      <a href="employer.html" class="btn-secondary magnetic" data-magnetic>Soy Empleador</a>
+      <a href="dashboard.html" class="btn-primary magnetic" data-magnetic>Explorar Empleos <span aria-hidden="true">&rarr;</span></a>
+      <a href="login.html" class="btn-secondary magnetic" data-magnetic id="heroEmployerBtn">Publicar Empleo</a>
     </div>
   </div>
   <div class="hero__scroll" aria-hidden="true">
@@ -593,11 +594,11 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 <!-- ═══════════ CTA ═══════════ -->
 <section class="cta-section">
   <h2>Tu Talento es tu <span>Mundo.</span></h2>
-  <p>Únete a miles de trabajadores y empresas que ya están construyendo el futuro del empleo global.</p>
-  <form class="cta__form" onsubmit="event.preventDefault();this.querySelector('button').textContent='¡Listo! ✓'">
-    <input type="email" class="cta__input" placeholder="tu@email.com" aria-label="Tu correo electrónico" required>
-    <button type="submit" class="cta__btn magnetic" data-magnetic>Suscribirse</button>
-  </form>
+  <p>Unete a miles de trabajadores y empresas que ya estan construyendo el futuro del empleo global.</p>
+  <div class="hero__ctas" style="justify-content:center;margin-top:40px;position:relative;z-index:1">
+    <a href="dashboard.html" class="cta__btn magnetic" data-magnetic style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">Ver Oportunidades &rarr;</a>
+    <a href="login.html" class="btn-secondary magnetic" data-magnetic style="border-color:rgba(255,255,255,0.2);color:#fff">Comenzar Gratis</a>
+  </div>
 </section>
 
 <!-- ═══════════ FOOTER ═══════════ -->
@@ -623,11 +624,11 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
       <a href="#sectores">Comercio</a>
     </div>
     <div class="footer__col">
-      <h4>Compañía</h4>
-      <a href="#">Sobre Nosotros</a>
-      <a href="#">Blog</a>
-      <a href="#">Prensa</a>
-      <a href="#">Contacto</a>
+      <h4>Compania</h4>
+      <a href="synera.html#problema">Sobre Nosotros</a>
+      <a href="synera.html#impacto">Impacto</a>
+      <a href="login.html">Registrate</a>
+      <a href="login.html">Contacto</a>
     </div>
   </div>
   <div class="footer__bottom">
@@ -867,6 +868,41 @@ if(!CSS.supports('animation-timeline','view()')){
   },{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 }
+
+// ─── Supabase Auth Awareness ───
+async function initAuthState(){
+  try{
+    const session=await SyneraAuth.getSession();
+    if(session&&session.user){
+      const navCta=document.getElementById('navCta');
+      if(navCta){
+        navCta.textContent='Mi Panel';
+        navCta.href='dashboard.html';
+      }
+      // Update employer button
+      const empBtn=document.getElementById('heroEmployerBtn');
+      if(empBtn){
+        empBtn.href='employer.html';
+      }
+    }
+  }catch(e){/* not logged in, keep defaults */}
+}
+initAuthState();
+
+// ─── Smooth scroll for nav links (ensure anchors work with Lenis) ───
+document.querySelectorAll('.nav__link[href^="#"]').forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    const targetId=link.getAttribute('href').substring(1);
+    const target=document.getElementById(targetId);
+    if(target){
+      // Close mobile nav
+      burger.classList.remove('open');
+      navLinks.classList.remove('open');
+      target.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
 
 })();
 </script>

@@ -676,7 +676,7 @@ grid-template-columns:1.5fr 1fr;
 <button class="hamburger" id="hamburger" aria-label="Menú">
 <span></span>
 </button>
-<a href="#" class="topbar__logo">Synera<span>.</span></a>
+<a href="dashboard.html" class="topbar__logo">Synera<span>.</span></a>
 <div class="topbar__search">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
 <input type="text" placeholder="Buscar empleos, empresas, sectores..." id="globalSearch" aria-label="Búsqueda global">
@@ -714,14 +714,14 @@ Hace 1 día
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
 Mi Perfil
 </a>
-<a href="#">
+<a href="#" onclick="event.preventDefault();showToast('Configuracion proximamente','warning')">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-Configuración
+Configuracion
 </a>
 <div class="divider"></div>
-<button class="logout" onclick="localStorage.clear();location.reload()">
+<button class="logout" id="dropdownLogout">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-Cerrar Sesión
+Cerrar Sesion
 </button>
 </div>
 </div>
@@ -734,7 +734,7 @@ Cerrar Sesión
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
 <nav class="sidebar__nav">
-<a href="#" class="sidebar__item active" data-tab="dashboard">
+<a href="dashboard.html" class="sidebar__item active" data-tab="dashboard">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
 Panel
 </a>
@@ -746,31 +746,31 @@ Buscar Empleos
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
 Mis Aplicaciones
 </a>
-<a href="#" class="sidebar__item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-Contratos
+<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Red profesional proximamente','warning')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+Red
 </a>
 <a href="wallet.html" class="sidebar__item">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="14" r="1.5"/></svg>
 Wallet
 </a>
 <a href="profile.html" class="sidebar__item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-Mi Perfil
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+Documentos
 </a>
-<a href="#" class="sidebar__item">
+<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Mensajes proximamente','warning')">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 Mensajes
 </a>
 </nav>
 <div class="sidebar__bottom">
-<a href="#" class="sidebar__item">
+<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Configuracion proximamente','warning')">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-Configuración
+Configuracion
 </a>
-<a href="#" class="sidebar__item logout" onclick="localStorage.clear();location.reload()">
+<a href="#" class="sidebar__item logout" id="sidebarLogout">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-Cerrar Sesión
+Cerrar Sesion
 </a>
 </div>
 </aside>
@@ -798,24 +798,24 @@ Cerrar Sesión
 <div class="stats reveal">
 <div class="stat-card">
 <div class="stat-card__icon teal">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
 </div>
-<div class="stat-card__label">Aplicaciones enviadas</div>
-<div class="stat-card__value" data-count="12">0</div>
+<div class="stat-card__label">Empleos disponibles</div>
+<div class="stat-card__value" id="statJobs" data-count="0">0</div>
 </div>
 <div class="stat-card">
 <div class="stat-card__icon blue">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
 </div>
-<div class="stat-card__label">Entrevistas pendientes</div>
-<div class="stat-card__value" data-count="3">0</div>
+<div class="stat-card__label">Mis Aplicaciones</div>
+<div class="stat-card__value" id="statApps" data-count="0">0</div>
 </div>
 <div class="stat-card">
 <div class="stat-card__icon warn">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
 </div>
-<div class="stat-card__label">Ofertas recibidas</div>
-<div class="stat-card__value" data-count="2">0</div>
+<div class="stat-card__label">Notificaciones</div>
+<div class="stat-card__value" id="statNotifs" data-count="0">0</div>
 </div>
 <div class="stat-card stat-card--progress">
 <div class="stat-card__label">Perfil completado</div>
@@ -825,7 +825,7 @@ Cerrar Sesión
 <circle class="progress-ring__fill" cx="32" cy="32" r="28" stroke-width="5"
 stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 </svg>
-<div class="progress-ring__text">78%</div>
+<div class="progress-ring__text" id="progressText">0%</div>
 </div>
 </div>
 </div>
@@ -934,36 +934,18 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 <div class="tab-content" id="tab-aplicaciones">
 <div class="section" style="margin-top:0">
 <h2 class="section__title" style="margin-bottom:20px">Mis Aplicaciones</h2>
-<div class="apps-table">
+<div class="apps-table" id="appsTable">
 <div class="apps-table__header">
 <div>Puesto</div>
 <div>Empresa</div>
 <div>Fecha</div>
 <div>Estado</div>
 </div>
+<div id="appsTableBody">
 <div class="apps-table__row">
-<div class="apps-table__job">Ayudante de Obra</div>
-<div class="apps-table__company">Constructora S.A.</div>
-<div class="apps-table__date">28 Feb 2026</div>
-<div><span class="status-badge review">En Revisión</span></div>
+<div class="apps-table__job" style="color:var(--muted)">Cargando aplicaciones...</div>
+<div></div><div></div><div></div>
 </div>
-<div class="apps-table__row">
-<div class="apps-table__job">Cocinero</div>
-<div class="apps-table__company">Hotel Mediterráneo</div>
-<div class="apps-table__date">25 Feb 2026</div>
-<div><span class="status-badge interview">Entrevista Programada</span></div>
-</div>
-<div class="apps-table__row">
-<div class="apps-table__job">Cuidador</div>
-<div class="apps-table__company">Residencia Alpen</div>
-<div class="apps-table__date">20 Feb 2026</div>
-<div><span class="status-badge accepted">Aceptado</span></div>
-</div>
-<div class="apps-table__row">
-<div class="apps-table__job">Jardinero</div>
-<div class="apps-table__company">Servicios Munich</div>
-<div class="apps-table__date">15 Feb 2026</div>
-<div><span class="status-badge rejected">Rechazado</span></div>
 </div>
 </div>
 </div>
@@ -996,90 +978,262 @@ Perfil
 </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 (function(){
 'use strict';
 
-// ======== DATA ========
-const JOBS = [
-{id:1,company:'Constructora S.A.',title:'Ayudante de Construcción',location:'Madrid, España',flag:'🇪🇸',salary:2500,sector:'construccion',pais:'españa',tipo:'completa',tags:['Jornada Completa','Urgente'],color:'#e74c3c',initial:'C',date:Date.now()-3600000},
-{id:2,company:'Hotel Paraíso',title:'Recepcionista Bilingüe',location:'Zurich, Suiza',flag:'🇨🇭',salary:3200,sector:'hoteleria',pais:'suiza',tipo:'completa',tags:['Jornada Completa','Visa Incluida'],color:'#3498db',initial:'H',date:Date.now()-7200000},
-{id:3,company:'Finca La Esperanza',title:'Recolector Agrícola',location:'Sevilla, España',flag:'🇪🇸',salary:2200,sector:'agricultura',pais:'españa',tipo:'temporal',tags:['Temporal','Alojamiento'],color:'#27ae60',initial:'F',date:Date.now()-10800000},
-{id:4,company:'Klinik Alpen',title:'Auxiliar de Enfermería',location:'Viena, Austria',flag:'🇦🇹',salary:2800,sector:'salud',pais:'austria',tipo:'completa',tags:['Jornada Completa','Visa Incluida'],color:'#9b59b6',initial:'K',date:Date.now()-14400000},
-{id:5,company:'Grupo Hotelero TUI',title:'Cocinero Internacional',location:'Dubái, Emiratos',flag:'🇦🇪',salary:3500,sector:'hoteleria',pais:'emiratos',tipo:'completa',tags:['Jornada Completa','Alojamiento','Urgente'],color:'#f39c12',initial:'G',date:Date.now()-18000000},
-{id:6,company:'Maple Construction',title:'Operador de Maquinaria',location:'Toronto, Canadá',flag:'🇨🇦',salary:4000,sector:'construccion',pais:'canada',tipo:'completa',tags:['Jornada Completa','Visa Incluida'],color:'#e74c3c',initial:'M',date:Date.now()-21600000},
-{id:7,company:'AgroSüd GmbH',title:'Técnico Agrícola',location:'Munich, Alemania',flag:'🇩🇪',salary:2600,sector:'agricultura',pais:'alemania',tipo:'temporal',tags:['Temporal'],color:'#2ecc71',initial:'A',date:Date.now()-25200000},
-{id:8,company:'SuperMercado Central',title:'Cajero/a',location:'Barcelona, España',flag:'🇪🇸',salary:1800,sector:'comercio',pais:'españa',tipo:'media',tags:['Media Jornada'],color:'#1abc9c',initial:'S',date:Date.now()-28800000},
-{id:9,company:'Hotel Mediterráneo',title:'Camarero/a de Pisos',location:'Palma, España',flag:'🇪🇸',salary:2100,sector:'hoteleria',pais:'españa',tipo:'completa',tags:['Jornada Completa','Alojamiento'],color:'#3498db',initial:'H',date:Date.now()-32400000},
-{id:10,company:'Bauhaus Bau AG',title:'Soldador Industrial',location:'Berlín, Alemania',flag:'🇩🇪',salary:3300,sector:'construccion',pais:'alemania',tipo:'completa',tags:['Jornada Completa','Visa Incluida','Urgente'],color:'#e67e22',initial:'B',date:Date.now()-36000000},
-{id:11,company:'Residencia Alpen',title:'Cuidador/a de Mayores',location:'Zúrich, Suiza',flag:'🇨🇭',salary:3600,sector:'salud',pais:'suiza',tipo:'completa',tags:['Jornada Completa','Visa Incluida','Alojamiento'],color:'#8e44ad',initial:'R',date:Date.now()-39600000},
-{id:12,company:'Outback Farms',title:'Recolector de Frutas',location:'Melbourne, Australia',flag:'🇦🇺',salary:2900,sector:'agricultura',pais:'australia',tipo:'temporal',tags:['Temporal','Alojamiento'],color:'#d35400',initial:'O',date:Date.now()-43200000},
-{id:13,company:'Construcciones Pérez',title:'Electricista',location:'Houston, EE.UU.',flag:'🇺🇸',salary:4200,sector:'construccion',pais:'eeuu',tipo:'proyecto',tags:['Por Proyecto','Urgente'],color:'#c0392b',initial:'C',date:Date.now()-46800000},
-{id:14,company:'Clínica San Rafael',title:'Fisioterapeuta',location:'Madrid, España',flag:'🇪🇸',salary:2700,sector:'salud',pais:'españa',tipo:'completa',tags:['Jornada Completa'],color:'#16a085',initial:'C',date:Date.now()-50400000},
-{id:15,company:'Mall of Emirates',title:'Vendedor/a Retail',location:'Dubái, Emiratos',flag:'🇦🇪',salary:2400,sector:'comercio',pais:'emiratos',tipo:'completa',tags:['Jornada Completa','Alojamiento'],color:'#f1c40f',initial:'M',date:Date.now()-54000000},
-{id:16,company:'Schweizer Pflege',title:'Enfermero/a',location:'Berna, Suiza',flag:'🇨🇭',salary:4500,sector:'salud',pais:'suiza',tipo:'completa',tags:['Jornada Completa','Visa Incluida'],color:'#2980b9',initial:'S',date:Date.now()-57600000}
-];
-
-// ======== SAVED JOBS ========
+// ======== STATE ========
+let allJobs = [];
 let savedJobs = JSON.parse(localStorage.getItem('synera_saved') || '[]');
+let currentSort = 'recent';
+let visibleCount = 8;
+let currentUserId = null;
+
 function toggleSave(id){
 const i = savedJobs.indexOf(id);
 if(i>-1) savedJobs.splice(i,1); else savedJobs.push(id);
 localStorage.setItem('synera_saved',JSON.stringify(savedJobs));
 }
+window._toggleSave = toggleSave;
 
-// ======== USER NAME ========
-const raw = localStorage.getItem('synera_user') || sessionStorage.getItem('synera_user');
-let userName = 'Trabajador';
-if (raw) {
-  try {
-    const data = JSON.parse(raw);
-    userName = data.name || data.email || 'Trabajador';
-  } catch(e) {
-    userName = raw; // fallback if it's already a plain string
-  }
+// ======== COLOR PALETTE FOR COMPANIES ========
+const COLORS = ['#e74c3c','#3498db','#27ae60','#9b59b6','#f39c12','#e67e22','#1abc9c','#d35400','#c0392b','#16a085','#2980b9','#8e44ad'];
+function colorForName(name){
+let h=0; for(let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h);
+return COLORS[Math.abs(h)%COLORS.length];
 }
-document.getElementById('welcomeName').textContent = userName;
-document.getElementById('userDisplayName').textContent = userName;
-document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
 
-// ======== SKELETON ========
-setTimeout(()=>{
-document.getElementById('skeleton-overlay').classList.add('hidden');
-initReveal();
-animateCounters();
-},1000);
+// ======== NORMALIZE JOB FROM SUPABASE ========
+function normalizeJob(j){
+const company = j.companies ? j.companies.name : (j.company_name || 'Empresa');
+const color = colorForName(company);
+const salary = j.salary_max || j.salary_min || j.salary || 0;
+const tags = [];
+if(j.job_type==='full_time'||j.tipo==='completa') tags.push('Jornada Completa');
+else if(j.job_type==='part_time'||j.tipo==='media') tags.push('Media Jornada');
+else if(j.job_type==='temporary'||j.tipo==='temporal') tags.push('Temporal');
+else if(j.job_type==='project'||j.tipo==='proyecto') tags.push('Por Proyecto');
+if(j.visa_sponsorship) tags.push('Visa Incluida');
+if(j.housing_included) tags.push('Alojamiento');
+if(j.urgent) tags.push('Urgente');
+return {
+  id: j.id,
+  company,
+  title: j.title || 'Sin titulo',
+  location: j.location || (j.city ? j.city+', '+j.country : j.country || ''),
+  country: j.country || '',
+  salary,
+  sector: j.sector || '',
+  pais: (j.country||'').toLowerCase(),
+  tipo: j.job_type || j.tipo || '',
+  tags,
+  color,
+  initial: company.charAt(0).toUpperCase(),
+  date: new Date(j.created_at||Date.now()).getTime()
+};
+}
+
+// ======== PROFILE COMPLETION % ========
+function calcProfileCompletion(profile){
+if(!profile) return 0;
+const fields = ['full_name','phone','country','city','bio','skills','experience','education','languages','avatar_url'];
+let filled = 0;
+fields.forEach(f=>{
+  const v = profile[f];
+  if(v && (typeof v==='string' ? v.trim()!=='' : (Array.isArray(v) ? v.length>0 : true))) filled++;
+});
+return Math.round((filled/fields.length)*100);
+}
+
+// ======== RENDER JOB CARD ========
+function createJobCard(job,isResult){
+const isSaved = savedJobs.includes(job.id);
+const tagClass = t => t==='Urgente'?'urgent':t.includes('Visa')?'visa':t.includes('Alojamiento')?'housing':'';
+const tagsHTML = job.tags.map(t=>`<span class="job-tag ${tagClass(t)}">${t}</span>`).join('');
+const salaryStr = job.salary ? '$'+job.salary.toLocaleString()+'/mes' : 'A convenir';
+
+if(isResult){
+return `
+<div class="result-card" onclick="location.href='job-detail.html?id=${job.id}'">
+<div class="result-card__header">
+<div class="result-card__avatar" style="background:${job.color}">${job.initial}</div>
+<div class="result-card__info">
+<div class="result-card__company">${job.company}</div>
+<div class="result-card__title">${job.title}</div>
+</div>
+</div>
+<div class="result-card__meta">
+<span>${job.location}</span>
+</div>
+<div class="result-card__salary">${salaryStr}</div>
+<div class="result-card__tags">${tagsHTML}</div>
+<div class="result-card__footer">
+<button class="btn-apply" onclick="event.stopPropagation();location.href='job-detail.html?id=${job.id}'">Aplicar</button>
+<button class="btn-bookmark ${isSaved?'saved':''}" data-job="${job.id}" onclick="event.stopPropagation();this.classList.toggle('saved');window._toggleSave('${job.id}')">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+</button>
+</div>
+</div>`;
+}
+
+return `
+<div class="job-card" onclick="location.href='job-detail.html?id=${job.id}'">
+<div class="job-card__top">
+<div class="job-card__avatar" style="background:${job.color}">${job.initial}</div>
+<div>
+<div class="job-card__company">${job.company}</div>
+</div>
+</div>
+<div class="job-card__title">${job.title}</div>
+<div class="job-card__location">${job.location}</div>
+<div class="job-card__salary">${salaryStr}</div>
+<div class="job-card__tags">${tagsHTML}</div>
+<div class="job-card__actions">
+<button class="btn-apply" onclick="event.stopPropagation();location.href='job-detail.html?id=${job.id}'">Aplicar</button>
+<button class="btn-bookmark ${isSaved?'saved':''}" data-job="${job.id}" onclick="event.stopPropagation();this.classList.toggle('saved');window._toggleSave('${job.id}')">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+</button>
+</div>
+</div>`;
+}
+
+// ======== SEARCH & FILTER ========
+function getFilteredJobs(){
+const q = document.getElementById('jobSearchInput').value.toLowerCase();
+const sector = document.getElementById('filterSector').value;
+const pais = document.getElementById('filterPais').value;
+const tipo = document.getElementById('filterTipo').value;
+const minSalary = parseInt(document.getElementById('salarySlider').value);
+
+let results = allJobs.filter(j=>{
+if(q && !j.title.toLowerCase().includes(q) && !j.company.toLowerCase().includes(q) && !j.location.toLowerCase().includes(q) && !j.country.toLowerCase().includes(q)) return false;
+if(sector && j.sector!==sector) return false;
+if(pais && j.pais!==pais) return false;
+if(tipo && j.tipo!==tipo) return false;
+if(j.salary<minSalary) return false;
+return true;
+});
+
+if(currentSort==='salary') results.sort((a,b)=>b.salary-a.salary);
+else if(currentSort==='recent') results.sort((a,b)=>b.date-a.date);
+return results;
+}
+
+function renderResults(){
+const filtered = getFilteredJobs();
+document.getElementById('resultCount').textContent = filtered.length;
+const toShow = filtered.slice(0,visibleCount);
+document.getElementById('resultsGrid').innerHTML = toShow.length
+  ? toShow.map(j=>createJobCard(j,true)).join('')
+  : '<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:40px 0">No se encontraron empleos con esos filtros.</p>';
+document.getElementById('loadMore').style.display = filtered.length>visibleCount?'flex':'none';
+}
+
+// ======== RENDER APPLICATIONS TABLE ========
+function renderApplications(apps){
+const body = document.getElementById('appsTableBody');
+if(!apps || apps.length===0){
+  body.innerHTML = `<div class="apps-table__row"><div class="apps-table__job" style="color:var(--muted)">No tienes aplicaciones aun.</div><div></div><div></div><div></div></div>`;
+  return;
+}
+const statusMap = {
+  'pending':'review', 'en_revision':'review', 'review':'review',
+  'interview':'interview', 'entrevista':'interview',
+  'accepted':'accepted', 'aceptado':'accepted', 'hired':'accepted',
+  'rejected':'rejected', 'rechazado':'rejected'
+};
+const statusLabel = {
+  'review':'En Revision', 'interview':'Entrevista', 'accepted':'Aceptado', 'rejected':'Rechazado'
+};
+body.innerHTML = apps.map(a=>{
+  const job = a.jobs || {};
+  const company = job.companies ? job.companies.name : (job.company_name || '');
+  const cls = statusMap[a.status] || 'review';
+  const label = statusLabel[cls] || a.status;
+  const d = new Date(a.created_at);
+  const dateStr = d.toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
+  return `<div class="apps-table__row">
+    <div class="apps-table__job">${job.title||'Empleo'}</div>
+    <div class="apps-table__company">${company}</div>
+    <div class="apps-table__date">${dateStr}</div>
+    <div><span class="status-badge ${cls}">${label}</span></div>
+  </div>`;
+}).join('');
+}
+
+// ======== ANIMATED COUNTERS ========
+function animateCounters(){
+document.querySelectorAll('[data-count]').forEach(el=>{
+const target = parseInt(el.dataset.count);
+if(target===0){el.textContent='0';return;}
+const duration = 1200;
+const overshoot = 1.12;
+const start = performance.now();
+function tick(now){
+const elapsed = now - start;
+let progress = Math.min(elapsed/duration,1);
+let value;
+if(progress < 0.7){
+value = Math.round(target * overshoot * (progress/0.7));
+} else {
+const settle = (progress - 0.7)/0.3;
+value = Math.round(target * overshoot - (target * overshoot - target) * settle);
+}
+value = Math.min(value, Math.round(target * overshoot));
+if(progress >= 1) value = target;
+el.textContent = value;
+if(progress < 1) requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+});
+}
+
+function animateProgress(pct){
+const circle = document.getElementById('progressCircle');
+const circumference = 2*Math.PI*28;
+const offset = circumference - (pct/100)*circumference;
+document.getElementById('progressText').textContent = pct+'%';
+setTimeout(()=>{circle.style.strokeDashoffset=offset},100);
+}
+
+// ======== SCROLL REVEAL ========
+function initReveal(){
+const observer = new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+}
 
 // ======== HAMBURGER / SIDEBAR ========
 const hamburger = document.getElementById('hamburger');
 const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
 function toggleSidebar(){
 sidebar.classList.toggle('open');
 hamburger.classList.toggle('active');
-overlay.classList.toggle('show');
+sidebarOverlay.classList.toggle('show');
 }
 hamburger.addEventListener('click',toggleSidebar);
-overlay.addEventListener('click',toggleSidebar);
+sidebarOverlay.addEventListener('click',toggleSidebar);
 
-// ======== NOTIFICATIONS ========
+// ======== NOTIFICATIONS DROPDOWN ========
 const notifBtn = document.getElementById('notifBtn');
 const notifDrop = document.getElementById('notifDropdown');
+const userBtn = document.getElementById('userBtn');
+const userDropdown = document.getElementById('userDropdown');
+
 notifBtn.addEventListener('click',(e)=>{
 e.stopPropagation();
 notifDrop.classList.toggle('open');
 userDropdown.classList.remove('open');
 });
-
-// ======== USER DROPDOWN ========
-const userBtn = document.getElementById('userBtn');
-const userDropdown = document.getElementById('userDropdown');
 userBtn.addEventListener('click',(e)=>{
 e.stopPropagation();
 userDropdown.classList.toggle('open');
 notifDrop.classList.remove('open');
 });
-
 document.addEventListener('click',()=>{
 notifDrop.classList.remove('open');
 userDropdown.classList.remove('open');
@@ -1098,96 +1252,7 @@ document.querySelectorAll('.sidebar__item[data-tab]').forEach(s=>s.addEventListe
 document.querySelectorAll('.bottom-bar__item[data-tab]').forEach(b=>b.addEventListener('click',(e)=>{e.preventDefault();switchTab(b.dataset.tab);}));
 document.querySelectorAll('[data-tab-link]').forEach(l=>l.addEventListener('click',(e)=>{e.preventDefault();switchTab(l.dataset.tabLink);}));
 
-// ======== RENDER RECOMMENDED JOBS ========
-function createJobCard(job,isResult){
-const isSaved = savedJobs.includes(job.id);
-const tagClass = t => t==='Urgente'?'urgent':t.includes('Visa')?'visa':t.includes('Alojamiento')?'housing':'';
-const tagsHTML = job.tags.map(t=>`<span class="job-tag ${tagClass(t)}">${t}</span>`).join('');
-
-if(isResult){
-return `
-<div class="result-card" onclick="location.href='job-detail.html?id=${job.id}'">
-<div class="result-card__header">
-<div class="result-card__avatar" style="background:${job.color}">${job.initial}</div>
-<div class="result-card__info">
-<div class="result-card__company">${job.company}</div>
-<div class="result-card__title">${job.title}</div>
-</div>
-</div>
-<div class="result-card__meta">
-<span>${job.flag} ${job.location}</span>
-</div>
-<div class="result-card__salary">$${job.salary.toLocaleString()}/mes</div>
-<div class="result-card__tags">${tagsHTML}</div>
-<div class="result-card__footer">
-<button class="btn-apply" onclick="event.stopPropagation()">Aplicar</button>
-<button class="btn-bookmark ${isSaved?'saved':''}" data-job="${job.id}" onclick="event.stopPropagation();this.classList.toggle('saved');window._toggleSave(${job.id})">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-</button>
-</div>
-</div>`;
-}
-
-return `
-<div class="job-card" onclick="location.href='job-detail.html?id=${job.id}'">
-<div class="job-card__top">
-<div class="job-card__avatar" style="background:${job.color}">${job.initial}</div>
-<div>
-<div class="job-card__company">${job.company}</div>
-</div>
-</div>
-<div class="job-card__title">${job.title}</div>
-<div class="job-card__location">${job.flag} ${job.location}</div>
-<div class="job-card__salary">$${job.salary.toLocaleString()}/mes</div>
-<div class="job-card__tags">${tagsHTML}</div>
-<div class="job-card__actions">
-<button class="btn-apply" onclick="event.stopPropagation()">Aplicar</button>
-<button class="btn-bookmark ${isSaved?'saved':''}" data-job="${job.id}" onclick="event.stopPropagation();this.classList.toggle('saved');window._toggleSave(${job.id})">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-</button>
-</div>
-</div>`;
-}
-
-window._toggleSave = toggleSave;
-
-// Render recommended (first 5)
-document.getElementById('recommendedJobs').innerHTML = JOBS.slice(0,5).map(j=>createJobCard(j,false)).join('');
-
-// ======== SEARCH & FILTER ========
-let currentSort = 'recent';
-let visibleCount = 8;
-
-function getFilteredJobs(){
-const q = document.getElementById('jobSearchInput').value.toLowerCase();
-const sector = document.getElementById('filterSector').value;
-const pais = document.getElementById('filterPais').value;
-const tipo = document.getElementById('filterTipo').value;
-const minSalary = parseInt(document.getElementById('salarySlider').value);
-
-let results = JOBS.filter(j=>{
-if(q && !j.title.toLowerCase().includes(q) && !j.company.toLowerCase().includes(q) && !j.location.toLowerCase().includes(q)) return false;
-if(sector && j.sector!==sector) return false;
-if(pais && j.pais!==pais) return false;
-if(tipo && j.tipo!==tipo) return false;
-if(j.salary<minSalary) return false;
-return true;
-});
-
-if(currentSort==='salary') results.sort((a,b)=>b.salary-a.salary);
-else if(currentSort==='recent') results.sort((a,b)=>b.date-a.date);
-// relevance = default order
-return results;
-}
-
-function renderResults(){
-const filtered = getFilteredJobs();
-document.getElementById('resultCount').textContent = filtered.length;
-const toShow = filtered.slice(0,visibleCount);
-document.getElementById('resultsGrid').innerHTML = toShow.map(j=>createJobCard(j,true)).join('');
-document.getElementById('loadMore').style.display = filtered.length>visibleCount?'flex':'none';
-}
-
+// ======== SEARCH/FILTER EVENT LISTENERS ========
 document.getElementById('jobSearchBtn').addEventListener('click',()=>{visibleCount=8;renderResults()});
 document.getElementById('jobSearchInput').addEventListener('keyup',(e)=>{if(e.key==='Enter'){visibleCount=8;renderResults()}});
 ['filterSector','filterPais','filterTipo'].forEach(id=>{
@@ -1208,22 +1273,35 @@ renderResults();
 });
 });
 
-// Global search
-document.getElementById('globalSearch').addEventListener('keyup',(e)=>{
+// ======== GLOBAL SEARCH (topbar) — real-time filter ========
+const globalSearchInput = document.getElementById('globalSearch');
+let globalSearchTimer = null;
+globalSearchInput.addEventListener('input',(e)=>{
+clearTimeout(globalSearchTimer);
+globalSearchTimer = setTimeout(()=>{
+  const q = e.target.value.trim().toLowerCase();
+  if(q.length > 0){
+    document.getElementById('jobSearchInput').value = q;
+    switchTab('empleos');
+    visibleCount=8;
+    renderResults();
+  }
+},300);
+});
+globalSearchInput.addEventListener('keyup',(e)=>{
 if(e.key==='Enter'){
-document.getElementById('jobSearchInput').value = e.target.value;
-switchTab('empleos');
-renderResults();
+  document.getElementById('jobSearchInput').value = e.target.value;
+  switchTab('empleos');
+  visibleCount=8;
+  renderResults();
 }
 });
 
 // ======== 3D TILT ON STAT CARDS ========
 document.querySelectorAll('.stat-card').forEach(card=>{
-// Add glare overlay
 const glare = document.createElement('div');
 glare.className = 'stat-card__glare';
 card.appendChild(glare);
-
 card.addEventListener('mousemove',e=>{
 const rect = card.getBoundingClientRect();
 const x = e.clientX - rect.left;
@@ -1244,51 +1322,101 @@ card.style.transition = 'box-shadow 0.3s';
 });
 });
 
-// ======== ANIMATED COUNTERS WITH ELASTIC OVERSHOOT ========
-function animateCounters(){
-document.querySelectorAll('[data-count]').forEach(el=>{
-const target = parseInt(el.dataset.count);
-const duration = 1200;
-const overshoot = 1.12;
-const start = performance.now();
-function tick(now){
-const elapsed = now - start;
-let progress = Math.min(elapsed/duration,1);
-// Spring easing with overshoot
-let value;
-if(progress < 0.7){
-value = Math.round(target * overshoot * (progress/0.7));
-} else {
-const settle = (progress - 0.7)/0.3;
-value = Math.round(target * overshoot - (target * overshoot - target) * settle);
+// ======== LOGOUT HANDLERS ========
+async function handleLogout(e){
+e.preventDefault();
+try {
+  await SyneraAuth.signOut();
+} catch(err){ console.warn('Logout error',err); }
+window.location.href = 'login.html';
 }
-value = Math.min(value, Math.round(target * overshoot));
-if(progress >= 1) value = target;
-el.textContent = value;
-if(progress < 1) requestAnimationFrame(tick);
-}
-requestAnimationFrame(tick);
-});
-// Progress ring
-const circle = document.getElementById('progressCircle');
-const circumference = 2*Math.PI*28;
-const offset = circumference - (78/100)*circumference;
-setTimeout(()=>{circle.style.strokeDashoffset=offset},100);
-}
-
-// ======== SCROLL REVEAL ========
-function initReveal(){
-const observer = new IntersectionObserver((entries)=>{
-entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
-},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-}
+document.getElementById('sidebarLogout').addEventListener('click',handleLogout);
+document.getElementById('dropdownLogout').addEventListener('click',handleLogout);
 
 // ======== SALARY SLIDER INIT ========
 document.getElementById('salaryVal').textContent = '$0';
 
-// Initial render
-renderResults();
+// ======== MAIN INIT — AUTH + DATA LOADING ========
+async function init(){
+try {
+  // 1. Check auth
+  const session = await SyneraAuth.requireAuth();
+  if(!session) return; // redirecting to login
+
+  const user = session.user;
+  currentUserId = user.id;
+
+  // 2. Load profile
+  let profile = null;
+  try { profile = await SyneraProfiles.get(user.id); } catch(e){ console.warn('Profile load error',e); }
+
+  const userName = (profile && profile.full_name) ? profile.full_name : (user.user_metadata && user.user_metadata.name) ? user.user_metadata.name : user.email.split('@')[0];
+  const initials = userName.split(' ').map(w=>w.charAt(0).toUpperCase()).slice(0,2).join('');
+
+  document.getElementById('welcomeName').textContent = userName.split(' ')[0];
+  document.getElementById('userDisplayName').textContent = userName;
+  document.getElementById('userAvatar').textContent = initials || userName.charAt(0).toUpperCase();
+
+  // 3. Load jobs
+  let jobs = [];
+  try { jobs = await SyneraJobs.list(); } catch(e){ console.warn('Jobs load error',e); }
+  allJobs = jobs.map(normalizeJob);
+
+  // Render recommended jobs (first 6)
+  const recEl = document.getElementById('recommendedJobs');
+  if(allJobs.length > 0){
+    recEl.innerHTML = allJobs.slice(0,6).map(j=>createJobCard(j,false)).join('');
+  } else {
+    recEl.innerHTML = '<p style="color:var(--muted);padding:24px">No hay empleos disponibles en este momento.</p>';
+  }
+
+  // 4. Load applications
+  let apps = [];
+  try { apps = await SyneraApplications.listByUser(user.id); } catch(e){ console.warn('Apps load error',e); }
+  renderApplications(apps);
+
+  // 5. Load notifications count
+  let unreadCount = 0;
+  try { unreadCount = await SyneraNotifications.getUnreadCount(user.id); } catch(e){ console.warn('Notifs error',e); }
+  const badge = document.getElementById('notifBadge');
+  if(unreadCount > 0){
+    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+
+  // 6. Update stats
+  const profilePct = calcProfileCompletion(profile);
+  document.getElementById('statJobs').dataset.count = allJobs.length;
+  document.getElementById('statApps').dataset.count = apps.length;
+  document.getElementById('statNotifs').dataset.count = unreadCount;
+
+  // 7. Remove skeleton, start animations
+  document.getElementById('skeleton-overlay').classList.add('hidden');
+  initReveal();
+  animateCounters();
+  animateProgress(profilePct);
+
+  // Render search results
+  renderResults();
+
+} catch(err){
+  console.error('Dashboard init error:',err);
+  // Still remove skeleton on error
+  document.getElementById('skeleton-overlay').classList.add('hidden');
+  initReveal();
+
+  // Fallback: show what we can
+  document.getElementById('welcomeName').textContent = 'Trabajador';
+  renderResults();
+  animateCounters();
+  animateProgress(0);
+}
+}
+
+// Start!
+init();
 
 })();
 </script>

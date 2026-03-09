@@ -612,9 +612,60 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   </section>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 (function(){
   'use strict';
+
+  // ========== CHECK IF ALREADY LOGGED IN ==========
+  (async function checkExistingSession() {
+    try {
+      const session = await SyneraAuth.getSession();
+      if (session && session.user) {
+        const role = session.user.user_metadata?.role || 'worker';
+        const redirect = role === 'employer' ? 'employer.html' : 'dashboard.html';
+        window.location.href = redirect;
+      }
+    } catch (e) {
+      // Not logged in, stay on login page
+    }
+  })();
+
+  // ========== FORM ERROR DISPLAY HELPER ==========
+  function showFormError(formEl, message) {
+    let errorDiv = formEl.querySelector('.form-error-msg');
+    if (!errorDiv) {
+      errorDiv = document.createElement('div');
+      errorDiv.className = 'form-error-msg';
+      errorDiv.style.cssText = 'background:rgba(239,68,68,0.1);border:1px solid var(--danger);color:var(--danger);padding:12px 16px;border-radius:12px;font-size:0.875rem;font-weight:500;margin-bottom:1rem;text-align:center;animation:fadeIn 0.3s ease;';
+      formEl.insertBefore(errorDiv, formEl.firstChild);
+    }
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+  }
+
+  function hideFormError(formEl) {
+    const errorDiv = formEl.querySelector('.form-error-msg');
+    if (errorDiv) errorDiv.style.display = 'none';
+  }
+
+  function showFormSuccess(formEl, message) {
+    let successDiv = formEl.querySelector('.form-success-msg');
+    if (!successDiv) {
+      successDiv = document.createElement('div');
+      successDiv.className = 'form-success-msg';
+      successDiv.style.cssText = 'background:rgba(34,197,94,0.1);border:1px solid var(--success);color:var(--success);padding:12px 16px;border-radius:12px;font-size:0.875rem;font-weight:500;margin-bottom:1rem;text-align:center;animation:fadeIn 0.3s ease;';
+      formEl.insertBefore(successDiv, formEl.firstChild);
+    }
+    successDiv.textContent = message;
+    successDiv.style.display = 'block';
+  }
+
+  function resetBtn(btn) {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
 
   // ========== CUSTOM CURSOR ==========
   const cursor = document.getElementById('cursor');
@@ -811,12 +862,48 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     }
   });
 
+  // ========== FORGOT PASSWORD ==========
+  const forgotLink = document.querySelector('.forgot-link a');
+  if (forgotLink) {
+    forgotLink.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const email = loginEmail.value.trim();
+      const loginForm = document.getElementById('loginForm');
+
+      if (!email || !isValidEmail(email)) {
+        showFormError(loginForm, 'Ingresa tu correo electronico arriba para recuperar tu contrasena.');
+        setInputState(loginEmail, 'error');
+        loginEmail.focus();
+        return;
+      }
+
+      forgotLink.textContent = 'Enviando...';
+      forgotLink.style.pointerEvents = 'none';
+
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/reset-password.html'
+        });
+        if (error) throw error;
+        hideFormError(loginForm);
+        showFormSuccess(loginForm, 'Te enviamos un enlace de recuperacion a ' + email + '. Revisa tu bandeja de entrada.');
+      } catch (err) {
+        showFormError(loginForm, err.message || 'Error al enviar el correo de recuperacion. Intenta de nuevo.');
+      } finally {
+        forgotLink.textContent = 'Olvidaste tu contrasena?';
+        forgotLink.style.pointerEvents = '';
+      }
+    });
+  }
+
   // ========== LOGIN FORM SUBMIT ==========
-  document.getElementById('loginForm').addEventListener('submit', function(e) {
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const email = loginEmail.value.trim();
     const password = document.getElementById('loginPassword').value;
     let valid = true;
+
+    hideFormError(this);
 
     if (!email || !isValidEmail(email)) {
       showMsg(loginEmailMsg, 'Ingresa un correo electronico valido', 'error');
@@ -835,19 +922,48 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     btn.classList.add('loading');
     btn.disabled = true;
 
-    // Mock login
-    setTimeout(() => {
-      const remember = document.getElementById('rememberMe').checked;
-      const name = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-      const userData = { name, email, role: 'user', loggedIn: true };
+    try {
+      const data = await SyneraAuth.signIn(email, password);
+      const user = data.user;
+      const role = user.user_metadata?.role || 'worker';
+      const fullName = user.user_metadata?.full_name || email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+      // Store in localStorage for backward compatibility
+      const userData = {
+        id: user.id,
+        name: fullName,
+        email: user.email,
+        role: role,
+        country: user.user_metadata?.country || '',
+        loggedIn: true
+      };
       localStorage.setItem('synera_user', JSON.stringify(userData));
       sessionStorage.setItem('synera_user', JSON.stringify(userData));
-      window.location.href = 'dashboard.html';
-    }, 1500);
+
+      // Redirect based on role
+      if (role === 'employer') {
+        window.location.href = 'employer.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    } catch (err) {
+      resetBtn(btn);
+      let message = 'Error al iniciar sesion. Intenta de nuevo.';
+      if (err.message) {
+        if (err.message.includes('Invalid login credentials')) {
+          message = 'Correo o contrasena incorrectos. Verifica tus datos.';
+        } else if (err.message.includes('Email not confirmed')) {
+          message = 'Tu correo aun no ha sido confirmado. Revisa tu bandeja de entrada.';
+        } else {
+          message = err.message;
+        }
+      }
+      showFormError(this, message);
+    }
   });
 
   // ========== REGISTER FORM SUBMIT ==========
-  document.getElementById('registerForm').addEventListener('submit', function(e) {
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const name = regName.value.trim();
     const email = regEmail.value.trim();
@@ -856,6 +972,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     const country = document.getElementById('regCountry').value;
     const terms = document.getElementById('regTerms').checked;
     let valid = true;
+
+    hideFormError(this);
 
     if (!name || name.length < 2) {
       showMsg(regNameMsg, 'Ingresa tu nombre completo', 'error');
@@ -891,18 +1009,78 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     btn.classList.add('loading');
     btn.disabled = true;
 
-    // Mock register
-    setTimeout(() => {
-      const userData = { name, email, role: selectedRole, country, loggedIn: true };
-      localStorage.setItem('synera_user', JSON.stringify(userData));
-      sessionStorage.setItem('synera_user', JSON.stringify(userData));
+    try {
+      const data = await SyneraAuth.signUp(email, password, {
+        full_name: name,
+        role: selectedRole,
+        country: country
+      });
 
-      if (selectedRole === 'worker') {
-        window.location.href = 'profile.html';
+      const user = data.user;
+
+      // If email confirmation is required, Supabase returns a user but no session
+      if (data.session) {
+        // Auto-confirmed: store user and redirect
+        const userData = {
+          id: user.id,
+          name: name,
+          email: user.email,
+          role: selectedRole,
+          country: country,
+          loggedIn: true
+        };
+        localStorage.setItem('synera_user', JSON.stringify(userData));
+        sessionStorage.setItem('synera_user', JSON.stringify(userData));
+
+        if (selectedRole === 'worker') {
+          window.location.href = 'dashboard.html';
+        } else {
+          window.location.href = 'employer.html';
+        }
       } else {
-        window.location.href = 'employer.html';
+        // Email confirmation required
+        resetBtn(btn);
+        hideFormError(this);
+        showFormSuccess(this, 'Cuenta creada. Revisa tu correo electronico para confirmar tu cuenta antes de iniciar sesion.');
       }
-    }, 1500);
+    } catch (err) {
+      resetBtn(btn);
+      let message = 'Error al crear la cuenta. Intenta de nuevo.';
+      if (err.message) {
+        if (err.message.includes('already registered') || err.message.includes('already been registered')) {
+          message = 'Este correo ya esta registrado. Intenta iniciar sesion.';
+        } else if (err.message.includes('Password should be')) {
+          message = 'La contrasena debe tener al menos 6 caracteres.';
+        } else {
+          message = err.message;
+        }
+      }
+      showFormError(this, message);
+    }
+  });
+
+  // ========== SOCIAL LOGIN BUTTONS ==========
+  const socialBtns = document.querySelectorAll('.btn-social');
+  socialBtns.forEach(btn => {
+    btn.addEventListener('click', async function() {
+      const text = btn.textContent.trim();
+      let provider = null;
+      if (text.includes('Google')) provider = 'google';
+      else if (text.includes('LinkedIn')) provider = 'linkedin_oidc';
+
+      if (provider) {
+        try {
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: provider,
+            options: { redirectTo: window.location.origin + '/dashboard.html' }
+          });
+          if (error) throw error;
+        } catch (err) {
+          const form = document.querySelector('.form-panel.active form') || document.getElementById('loginForm');
+          showFormError(form, err.message || 'Error con el inicio de sesion social.');
+        }
+      }
+    });
   });
 
   // ========== STATS CAROUSEL ==========

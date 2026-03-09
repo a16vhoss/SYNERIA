@@ -698,14 +698,14 @@ img{display:block;max-width:100%}
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 1.5"/></svg>
         </div>
         <div class="stat-card__value" data-count="3">0</div>
-        <div class="stat-card__label">Entrevistas hoy</div>
+        <div class="stat-card__label">En entrevista</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-card__icon success">
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="m9 13 2 2 4-4"/></svg>
         </div>
         <div class="stat-card__value" data-count="12">0</div>
-        <div class="stat-card__label">Contratos activos</div>
+        <div class="stat-card__label">Aceptados</div>
       </div>
     </div>
 
@@ -773,30 +773,9 @@ img{display:block;max-width:100%}
               <th>Estado</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="contractsBody">
             <tr>
-              <td>Pedro Hernández</td>
-              <td>Ayudante de Construcción</td>
-              <td>15 Mar 2026</td>
-              <td><span class="status-badge activa">Activo</span></td>
-            </tr>
-            <tr>
-              <td>Juan Martínez</td>
-              <td>Soldador Certificado</td>
-              <td>01 Abr 2026</td>
-              <td><span class="status-badge pausada">Pendiente firma</span></td>
-            </tr>
-            <tr>
-              <td>Luis Rodríguez</td>
-              <td>Electricista Industrial</td>
-              <td>20 Feb 2026</td>
-              <td><span class="status-badge activa">Activo</span></td>
-            </tr>
-            <tr>
-              <td>Carlos Méndez</td>
-              <td>Fontanero</td>
-              <td>10 Ene 2026</td>
-              <td><span class="status-badge activa">Activo</span></td>
+              <td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">Cargando contratos...</td>
             </tr>
           </tbody>
         </table>
@@ -969,72 +948,116 @@ img{display:block;max-width:100%}
   </div>
 </div>
 
+<!-- Supabase SDK + shared config -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
 <script>
-/* ========== DATA ========== */
-const DEFAULT_VACANCIES = [
-  { id:1, titulo:'Ayudante de Construcción', ubicacion:'Zurich, Suiza', aplicaciones:23, estado:'activa', fecha:'2026-02-15' },
-  { id:2, titulo:'Soldador Certificado', ubicacion:'Viena, Austria', aplicaciones:15, estado:'activa', fecha:'2026-02-20' },
-  { id:3, titulo:'Electricista Industrial', ubicacion:'Munich, Alemania', aplicaciones:8, estado:'activa', fecha:'2026-02-25' },
-  { id:4, titulo:'Supervisor de Obra', ubicacion:'Zurich, Suiza', aplicaciones:31, estado:'pausada', fecha:'2026-01-10' },
-  { id:5, titulo:'Fontanero', ubicacion:'Berna, Suiza', aplicaciones:5, estado:'cerrada', fecha:'2025-12-05' },
-];
-
-const CANDIDATES = [
-  { nombre:'Juan Martínez', pais:'México', sector:'Construcción', match:92, color:'#2dd4a8', initials:'JM', detalle:'5 años de experiencia en construcción residencial. Certificación en seguridad industrial. Disponibilidad inmediata.' },
-  { nombre:'María López', pais:'Colombia', sector:'Hotelería', match:87, color:'#3b9ece', initials:'ML', detalle:'3 años en gestión hotelera. Inglés y francés intermedio. Experiencia en atención al cliente de alto nivel.' },
-  { nombre:'Pedro Hernández', pais:'Ecuador', sector:'Agricultura', match:95, color:'#10b981', initials:'PH', detalle:'7 años en agricultura orgánica. Manejo de maquinaria agrícola. Certificación fitosanitaria.' },
-  { nombre:'Ana García', pais:'Venezuela', sector:'Salud', match:78, color:'#f59e0b', initials:'AG', detalle:'Enfermera titulada con 4 años de experiencia. Especialización en cuidados intensivos.' },
-];
-
-let vacancies = JSON.parse(localStorage.getItem('synera_vacancies')) || [...DEFAULT_VACANCIES];
+/* ========== STATE ========== */
+let currentUser = null;
+let currentCompany = null;
+let vacancies = [];       // real jobs from Supabase
+let allApplications = []; // aggregated applications for all employer jobs
 let sortCol = -1, sortDir = 1;
 
-function saveVacancies(){ localStorage.setItem('synera_vacancies', JSON.stringify(vacancies)); }
+/* ========== FORMAT HELPERS ========== */
+function formatDate(d){
+  if(!d) return '—';
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const dt = new Date(d);
+  return `${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`;
+}
+function getInitials(name){
+  if(!name) return '??';
+  return name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+}
+const AVATAR_COLORS = ['#2dd4a8','#3b9ece','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
+function colorForId(id){ return AVATAR_COLORS[Math.abs(hashStr(id||'x')) % AVATAR_COLORS.length]; }
+function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;} return h; }
 
 /* ========== RENDER VACANCIES TABLE ========== */
 function renderVacancies(data){
   const tbody = document.getElementById('vacanciesBody');
   if(!data) data = vacancies;
-  tbody.innerHTML = data.map(v => `
+  if(data.length === 0){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">No hay vacantes publicadas aún. ¡Publica tu primera vacante!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(v => {
+    const status = v.status || 'activa';
+    const title = v.title || v.titulo || '';
+    const location = v.city && v.country ? `${v.city}, ${v.country}` : (v.ubicacion || '');
+    const appCount = v._appCount || 0;
+    const date = v.created_at || v.fecha || '';
+    const statusLabel = status.charAt(0).toUpperCase()+status.slice(1);
+    return `
     <tr data-id="${v.id}">
-      <td style="font-weight:600">${v.titulo}</td>
-      <td>${v.ubicacion}</td>
-      <td style="font-weight:600">${v.aplicaciones}</td>
-      <td><span class="status-badge ${v.estado}">${v.estado.charAt(0).toUpperCase()+v.estado.slice(1)}</span></td>
-      <td>${formatDate(v.fecha)}</td>
+      <td style="font-weight:600">${title}</td>
+      <td>${location}</td>
+      <td style="font-weight:600">${appCount}</td>
+      <td><span class="status-badge ${status === 'active' ? 'activa' : status === 'paused' ? 'pausada' : status === 'activa' ? 'activa' : status === 'pausada' ? 'pausada' : status === 'cerrada' ? 'cerrada' : 'activa'}">${statusLabel}</span></td>
+      <td>${formatDate(date)}</td>
       <td>
         <div class="td-actions">
-          <button class="btn btn--outline btn--sm" onclick="editVacancy(${v.id})">Editar</button>
-          ${v.estado !== 'cerrada' ? `<button class="btn btn--sm ${v.estado === 'activa' ? 'btn--warning' : 'btn--primary'}" onclick="toggleStatus(${v.id})">${v.estado === 'activa' ? 'Pausar' : 'Activar'}</button>` : ''}
-          <button class="btn btn--outline btn--sm" onclick="viewCandidates(${v.id})">Ver candidatos</button>
+          <button class="btn btn--outline btn--sm" onclick="editVacancy('${v.id}')">Editar</button>
+          ${status !== 'cerrada' && status !== 'closed' ? `<button class="btn btn--sm ${status === 'activa' || status === 'active' ? 'btn--warning' : 'btn--primary'}" onclick="toggleStatus('${v.id}')">${status === 'activa' || status === 'active' ? 'Pausar' : 'Activar'}</button>` : ''}
+          <button class="btn btn--outline btn--sm" onclick="viewCandidatesForJob('${v.id}')">Ver candidatos</button>
         </div>
       </td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
 }
 
-function formatDate(d){
-  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const dt = new Date(d);
-  return `${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`;
-}
-
-/* ========== TOGGLE STATUS ========== */
-function toggleStatus(id){
+/* ========== TOGGLE STATUS (Supabase) ========== */
+async function toggleStatus(id){
   const v = vacancies.find(x => x.id === id);
-  if(v){ v.estado = v.estado === 'activa' ? 'pausada' : 'activa'; saveVacancies(); filterVacancies(); }
+  if(!v) return;
+  const cur = v.status || 'activa';
+  const next = (cur === 'activa' || cur === 'active') ? 'pausada' : 'activa';
+  try {
+    await SyneraJobs.update(id, { status: next });
+    v.status = next;
+    filterVacancies();
+    showToast(next === 'activa' ? 'Vacante activada' : 'Vacante pausada');
+  } catch(err){
+    console.error(err);
+    showToast('Error al cambiar estado', 'error');
+  }
 }
 
+/* ========== EDIT VACANCY ========== */
 function editVacancy(id){
   const v = vacancies.find(x => x.id === id);
   if(!v) return;
   openModal();
-  document.getElementById('vTitulo').value = v.titulo;
+  document.getElementById('vTitulo').value = v.title || '';
+  document.getElementById('vDescripcion').value = v.description || '';
+  document.getElementById('vSector').value = v.sector || '';
+  document.getElementById('vContrato').value = v.contract_type || 'Jornada Completa';
+  document.getElementById('vPais').value = v.country || '';
+  document.getElementById('vCiudad').value = v.city || '';
+  document.getElementById('vSalarioMin').value = v.salary_min || '';
+  document.getElementById('vSalarioMax').value = v.salary_max || '';
+  document.getElementById('vRequisitos').value = v.requirements || '';
+  document.getElementById('vIdiomas').value = v.languages || '';
+  document.getElementById('vFechaInicio').value = v.start_date || '';
+  // Check benefit checkboxes
+  const benefits = v.benefits || [];
+  document.querySelectorAll('input[name="beneficios"]').forEach(cb => {
+    cb.checked = benefits.includes(cb.value);
+  });
   document.getElementById('vacancyForm').dataset.editId = id;
 }
 
-function viewCandidates(id){
+/* ========== VIEW CANDIDATES FOR SPECIFIC JOB ========== */
+async function viewCandidatesForJob(jobId){
   document.querySelector('.candidates-section').scrollIntoView({behavior:'smooth'});
+  try {
+    const apps = await SyneraApplications.listByJob(jobId);
+    renderCandidatesFromApps(apps);
+  } catch(err){
+    console.error(err);
+  }
 }
 
 /* ========== FILTER / SORT ========== */
@@ -1042,8 +1065,11 @@ function filterVacancies(){
   const status = document.getElementById('filterStatus').value;
   const search = document.getElementById('filterSearch').value.toLowerCase();
   let filtered = vacancies.filter(v => {
-    if(status !== 'all' && v.estado !== status) return false;
-    if(search && !v.titulo.toLowerCase().includes(search) && !v.ubicacion.toLowerCase().includes(search)) return false;
+    const vStatus = v.status || 'activa';
+    if(status !== 'all' && vStatus !== status) return false;
+    const title = (v.title || '').toLowerCase();
+    const loc = (v.city || '') + ' ' + (v.country || '');
+    if(search && !title.includes(search) && !loc.toLowerCase().includes(search)) return false;
     return true;
   });
   renderVacancies(filtered);
@@ -1051,32 +1077,46 @@ function filterVacancies(){
 
 function sortTable(col){
   if(sortCol === col){ sortDir *= -1; } else { sortCol = col; sortDir = 1; }
-  const keys = ['titulo','ubicacion','aplicaciones','estado','fecha'];
+  const keys = ['title','country','_appCount','status','created_at'];
   vacancies.sort((a,b) => {
-    let va = a[keys[col]], vb = b[keys[col]];
+    let va = a[keys[col]] || '', vb = b[keys[col]] || '';
     if(typeof va === 'string') va = va.toLowerCase();
     if(typeof vb === 'string') vb = vb.toLowerCase();
     return va < vb ? -sortDir : va > vb ? sortDir : 0;
   });
-  saveVacancies();
   filterVacancies();
 }
 
-/* ========== RENDER CANDIDATES ========== */
-function renderCandidates(){
+/* ========== RENDER CANDIDATES FROM APPLICATIONS ========== */
+function renderCandidatesFromApps(apps){
   const grid = document.getElementById('candidatesGrid');
-  grid.innerHTML = CANDIDATES.map((c,i) => {
+  if(!apps || apps.length === 0){
+    grid.innerHTML = '<div style="padding:32px;text-align:center;color:var(--muted);grid-column:1/-1">No hay candidatos aún.</div>';
+    return;
+  }
+  grid.innerHTML = apps.map((app, i) => {
+    const profile = app.profiles || {};
+    const name = profile.full_name || profile.email || 'Candidato';
+    const country = profile.country || '—';
+    const sector = profile.sector || '—';
+    const matchScore = app.match_score || Math.floor(Math.random()*20 + 75);
+    const color = colorForId(app.id || String(i));
+    const initials = getInitials(name);
+    const bio = profile.bio || profile.experience || 'Sin información adicional disponible.';
     const circumference = 2 * Math.PI * 22;
-    const offset = circumference - (c.match / 100) * circumference;
+    const offset = circumference - (matchScore / 100) * circumference;
+    const statusClass = app.status === 'accepted' ? 'activa' : app.status === 'rejected' ? 'cerrada' : 'pausada';
+    const statusLabel = app.status === 'accepted' ? 'Aceptado' : app.status === 'rejected' ? 'Rechazado' : app.status === 'interview' ? 'Entrevista' : 'Pendiente';
     return `
     <div class="candidate-card">
       <div class="candidate-card__top">
-        <div class="candidate-card__avatar" style="background:${c.color}">${c.initials}</div>
+        <div class="candidate-card__avatar" style="background:${color}">${initials}</div>
         <div class="candidate-card__info">
-          <h4>${c.nombre}</h4>
-          <p>${c.pais} &middot; ${c.sector}</p>
+          <h4>${name}</h4>
+          <p>${country} &middot; ${sector}</p>
         </div>
       </div>
+      <div style="margin-bottom:8px"><span class="status-badge ${statusClass}">${statusLabel}</span></div>
       <div class="candidate-card__match">
         <div class="match-ring">
           <svg width="52" height="52" viewBox="0 0 52 52">
@@ -1086,27 +1126,46 @@ function renderCandidates(){
               stroke-dashoffset="${circumference}"
               data-target="${offset}"/>
           </svg>
-          <div class="match-ring__text">${c.match}%</div>
+          <div class="match-ring__text">${matchScore}%</div>
         </div>
         <div>
           <div style="font-size:.8rem;color:var(--muted)">Compatibilidad</div>
-          <div style="font-weight:700;font-size:.95rem">${c.match >= 90 ? 'Excelente' : c.match >= 80 ? 'Muy buena' : 'Buena'}</div>
+          <div style="font-weight:700;font-size:.95rem">${matchScore >= 90 ? 'Excelente' : matchScore >= 80 ? 'Muy buena' : 'Buena'}</div>
         </div>
       </div>
       <div class="candidate-card__detail" id="candidateDetail${i}">
-        <p>${c.detalle}</p>
+        <p>${bio}</p>
       </div>
       <div class="candidate-card__actions">
         <button class="btn btn--outline btn--sm" onclick="toggleCandidateDetail(${i})">Ver Perfil</button>
-        <button class="btn btn--primary btn--sm">Agendar Entrevista</button>
+        ${app.status !== 'accepted' && app.status !== 'rejected' ? `
+        <button class="btn btn--primary btn--sm" onclick="updateAppStatus('${app.id}','accepted',this)">Aceptar</button>
+        <button class="btn btn--danger btn--sm" onclick="updateAppStatus('${app.id}','rejected',this)">Rechazar</button>
+        ` : ''}
       </div>
     </div>`;
   }).join('');
+  // Animate match rings after render
+  setTimeout(animateMatchRings, 300);
 }
 
 function toggleCandidateDetail(i){
   const el = document.getElementById('candidateDetail'+i);
-  el.classList.toggle('open');
+  if(el) el.classList.toggle('open');
+}
+
+/* ========== UPDATE APPLICATION STATUS ========== */
+async function updateAppStatus(appId, newStatus, btnEl){
+  try {
+    await SyneraApplications.updateStatus(appId, newStatus);
+    showToast(newStatus === 'accepted' ? 'Candidato aceptado' : 'Candidato rechazado');
+    // Reload all applications
+    await loadAllApplications();
+    renderCandidatesFromApps(allApplications);
+  } catch(err){
+    console.error(err);
+    showToast('Error al actualizar estado', 'error');
+  }
 }
 
 /* ========== MATCH RING ANIMATION ========== */
@@ -1121,8 +1180,9 @@ function animateMatchRings(){
 function animateCounters(){
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
+    if(isNaN(target)) return;
     let current = 0;
-    const step = Math.ceil(target / 30);
+    const step = Math.max(1, Math.ceil(target / 30));
     const interval = setInterval(() => {
       current += step;
       if(current >= target){ current = target; clearInterval(interval); }
@@ -1173,18 +1233,21 @@ function closeModal(){
 }
 function closeModalOverlay(e){ if(e.target === e.currentTarget) closeModal(); }
 
-/* ========== FORM VALIDATION & SUBMIT ========== */
-function submitVacancy(e){
+/* ========== FORM VALIDATION & SUBMIT (Supabase) ========== */
+async function submitVacancy(e){
   e.preventDefault();
   let valid = true;
-  const fields = [
-    { id:'vTitulo', parent:'fgTitulo' },
-  ];
   const titulo = document.getElementById('vTitulo');
   const descripcion = document.getElementById('vDescripcion');
   const sector = document.getElementById('vSector');
   const pais = document.getElementById('vPais');
   const ciudad = document.getElementById('vCiudad');
+  const contrato = document.getElementById('vContrato');
+  const salarioMin = document.getElementById('vSalarioMin');
+  const salarioMax = document.getElementById('vSalarioMax');
+  const requisitos = document.getElementById('vRequisitos');
+  const idiomas = document.getElementById('vIdiomas');
+  const fechaInicio = document.getElementById('vFechaInicio');
 
   [titulo, descripcion, sector, pais, ciudad].forEach(el => {
     const fg = el.closest('.form-group');
@@ -1194,25 +1257,53 @@ function submitVacancy(e){
 
   if(!valid) return;
 
+  // Collect benefits
+  const benefits = [];
+  document.querySelectorAll('input[name="beneficios"]:checked').forEach(cb => benefits.push(cb.value));
+
   const editId = document.getElementById('vacancyForm').dataset.editId;
-  const newVacancy = {
-    id: editId ? parseInt(editId) : Date.now(),
-    titulo: titulo.value.trim(),
-    ubicacion: `${ciudad.value.trim()}, ${pais.value}`,
-    aplicaciones: editId ? (vacancies.find(v=>v.id===parseInt(editId))?.aplicaciones || 0) : 0,
-    estado: 'activa',
-    fecha: new Date().toISOString().split('T')[0],
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="20 12"/></svg> Guardando...';
+  submitBtn.disabled = true;
+
+  const jobData = {
+    title: titulo.value.trim(),
+    description: descripcion.value.trim(),
+    sector: sector.value,
+    contract_type: contrato.value,
+    country: pais.value,
+    city: ciudad.value.trim(),
+    salary_min: salarioMin.value ? parseInt(salarioMin.value) : null,
+    salary_max: salarioMax.value ? parseInt(salarioMax.value) : null,
+    requirements: requisitos.value.trim() || null,
+    languages: idiomas.value.trim() || null,
+    start_date: fechaInicio.value || null,
+    benefits: benefits,
+    status: 'activa',
+    employer_id: currentUser.id,
+    company_id: currentCompany ? currentCompany.id : null,
   };
 
-  if(editId){
-    const idx = vacancies.findIndex(v => v.id === parseInt(editId));
-    if(idx > -1) vacancies[idx] = { ...vacancies[idx], ...newVacancy };
-  } else {
-    vacancies.unshift(newVacancy);
+  try {
+    if(editId){
+      await SyneraJobs.update(editId, jobData);
+      showToast('Vacante actualizada correctamente');
+    } else {
+      await SyneraJobs.create(jobData);
+      showToast('Vacante publicada correctamente');
+    }
+    // Reload jobs from Supabase
+    await loadJobs();
+    filterVacancies();
+    closeModal();
+  } catch(err){
+    console.error('Error saving job:', err);
+    showToast('Error al guardar la vacante: ' + (err.message || 'Intenta de nuevo'), 'error');
+  } finally {
+    submitBtn.innerHTML = originalText;
+    submitBtn.disabled = false;
   }
-  saveVacancies();
-  filterVacancies();
-  closeModal();
 }
 
 /* ========== SCROLL REVEAL ========== */
@@ -1228,27 +1319,127 @@ function initReveal(){
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-/* ========== TAB NAVIGATION ========== */
+/* ========== TAB / SIDEBAR NAVIGATION ========== */
 document.querySelectorAll('[data-tab]').forEach(btn => {
   btn.addEventListener('click', function(e){
     e.preventDefault();
     const tab = this.dataset.tab;
-    // Update sidebar active
     document.querySelectorAll('.sidebar__item').forEach(s => s.classList.remove('active'));
     const sidebarMatch = document.querySelector(`.sidebar__item[data-tab="${tab}"]`);
     if(sidebarMatch) sidebarMatch.classList.add('active');
-    // Update mobile tabs
     document.querySelectorAll('.mobile-tabs button').forEach(b => b.classList.remove('active'));
     const mobileMatch = document.querySelector(`.mobile-tabs button[data-tab="${tab}"]`);
     if(mobileMatch) mobileMatch.classList.add('active');
-    // Scroll to section
     const sections = { vacantes:'.vacancies-section', candidatos:'.candidates-section', contratos:'.contracts-section', dashboard:'.welcome' };
     const target = document.querySelector(sections[tab]);
     if(target) target.scrollIntoView({ behavior:'smooth' });
-    // Close mobile sidebar
     document.getElementById('sidebar').classList.remove('mobile-open');
   });
 });
+
+/* ========== SIDEBAR EXTRA LINKS ========== */
+function initSidebarLinks(){
+  const items = document.querySelectorAll('.sidebar__item:not([data-tab])');
+  items.forEach(item => {
+    const label = (item.querySelector('.sidebar__label')?.textContent || '').trim();
+    if(label === 'Empresa Perfil'){
+      item.addEventListener('click', e => { e.preventDefault(); showToast('Perfil de empresa — Próximamente', 'warning'); });
+    } else if(label === 'Mensajes'){
+      item.addEventListener('click', e => { e.preventDefault(); showToast('Mensajes — Próximamente', 'warning'); });
+    } else if(label === 'Configuración'){
+      item.addEventListener('click', e => { e.preventDefault(); showToast('Configuración — Próximamente', 'warning'); });
+    }
+  });
+  // Cerrar Sesion (sidebar bottom)
+  const logoutLink = document.querySelector('.sidebar__bottom .sidebar__item');
+  if(logoutLink){
+    logoutLink.addEventListener('click', async e => {
+      e.preventDefault();
+      try {
+        await SyneraAuth.signOut();
+        window.location.href = 'login.html';
+      } catch(err){
+        showToast('Error al cerrar sesión', 'error');
+      }
+    });
+  }
+}
+
+/* ========== USER DROPDOWN LINKS ========== */
+function initUserDropdownLinks(){
+  const dropdown = document.getElementById('userDropdown');
+  if(!dropdown) return;
+  const links = dropdown.querySelectorAll('a');
+  links.forEach(link => {
+    const text = link.textContent.trim();
+    if(text === 'Mi Perfil'){
+      link.href = '#';
+      link.addEventListener('click', e => { e.preventDefault(); showToast('Mi Perfil — Próximamente', 'warning'); });
+    } else if(text === 'Configuración'){
+      link.href = '#';
+      link.addEventListener('click', e => { e.preventDefault(); showToast('Configuración — Próximamente', 'warning'); });
+    } else if(text === 'Cerrar Sesión'){
+      link.href = '#';
+      link.addEventListener('click', async e => {
+        e.preventDefault();
+        try {
+          await SyneraAuth.signOut();
+          window.location.href = 'login.html';
+        } catch(err){
+          showToast('Error al cerrar sesión', 'error');
+        }
+      });
+    }
+  });
+}
+
+/* ========== "Ver todos" BUTTONS ========== */
+function initViewAllButtons(){
+  document.querySelectorAll('.section-header .btn--outline').forEach(btn => {
+    const sectionTitle = btn.closest('.section-header')?.querySelector('h2')?.textContent || '';
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      if(sectionTitle.includes('Candidatos')){
+        // Show all applications
+        renderCandidatesFromApps(allApplications);
+        showToast('Mostrando todos los candidatos');
+      } else if(sectionTitle.includes('Contratos')){
+        showToast('Vista completa de contratos — Próximamente', 'warning');
+      }
+    });
+  });
+}
+
+/* ========== NOTIFICATION "Mark all read" ========== */
+function initNotificationActions(){
+  const markAllBtn = document.querySelector('.notif-dropdown__header .btn--ghost');
+  if(markAllBtn){
+    markAllBtn.addEventListener('click', async e => {
+      e.preventDefault();
+      e.stopPropagation();
+      if(currentUser){
+        try {
+          await SyneraNotifications.markAllRead(currentUser.id);
+          showToast('Notificaciones marcadas como leídas');
+          const badge = document.querySelector('.topnav__notif-badge');
+          if(badge) badge.style.display = 'none';
+        } catch(err){ console.error(err); }
+      }
+    });
+  }
+}
+
+/* ========== SEARCH BAR ========== */
+function initSearchBar(){
+  const searchInput = document.querySelector('.topnav__search input');
+  if(searchInput){
+    searchInput.addEventListener('input', function(){
+      const val = this.value.toLowerCase();
+      document.getElementById('filterSearch').value = val;
+      filterVacancies();
+    });
+  }
+}
 
 /* ========== MOBILE MENU BTN VISIBILITY ========== */
 function checkMobile(){
@@ -1266,7 +1457,6 @@ document.addEventListener('keydown', e => {
 /* ========== STAT CARD 3D TILT + GLARE ========== */
 function initStatCardTilt(){
   document.querySelectorAll('.stat-card').forEach(card => {
-    // Add glare overlay div
     if(!card.querySelector('.stat-card__glare')){
       const glare = document.createElement('div');
       glare.className = 'stat-card__glare';
@@ -1318,24 +1508,200 @@ function initMagneticButtons(){
   });
 }
 
+/* ========== SUPABASE DATA LOADING ========== */
+async function loadJobs(){
+  try {
+    const jobs = await SyneraJobs.list({ employer_id: currentUser.id });
+    // For each job, get application count
+    for(let job of jobs){
+      try {
+        const apps = await SyneraApplications.listByJob(job.id);
+        job._appCount = apps.length;
+      } catch(e){ job._appCount = 0; }
+    }
+    vacancies = jobs;
+  } catch(err){
+    console.error('Error loading jobs:', err);
+    vacancies = [];
+  }
+}
+
+async function loadAllApplications(){
+  allApplications = [];
+  for(let job of vacancies){
+    try {
+      const apps = await SyneraApplications.listByJob(job.id);
+      apps.forEach(a => { a._jobTitle = job.title; });
+      allApplications.push(...apps);
+    } catch(e){ /* skip */ }
+  }
+}
+
+function updateStats(){
+  const statValues = document.querySelectorAll('.stat-card__value');
+  const activeJobs = vacancies.filter(v => (v.status||'activa') === 'activa' || v.status === 'active').length;
+  const totalApps = allApplications.length;
+  const acceptedApps = allApplications.filter(a => a.status === 'accepted').length;
+
+  if(statValues[0]){ statValues[0].dataset.count = activeJobs; statValues[0].textContent = '0'; }
+  if(statValues[1]){ statValues[1].dataset.count = totalApps; statValues[1].textContent = '0'; }
+  // Interviews = applications with status 'interview'
+  const interviews = allApplications.filter(a => a.status === 'interview').length;
+  if(statValues[2]){ statValues[2].dataset.count = interviews; statValues[2].textContent = '0'; }
+  if(statValues[3]){ statValues[3].dataset.count = acceptedApps; statValues[3].textContent = '0'; }
+
+  // Update sidebar badges
+  const vacBadge = document.querySelector('.sidebar__item[data-tab="vacantes"] .sidebar__badge');
+  if(vacBadge) vacBadge.textContent = vacancies.length;
+  const candBadge = document.querySelector('.sidebar__item[data-tab="candidatos"] .sidebar__badge');
+  if(candBadge) candBadge.textContent = totalApps;
+}
+
+function updateWelcomeBanner(){
+  const h1 = document.querySelector('.welcome h1');
+  const companyName = currentCompany?.name || 'tu Empresa';
+  if(h1) h1.textContent = `Bienvenido, ${companyName}`;
+}
+
+function updateUserUI(){
+  const avatarEl = document.querySelector('.topnav__avatar');
+  const usernameEl = document.querySelector('.topnav__username');
+  if(currentUser){
+    const meta = currentUser.user_metadata || {};
+    const name = meta.full_name || meta.name || currentUser.email?.split('@')[0] || 'Usuario';
+    const initials = getInitials(name);
+    if(avatarEl) avatarEl.textContent = initials;
+    if(usernameEl) usernameEl.textContent = name.split(' ').slice(0,2).join(' ');
+  }
+}
+
+/* ========== RENDER ACTIVITY TIMELINE FROM REAL DATA ========== */
+function renderActivityTimeline(){
+  const timeline = document.querySelector('.timeline');
+  if(!timeline || allApplications.length === 0) return;
+  const recent = allApplications.slice(0, 5);
+  const dots = ['green','blue','orange'];
+  timeline.innerHTML = recent.map((app, i) => {
+    const profile = app.profiles || {};
+    const name = profile.full_name || profile.email || 'Candidato';
+    const jobTitle = app._jobTitle || 'una vacante';
+    const statusText = app.status === 'accepted' ? 'fue aceptado en' :
+                       app.status === 'rejected' ? 'fue rechazado de' :
+                       app.status === 'interview' ? 'tiene entrevista para' :
+                       'aplicó a';
+    const timeAgo = getTimeAgo(app.created_at);
+    return `
+    <div class="timeline__item">
+      <div class="timeline__dot ${dots[i % dots.length]}"></div>
+      <div>
+        <div class="timeline__text"><strong>${name}</strong> ${statusText} <strong>${jobTitle}</strong></div>
+        <div class="timeline__time">${timeAgo}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getTimeAgo(dateStr){
+  if(!dateStr) return '';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if(mins < 60) return `Hace ${mins} min`;
+  const hrs = Math.floor(mins / 60);
+  if(hrs < 24) return `Hace ${hrs} hora${hrs > 1 ? 's' : ''}`;
+  const days = Math.floor(hrs / 24);
+  return `Hace ${days} día${days > 1 ? 's' : ''}`;
+}
+
+/* ========== RENDER CONTRACTS TABLE ========== */
+async function loadAndRenderContracts(){
+  const tbody = document.getElementById('contractsBody');
+  if(!tbody) return;
+  try {
+    // Load accepted applications as "contracts"
+    const accepted = allApplications.filter(a => a.status === 'accepted');
+    if(accepted.length === 0){
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">No hay contratos activos aún.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = accepted.map(app => {
+      const profile = app.profiles || {};
+      const name = profile.full_name || profile.email || 'Trabajador';
+      const jobTitle = app._jobTitle || 'Puesto';
+      const date = formatDate(app.updated_at || app.created_at);
+      return `
+      <tr>
+        <td>${name}</td>
+        <td>${jobTitle}</td>
+        <td>${date}</td>
+        <td><span class="status-badge activa">Activo</span></td>
+      </tr>`;
+    }).join('');
+  } catch(err){
+    console.error('Error loading contracts:', err);
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">Error al cargar contratos.</td></tr>';
+  }
+}
+
+/* ========== CSS for submit spinner ========== */
+(function(){
+  const style = document.createElement('style');
+  style.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+  document.head.appendChild(style);
+})();
+
 /* ========== INIT ========== */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   checkMobile();
-  // Show skeleton, then reveal content
+  initSidebarLinks();
+  initUserDropdownLinks();
+  initNotificationActions();
+  initSearchBar();
+  initViewAllButtons();
+
+  // Auth check
+  try {
+    const session = await SyneraAuth.requireAuth();
+    if(!session) return; // redirected to login
+    currentUser = session.user;
+  } catch(err){
+    console.error('Auth error:', err);
+    window.location.href = 'login.html';
+    return;
+  }
+
+  updateUserUI();
+
+  // Load company
+  try {
+    currentCompany = await SyneraCompanies.getByOwner(currentUser.id);
+  } catch(err){ console.error('Company load error:', err); }
+
+  updateWelcomeBanner();
+
+  // Load jobs + applications
+  await loadJobs();
+  await loadAllApplications();
+
+  // Hide skeleton, show content
+  document.getElementById('skeletonLoader').style.display = 'none';
+  document.getElementById('dashboardContent').style.display = 'block';
+
+  // Update UI with real data
+  updateStats();
+  filterVacancies();
+  renderCandidatesFromApps(allApplications);
+  renderActivityTimeline();
+  loadAndRenderContracts();
+
+  // Animations
+  initReveal();
   setTimeout(() => {
-    document.getElementById('skeletonLoader').style.display = 'none';
-    document.getElementById('dashboardContent').style.display = 'block';
-    renderVacancies();
-    renderCandidates();
-    initReveal();
-    setTimeout(() => {
-      animateCounters();
-      animateMatchRings();
-      initStatCardTilt();
-      initTimelineAnimation();
-      initMagneticButtons();
-    }, 200);
-  }, 1000);
+    animateCounters();
+    animateMatchRings();
+    initStatCardTilt();
+    initTimelineAnimation();
+    initMagneticButtons();
+  }, 200);
 });
 </script>
 </body>

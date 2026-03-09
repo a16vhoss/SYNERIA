@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Ayudante de Construcción Senior</title>
+<title>Synera — Detalle de Empleo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -234,6 +234,8 @@ img{display:block;max-width:100%}
   *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 </head>
 <body>
 
@@ -246,17 +248,20 @@ img{display:block;max-width:100%}
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="dashboard.html" class="nav__logo" data-h>Synera<span>.</span></a>
+  <a href="synera.html" class="nav__logo" data-h>Synera<span>.</span></a>
   <div class="nav__search" data-h>
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/></svg>
-    <input type="text" placeholder="Buscar empleos, sectores, países...">
+    <input type="text" id="navSearchInput" placeholder="Buscar empleos, sectores, países..." onkeydown="if(event.key==='Enter'){window.location.href='dashboard.html?search='+encodeURIComponent(this.value)}">
   </div>
   <div class="nav__right">
-    <div class="nav__icon" data-h title="Notificaciones">
+    <a href="dashboard.html" class="nav__icon" data-h title="Panel">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="4" height="7" rx="1"/><rect x="3" y="14" width="4" height="4" rx="1"/><rect x="11" y="14" width="7" height="4" rx="1"/></svg>
+    </a>
+    <a href="dashboard.html" class="nav__icon" data-h title="Notificaciones">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 16.5c.83 0 1.5-.67 1.5-1.5h-3c0 .83.67 1.5 1.5 1.5zM15 12l-1.5-2V6.5a4.5 4.5 0 0 0-9 0V10L3 12v1h12v-1z"/></svg>
-      <div class="badge"></div>
-    </div>
-    <div class="nav__avatar" data-h>SR</div>
+      <div class="badge" id="notifBadge" style="display:none"></div>
+    </a>
+    <a href="login.html" class="nav__avatar" id="navAvatar" data-h>?</a>
   </div>
 </nav>
 
@@ -561,192 +566,458 @@ img{display:block;max-width:100%}
 
 <script>
 (function(){
-  /* ── Cursor ── */
-  const cur=document.getElementById('cur'),curD=document.getElementById('curD');
-  let mx=0,my=0,cx=0,cy=0,dx=0,dy=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  /* ═══ STATE ═══ */
+  let currentUser = null;
+  let currentJob = null;
+  let bookmarked = false;
+  const params = new URLSearchParams(window.location.search);
+  const jobId = params.get('id');
+
+  /* ═══ INIT ═══ */
+  async function init() {
+    // Auth state
+    try {
+      const session = await SyneraAuth.getSession();
+      if (session && session.user) {
+        currentUser = session.user;
+        const profile = await SyneraProfiles.get(currentUser.id);
+        updateNavForUser(currentUser, profile);
+      }
+    } catch(e) { console.warn('Auth check failed:', e); }
+
+    // Load job from Supabase
+    if (jobId) {
+      try {
+        currentJob = await SyneraJobs.get(jobId);
+        if (currentJob) {
+          populateJobData(currentJob);
+          document.title = `Synera — ${currentJob.title || 'Detalle de Empleo'}`;
+          loadSimilarJobs(currentJob);
+        }
+      } catch(e) {
+        console.warn('Job load failed, showing fallback:', e);
+      }
+    }
+
+    // Load bookmark state
+    if (currentUser && jobId) {
+      try {
+        const { data } = await supabase
+          .from('saved_jobs')
+          .select('id')
+          .eq('user_id', currentUser.id)
+          .eq('job_id', jobId)
+          .maybeSingle();
+        if (data) {
+          bookmarked = true;
+          updateBookmarkUI(true);
+        }
+      } catch(e) {}
+    }
+  }
+
+  /* ═══ POPULATE JOB DATA ═══ */
+  function populateJobData(job) {
+    const company = job.companies || {};
+    // Header
+    const logoEl = document.querySelector('.job-header__logo');
+    if (company.name) logoEl.textContent = company.name.charAt(0).toUpperCase();
+    document.querySelector('.job-header__company').textContent = company.name || 'Empresa';
+    document.querySelector('.job-header__title').textContent = job.title || '';
+
+    // Meta: location + date
+    const metaItems = document.querySelectorAll('.job-header__meta-item');
+    if (metaItems[0] && job.country) {
+      metaItems[0].innerHTML = metaItems[0].querySelector('svg').outerHTML + ' ' + (job.city ? job.city + ', ' : '') + job.country;
+    }
+    if (metaItems[1] && job.created_at) {
+      const days = Math.floor((Date.now() - new Date(job.created_at).getTime()) / 86400000);
+      const timeText = days === 0 ? 'Hoy' : days === 1 ? 'Hace 1 dia' : `Hace ${days} dias`;
+      metaItems[1].innerHTML = metaItems[1].querySelector('svg').outerHTML + ' ' + timeText;
+    }
+
+    // Salary
+    if (job.salary) {
+      document.querySelector('.job-header__salary').textContent = job.salary;
+    }
+
+    // Tags
+    const tagsContainer = document.querySelector('.job-header__tags');
+    if (job.type || job.tags) {
+      tagsContainer.innerHTML = '';
+      if (job.type) tagsContainer.innerHTML += `<span class="tag tag--green">${job.type}</span>`;
+      if (job.urgent) tagsContainer.innerHTML += '<span class="tag tag--red">Urgente</span>';
+      if (job.visa_sponsorship) tagsContainer.innerHTML += '<span class="tag tag--blue">Visa Sponsorship</span>';
+      if (job.housing_included) tagsContainer.innerHTML += '<span class="tag tag--purple">Alojamiento Incluido</span>';
+      if (job.tags && Array.isArray(job.tags)) {
+        job.tags.forEach(t => { tagsContainer.innerHTML += `<span class="tag tag--blue">${t}</span>`; });
+      }
+    }
+
+    // Description
+    if (job.description) {
+      const descSection = document.querySelector('#sec-desc');
+      const ps = descSection.querySelectorAll('p');
+      const paragraphs = job.description.split('\n').filter(p => p.trim());
+      ps.forEach((p, i) => { if (paragraphs[i]) p.textContent = paragraphs[i]; });
+      // Add extra paragraphs if needed
+      if (paragraphs.length > ps.length) {
+        for (let i = ps.length; i < paragraphs.length; i++) {
+          const p = document.createElement('p');
+          p.textContent = paragraphs[i];
+          descSection.appendChild(p);
+        }
+      }
+    }
+
+    // Responsibilities
+    if (job.responsibilities && Array.isArray(job.responsibilities)) {
+      const ul = document.querySelector('#sec-resp ul');
+      ul.innerHTML = '';
+      job.responsibilities.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = r;
+        ul.appendChild(li);
+      });
+    }
+
+    // Requirements
+    if (job.requirements && Array.isArray(job.requirements)) {
+      const ul = document.querySelector('#sec-req ul');
+      ul.innerHTML = '';
+      job.requirements.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = r;
+        ul.appendChild(li);
+      });
+    }
+
+    // Benefits
+    if (job.benefits && Array.isArray(job.benefits)) {
+      const grid = document.querySelector('.benefits-grid');
+      grid.innerHTML = '';
+      const icons = ['&#127758;','&#127968;','&#128153;','&#9992;&#65039;','&#127891;','&#128176;'];
+      job.benefits.forEach((b, i) => {
+        const label = typeof b === 'string' ? b : (b.label || b.name || '');
+        const desc = typeof b === 'object' ? (b.description || b.desc || '') : '';
+        grid.innerHTML += `
+          <div class="benefit-card" data-h>
+            <div class="benefit-card__icon">${icons[i % icons.length]}</div>
+            <div class="benefit-card__label">${label}</div>
+            ${desc ? `<div class="benefit-card__desc">${desc}</div>` : ''}
+          </div>`;
+      });
+      // Re-attach tilt
+      initBenefitTilt();
+    }
+
+    // Sidebar - job summary
+    const sidebarRows = document.querySelectorAll('.sidebar-card__row .sidebar-card__value');
+    if (job.sector && sidebarRows[0]) sidebarRows[0].textContent = job.sector;
+    if (job.type && sidebarRows[1]) sidebarRows[1].textContent = job.type;
+    if (job.experience && sidebarRows[2]) sidebarRows[2].textContent = job.experience;
+    if (job.languages && sidebarRows[3]) sidebarRows[3].textContent = job.languages;
+    if (job.start_date && sidebarRows[4]) sidebarRows[4].textContent = new Date(job.start_date).toLocaleDateString('es', { month: 'long', year: 'numeric' });
+    if (job.duration && sidebarRows[5]) sidebarRows[5].textContent = job.duration;
+
+    // Company sidebar
+    const companyLogo = document.querySelector('.company-brief__logo');
+    const companyName = document.querySelector('.company-brief__name');
+    const companyDesc = document.querySelector('.company-brief__desc');
+    if (company.name) {
+      companyLogo.textContent = company.name.charAt(0).toUpperCase();
+      companyName.textContent = company.name;
+    }
+    if (company.description) companyDesc.textContent = company.description;
+  }
+
+  /* ═══ SIMILAR JOBS ═══ */
+  async function loadSimilarJobs(job) {
+    try {
+      const colors = [
+        'linear-gradient(135deg,#2dd4a8,#3b9ece)',
+        'linear-gradient(135deg,#7c3aed,#ec4899)',
+        'linear-gradient(135deg,#f59e0b,#ef4444)',
+        'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+        'linear-gradient(135deg,#10b981,#059669)'
+      ];
+      // Try by sector first, then by country
+      let similar = [];
+      if (job.sector) {
+        similar = await SyneraJobs.list({ sector: job.sector, limit: 4, status: 'active' });
+      }
+      if (similar.length < 2 && job.country) {
+        const byCountry = await SyneraJobs.list({ country: job.country, limit: 4, status: 'active' });
+        const ids = new Set(similar.map(j => j.id));
+        byCountry.forEach(j => { if (!ids.has(j.id)) similar.push(j); });
+      }
+      // Remove current job
+      similar = similar.filter(j => j.id !== job.id).slice(0, 3);
+
+      if (similar.length > 0) {
+        const container = document.querySelector('.sidebar-card:last-child');
+        const title = container.querySelector('.sidebar-card__title');
+        container.innerHTML = '';
+        container.appendChild(title);
+        similar.forEach((sj, i) => {
+          const comp = sj.companies || {};
+          const a = document.createElement('a');
+          a.href = `job-detail.html?id=${sj.id}`;
+          a.className = 'similar-job';
+          a.setAttribute('data-h', '');
+          a.innerHTML = `
+            <div class="similar-job__logo" style="background:${colors[i % colors.length]}">${(comp.name || sj.title || 'S').charAt(0).toUpperCase()}</div>
+            <div class="similar-job__info">
+              <div class="similar-job__title">${sj.title}</div>
+              <div class="similar-job__meta">${comp.name || ''} &middot; ${sj.city ? sj.city + ', ' : ''}${sj.country || ''}</div>
+            </div>`;
+          container.appendChild(a);
+        });
+        // Re-attach hover cursor
+        container.querySelectorAll('[data-h]').forEach(el => {
+          el.addEventListener('mouseenter', () => cur.classList.add('h'));
+          el.addEventListener('mouseleave', () => cur.classList.remove('h'));
+        });
+      }
+    } catch(e) { console.warn('Similar jobs load failed:', e); }
+  }
+
+  /* ═══ NAV USER STATE ═══ */
+  function updateNavForUser(user, profile) {
+    const avatar = document.getElementById('navAvatar');
+    if (profile && profile.full_name) {
+      const parts = profile.full_name.trim().split(' ');
+      const initials = parts.length >= 2
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : parts[0].substring(0, 2).toUpperCase();
+      avatar.textContent = initials;
+    } else if (user.email) {
+      avatar.textContent = user.email.substring(0, 2).toUpperCase();
+    }
+    avatar.href = 'dashboard.html';
+  }
+
+  /* ═══ BOOKMARK ═══ */
+  function updateBookmarkUI(state) {
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    bookmarkBtn.classList.toggle('active', state);
+    const svg = bookmarkBtn.querySelector('svg');
+    svg.setAttribute('fill', state ? 'currentColor' : 'none');
+    const textNode = bookmarkBtn.childNodes[bookmarkBtn.childNodes.length - 1];
+    if (textNode) textNode.textContent = state ? ' Guardado' : ' Guardar';
+  }
+
+  /* ═══ CURSOR ═══ */
+  const cur = document.getElementById('cur'), curD = document.getElementById('curD');
+  let mx = 0, my = 0, cx = 0, cy = 0, dx = 0, dy = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
   (function loop(){
-    cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;
-    dx+=(mx-dx)*0.35;dy+=(my-dy)*0.35;
-    cur.style.transform=`translate(${cx-10}px,${cy-10}px)`;
-    curD.style.transform=`translate(${dx-2.5}px,${dy-2.5}px)`;
+    cx += (mx - cx) * 0.15; cy += (my - cy) * 0.15;
+    dx += (mx - dx) * 0.35; dy += (my - dy) * 0.35;
+    cur.style.transform = `translate(${cx - 10}px,${cy - 10}px)`;
+    curD.style.transform = `translate(${dx - 2.5}px,${dy - 2.5}px)`;
     requestAnimationFrame(loop);
   })();
-  document.querySelectorAll('[data-h]').forEach(el=>{
-    el.addEventListener('mouseenter',()=>cur.classList.add('h'));
-    el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+  document.querySelectorAll('[data-h]').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('h'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('h'));
   });
 
-  /* ── Nav scroll ── */
-  const nav=document.getElementById('nav');
-  window.addEventListener('scroll',()=>{
-    nav.classList.toggle('scrolled',window.scrollY>10);
-  },{passive:true});
+  /* ═══ NAV SCROLL ═══ */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
 
-  /* ── Scroll Spy ── */
-  const sections=document.querySelectorAll('[data-section]');
-  const spyLinks=document.querySelectorAll('[data-spy]');
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        spyLinks.forEach(l=>l.classList.remove('active'));
-        const link=document.querySelector(`[data-spy="${entry.target.id}"]`);
-        if(link)link.classList.add('active');
+  /* ═══ SCROLL SPY ═══ */
+  const sections = document.querySelectorAll('[data-section]');
+  const spyLinks = document.querySelectorAll('[data-spy]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        spyLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`[data-spy="${entry.target.id}"]`);
+        if (link) link.classList.add('active');
       }
     });
-  },{rootMargin:'-100px 0px -60% 0px',threshold:0});
-  sections.forEach(s=>observer.observe(s));
-
-  spyLinks.forEach(link=>{
-    link.addEventListener('click',e=>{
+  }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+  spyLinks.forEach(link => {
+    link.addEventListener('click', e => {
       e.preventDefault();
-      const target=document.getElementById(link.dataset.spy);
-      if(target)target.scrollIntoView({behavior:'smooth'});
+      const target = document.getElementById(link.dataset.spy);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
-  /* ── Bookmark toggle ── */
-  const bookmarkBtn=document.getElementById('bookmarkBtn');
-  let bookmarked=false;
-  bookmarkBtn.addEventListener('click',()=>{
-    bookmarked=!bookmarked;
-    bookmarkBtn.classList.toggle('active',bookmarked);
-    const svg=bookmarkBtn.querySelector('svg');
-    svg.setAttribute('fill',bookmarked?'currentColor':'none');
-    bookmarkBtn.childNodes[bookmarkBtn.childNodes.length-1].textContent=bookmarked?' Guardado':' Guardar';
-    try{
-      const saved=JSON.parse(localStorage.getItem('synera_bookmarks')||'[]');
-      if(bookmarked){saved.push('job-alpine-01')}else{const i=saved.indexOf('job-alpine-01');if(i>-1)saved.splice(i,1)}
-      localStorage.setItem('synera_bookmarks',JSON.stringify(saved));
-    }catch(e){}
+  /* ═══ BOOKMARK BUTTON ═══ */
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  bookmarkBtn.addEventListener('click', async () => {
+    if (!currentUser) {
+      window.location.href = 'login.html';
+      return;
+    }
+    const targetJobId = jobId || 'fallback';
+    bookmarked = !bookmarked;
+    updateBookmarkUI(bookmarked);
+    try {
+      if (bookmarked) {
+        await supabase.from('saved_jobs').insert({ user_id: currentUser.id, job_id: targetJobId });
+        showToast('Empleo guardado');
+      } else {
+        await supabase.from('saved_jobs').delete().eq('user_id', currentUser.id).eq('job_id', targetJobId);
+        showToast('Empleo removido de guardados');
+      }
+    } catch(e) {
+      // Revert on error
+      bookmarked = !bookmarked;
+      updateBookmarkUI(bookmarked);
+      showToast('Error al guardar', 'error');
+    }
   });
 
-  /* ── Share button ── */
-  const shareBtn=document.getElementById('shareBtn');
-  const shareTooltip=document.getElementById('shareTooltip');
-  shareBtn.addEventListener('click',()=>{
-    navigator.clipboard.writeText(window.location.href).then(()=>{
+  /* ═══ SHARE BUTTON ═══ */
+  const shareBtn = document.getElementById('shareBtn');
+  const shareTooltip = document.getElementById('shareTooltip');
+  shareBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
       shareTooltip.classList.add('show');
-      setTimeout(()=>shareTooltip.classList.remove('show'),2000);
-    }).catch(()=>{});
+      setTimeout(() => shareTooltip.classList.remove('show'), 2000);
+    }).catch(() => {});
   });
 
-  /* ── Application Modal ── */
-  const overlay=document.getElementById('modalOverlay');
-  const modalForm=document.getElementById('modalForm');
-  const modalSuccess=document.getElementById('modalSuccess');
-  const applyBtn=document.getElementById('applyBtn');
-  const modalClose=document.getElementById('modalClose');
+  /* ═══ APPLICATION MODAL ═══ */
+  const overlay = document.getElementById('modalOverlay');
+  const modalForm = document.getElementById('modalForm');
+  const modalSuccess = document.getElementById('modalSuccess');
+  const applyBtn = document.getElementById('applyBtn');
+  const modalClose = document.getElementById('modalClose');
 
-  function openModal(){
+  function openModal() {
     overlay.classList.add('active');
-    document.body.style.overflow='hidden';
+    document.body.style.overflow = 'hidden';
   }
-  function closeModal(){
+  function closeModal() {
     overlay.classList.remove('active');
-    document.body.style.overflow='';
-    setTimeout(()=>{
+    document.body.style.overflow = '';
+    setTimeout(() => {
       modalForm.classList.remove('hidden');
       modalSuccess.classList.remove('active');
-    },300);
+    }, 300);
   }
 
-  applyBtn.addEventListener('click',openModal);
-  modalClose.addEventListener('click',closeModal);
-  overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-
-  /* ── Upload area ── */
-  const uploadArea=document.getElementById('uploadArea');
-  const fileInput=document.getElementById('fileInput');
-  const uploadFileName=document.getElementById('uploadFileName');
-
-  uploadArea.addEventListener('click',()=>fileInput.click());
-  uploadArea.addEventListener('dragover',e=>{e.preventDefault();uploadArea.classList.add('dragover')});
-  uploadArea.addEventListener('dragleave',()=>uploadArea.classList.remove('dragover'));
-  uploadArea.addEventListener('drop',e=>{
-    e.preventDefault();uploadArea.classList.remove('dragover');
-    if(e.dataTransfer.files.length){handleFile(e.dataTransfer.files[0])}
-  });
-  fileInput.addEventListener('change',()=>{if(fileInput.files.length)handleFile(fileInput.files[0])});
-
-  function handleFile(file){
-    uploadFileName.textContent=file.name;
-    uploadFileName.style.display='block';
-  }
-
-  /* ── Submit application ── */
-  document.getElementById('submitApp').addEventListener('click',()=>{
-    modalForm.classList.add('hidden');
-    modalSuccess.classList.add('active');
-    try{
-      const app={
-        jobId:'job-alpine-01',
-        coverLetter:document.getElementById('coverLetter').value,
-        motivation:document.getElementById('motivation').value,
-        availability:document.getElementById('availability').value,
-        date:new Date().toISOString()
-      };
-      const apps=JSON.parse(localStorage.getItem('synera_applications')||'[]');
-      apps.push(app);
-      localStorage.setItem('synera_applications',JSON.stringify(apps));
-    }catch(e){}
-  });
-
-  /* ── Read job data from URL params ── */
-  const params=new URLSearchParams(window.location.search);
-  const jobId=params.get('id');
-  if(jobId){
-    try{
-      const jobs=JSON.parse(localStorage.getItem('synera_jobs')||'[]');
-      const job=jobs.find(j=>j.id===jobId);
-      if(job){
-        document.querySelector('.job-header__title').textContent=job.title||'';
-        document.querySelector('.job-header__company').textContent=job.company||'';
-        if(job.salary)document.querySelector('.job-header__salary').textContent=job.salary;
-      }
-    }catch(e){}
-  }
-
-  /* ── Load bookmark state ── */
-  try{
-    const saved=JSON.parse(localStorage.getItem('synera_bookmarks')||'[]');
-    if(saved.includes('job-alpine-01')){
-      bookmarked=true;
-      bookmarkBtn.classList.add('active');
-      bookmarkBtn.querySelector('svg').setAttribute('fill','currentColor');
-      bookmarkBtn.childNodes[bookmarkBtn.childNodes.length-1].textContent=' Guardado';
+  applyBtn.addEventListener('click', async () => {
+    if (!currentUser) {
+      window.location.href = 'login.html';
+      return;
     }
-  }catch(e){}
+    openModal();
+  });
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  /* ── Benefit card 3D tilt ── */
-  document.querySelectorAll('.benefit-card').forEach(card=>{
-    card.addEventListener('mousemove',e=>{
-      const r=card.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.width-0.5;
-      const y=(e.clientY-r.top)/r.height-0.5;
-      card.style.transform=`perspective(600px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-2px)`;
-    });
-    card.addEventListener('mouseleave',()=>{
-      card.style.transform='perspective(600px) rotateY(0) rotateX(0) translateY(0)';
-    });
+  /* ═══ UPLOAD AREA ═══ */
+  const uploadArea = document.getElementById('uploadArea');
+  const fileInput = document.getElementById('fileInput');
+  const uploadFileName = document.getElementById('uploadFileName');
+
+  uploadArea.addEventListener('click', () => fileInput.click());
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+
+  function handleFile(file) {
+    uploadFileName.textContent = file.name;
+    uploadFileName.style.display = 'block';
+  }
+
+  /* ═══ SUBMIT APPLICATION ═══ */
+  document.getElementById('submitApp').addEventListener('click', async () => {
+    if (!currentUser) {
+      window.location.href = 'login.html';
+      return;
+    }
+    const targetJobId = jobId || null;
+    if (!targetJobId) {
+      showToast('No se pudo identificar el empleo', 'error');
+      return;
+    }
+
+    const submitBtn = document.getElementById('submitApp');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<svg width="18" height="18" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Enviando...';
+
+    try {
+      await SyneraApplications.create({
+        job_id: targetJobId,
+        user_id: currentUser.id,
+        cover_letter: document.getElementById('coverLetter').value,
+        motivation: document.getElementById('motivation').value,
+        availability: document.getElementById('availability').value || null,
+        status: 'pending'
+      });
+
+      modalForm.classList.add('hidden');
+      modalSuccess.classList.add('active');
+
+      // Update apply button to show already applied
+      applyBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> Aplicacion Enviada';
+      applyBtn.disabled = true;
+      applyBtn.style.opacity = '0.7';
+
+      showToast('Aplicacion enviada exitosamente');
+    } catch(e) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar Aplicacion';
+      if (e.message && e.message.includes('duplicate')) {
+        showToast('Ya has aplicado a este empleo', 'warning');
+        modalForm.classList.add('hidden');
+        modalSuccess.classList.add('active');
+      } else {
+        showToast('Error al enviar aplicacion: ' + (e.message || ''), 'error');
+      }
+    }
   });
 
-  /* ── Magnetic back button ── */
-  const backLink=document.querySelector('.back-link');
-  if(backLink){
-    backLink.addEventListener('mousemove',e=>{
-      const r=backLink.getBoundingClientRect();
-      const x=e.clientX-r.left-r.width/2;
-      const y=e.clientY-r.top-r.height/2;
-      backLink.style.transform=`translate(${x*0.15}px,${y*0.15}px)`;
-    });
-    backLink.addEventListener('mouseleave',()=>{
-      backLink.style.transform='translate(0,0)';
-      backLink.style.transition='transform 0.4s var(--spring)';
-      setTimeout(()=>{backLink.style.transition=''},400);
+  /* ═══ BENEFIT CARD 3D TILT ═══ */
+  function initBenefitTilt() {
+    document.querySelectorAll('.benefit-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-2px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateY(0)';
+      });
     });
   }
+  initBenefitTilt();
+
+  /* ═══ MAGNETIC BACK BUTTON ═══ */
+  const backLink = document.querySelector('.back-link');
+  if (backLink) {
+    backLink.addEventListener('mousemove', e => {
+      const r = backLink.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width / 2;
+      const y = e.clientY - r.top - r.height / 2;
+      backLink.style.transform = `translate(${x * 0.15}px,${y * 0.15}px)`;
+    });
+    backLink.addEventListener('mouseleave', () => {
+      backLink.style.transform = 'translate(0,0)';
+      backLink.style.transition = 'transform 0.4s var(--spring)';
+      setTimeout(() => { backLink.style.transition = ''; }, 400);
+    });
+  }
+
+  /* ═══ KICK OFF ═══ */
+  init();
 })();
 </script>
 </body>

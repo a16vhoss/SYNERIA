@@ -400,13 +400,17 @@ img{display:block;max-width:100%}
       Documentos
     </a>
     <div class="sidebar__section">Soporte</div>
-    <a href="#" class="sidebar__link" data-h>
+    <a href="#" class="sidebar__link" data-h onclick="event.preventDefault();showToast('Proximamente','warning')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       Ayuda
     </a>
-    <a href="#" class="sidebar__link" data-h>
+    <a href="#" class="sidebar__link" data-h onclick="event.preventDefault();showToast('Proximamente','warning')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.32 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      Configuración
+      Configuracion
+    </a>
+    <a href="#" class="sidebar__link" data-h id="btnCerrarSesion" onclick="event.preventDefault();handleLogout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Cerrar Sesion
     </a>
   </nav>
   <div class="sidebar__bottom">
@@ -434,8 +438,8 @@ img{display:block;max-width:100%}
       <div class="badge"></div>
     </button>
     <div class="topnav__user" data-h>
-      <div class="topnav__avatar">CR</div>
-      <span class="topnav__name">Carlos Ramírez</span>
+      <div class="topnav__avatar" id="navAvatar">CR</div>
+      <span class="topnav__name" id="navUserName">Carlos Ramirez</span>
     </div>
   </div>
 </header>
@@ -596,7 +600,7 @@ img{display:block;max-width:100%}
             <div class="virtual-card__bottom">
               <div>
                 <div class="virtual-card__holder">Titular</div>
-                <div class="virtual-card__name">Carlos Ramírez</div>
+                <div class="virtual-card__name" id="cardHolderName">Carlos Ramirez</div>
               </div>
               <div class="virtual-card__expiry">
                 <div class="virtual-card__expiry-label">Válida hasta</div>
@@ -876,6 +880,11 @@ img{display:block;max-width:100%}
   </div>
 </div>
 
+<!-- ═══ TOAST STYLE (for inline toasts) ═══ -->
+<style>
+.synera-toast{position:fixed;bottom:24px;right:24px;z-index:99999;padding:14px 24px;border-radius:12px;color:#fff;font-family:var(--font-d);font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.15);transform:translateY(20px);opacity:0;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s}
+</style>
+
 <!-- ═══ ENVIAR REMESA MODAL ═══ -->
 <div class="modal-overlay" id="remesaModal">
   <div class="modal">
@@ -959,9 +968,22 @@ img{display:block;max-width:100%}
   </div>
 </div>
 
+<!-- Supabase CDN + shared config -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
 <script>
 (function(){
 'use strict';
+
+/* ═══════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════ */
+let currentUser = null;
+let currentProfile = null;
+let walletBalance = 0;
+let allTransactions = [];
+let allContracts = [];
 
 /* ═══ CUSTOM CURSOR ═══ */
 const cur = document.getElementById('cur');
@@ -976,15 +998,30 @@ function animCur(){
   requestAnimationFrame(animCur);
 }
 animCur();
-document.querySelectorAll('[data-h]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>cur.classList.add('h'));
-  el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
-});
+function bindHoverCursors(){
+  document.querySelectorAll('[data-h]').forEach(el=>{
+    if(el._hoverBound) return;
+    el._hoverBound=true;
+    el.addEventListener('mouseenter',()=>cur.classList.add('h'));
+    el.addEventListener('mouseleave',()=>cur.classList.remove('h'));
+  });
+}
+bindHoverCursors();
 
 /* ═══ SIDEBAR MOBILE TOGGLE ═══ */
 const sidebar=document.getElementById('sidebar');
 const menuToggle=document.getElementById('menuToggle');
 menuToggle.addEventListener('click',()=>sidebar.classList.toggle('open'));
+
+/* ═══ LOGOUT ═══ */
+window.handleLogout=async function(){
+  try{
+    await SyneraAuth.signOut();
+    window.location.href='login.html';
+  }catch(err){
+    showToast('Error al cerrar sesion','error');
+  }
+};
 
 /* ═══ TAB SWITCHING WITH SLIDING INDICATOR ═══ */
 const tabs=document.querySelectorAll('.tab');
@@ -1017,9 +1054,9 @@ requestAnimationFrame(()=>{
 });
 
 /* ═══ BALANCE COUNTER ANIMATION ═══ */
-function animateBalance(){
+function animateBalance(target){
   const el=document.getElementById('balanceAmount');
-  const target=4850;
+  if(!el) return;
   const duration=1500;
   const start=performance.now();
   function tick(now){
@@ -1032,29 +1069,183 @@ function animateBalance(){
   }
   requestAnimationFrame(tick);
 }
-setTimeout(animateBalance,300);
+
+/* ═══ TRANSACTION RENDERING ═══ */
+function renderTransactions(transactions){
+  const txList=document.getElementById('txList');
+  if(!txList) return;
+  if(!transactions||transactions.length===0){
+    txList.innerHTML='<div style="padding:32px;text-align:center;color:var(--muted);font-size:14px">No hay transacciones aun.</div>';
+    return;
+  }
+  txList.innerHTML='';
+  transactions.forEach(tx=>{
+    const isIncome = tx.type==='income' || tx.type==='in' || tx.type==='bonus' || (tx.amount && tx.amount > 0);
+    const isSwap = tx.type==='swap' || tx.type==='exchange';
+    const isBonus = tx.type==='bonus';
+    const dataType = isIncome ? 'in' : 'out';
+
+    let iconClass = isIncome ? 'tx__icon--in' : 'tx__icon--out';
+    let iconChar = isIncome ? '\u2193' : '\u2191';
+    let amountClass = isIncome ? 'tx__amount--pos' : 'tx__amount--neg';
+    let amountPrefix = isIncome ? '+' : '';
+
+    if(isSwap){ iconClass='tx__icon--swap'; iconChar='\u2192'; amountClass='tx__amount--swap'; }
+    if(isBonus){ iconClass='tx__icon--bonus'; iconChar='\u2605'; }
+
+    const amount = tx.amount||0;
+    const amountStr = amountPrefix+'$'+Math.abs(amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+    const dateStr = tx.created_at ? new Date(tx.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : (tx.date ? new Date(tx.date).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'}) : '');
+
+    const status = tx.status || 'completado';
+    const statusClass = status.toLowerCase()==='pendiente' ? 'tx__status--pending' : 'tx__status--done';
+    const statusLabel = status.charAt(0).toUpperCase()+status.slice(1);
+
+    const div=document.createElement('div');
+    div.className='tx';
+    div.dataset.type=dataType;
+    div.innerHTML=`
+      <div class="tx__icon ${iconClass}">${iconChar}</div>
+      <div class="tx__info">
+        <div class="tx__desc">${tx.description||tx.desc||'Transaccion'}</div>
+        <div class="tx__date">${dateStr}</div>
+      </div>
+      <div class="tx__amount ${amountClass}">${amountStr}</div>
+      <div class="tx__status ${statusClass}">${statusLabel}</div>
+    `;
+    txList.appendChild(div);
+  });
+  // Re-bind filter after render
+  bindTransactionFilters();
+}
 
 /* ═══ TRANSACTION FILTER ═══ */
-const filterBtns=document.querySelectorAll('.filter-btn');
-const txItems=document.querySelectorAll('.tx');
-filterBtns.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    filterBtns.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter=btn.dataset.filter;
-    txItems.forEach(tx=>{
-      if(filter==='all'||tx.dataset.type===filter){
-        tx.style.display='';
-      }else{
-        tx.style.display='none';
-      }
+function bindTransactionFilters(){
+  const filterBtns=document.querySelectorAll('.filter-btn');
+  const txItems=document.querySelectorAll('#txList .tx');
+  filterBtns.forEach(btn=>{
+    // Remove old listeners by cloning
+    const newBtn=btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn,btn);
+    newBtn.addEventListener('click',()=>{
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      newBtn.classList.add('active');
+      const filter=newBtn.dataset.filter;
+      document.querySelectorAll('#txList .tx').forEach(tx=>{
+        if(filter==='all'||tx.dataset.type===filter){
+          tx.style.display='';
+        }else{
+          tx.style.display='none';
+        }
+      });
     });
   });
-});
+  bindHoverCursors();
+}
+bindTransactionFilters();
+
+/* ═══ CONTRACT RENDERING ═══ */
+function renderContracts(contracts){
+  if(!contracts||contracts.length===0) return;
+  // Update stats
+  const activeCount = contracts.filter(c=>c.status==='activo').length;
+  const completedCount = contracts.filter(c=>c.status==='completado').length;
+  const pendingCount = contracts.filter(c=>c.status==='pendiente').length;
+
+  const statNums = document.querySelectorAll('.cstat__num');
+  if(statNums[0]) statNums[0].textContent=activeCount;
+  if(statNums[1]) statNums[1].textContent=completedCount;
+  if(statNums[2]) statNums[2].textContent=pendingCount;
+
+  // Build contract cards
+  const contractSection = document.querySelector('#tab-contratos .section-title:last-of-type');
+  if(!contractSection) return;
+
+  // Remove existing contract cards
+  document.querySelectorAll('.contract-card').forEach(c=>c.remove());
+
+  contracts.forEach((contract,idx)=>{
+    const id = contract.id || ('contract-db-'+idx);
+    const status = contract.status || 'pendiente';
+    let badgeClass='badge--pendiente', badgeText='Pendiente Firma';
+    if(status==='activo'){ badgeClass='badge--activo'; badgeText='Activo'; }
+    else if(status==='completado'){ badgeClass='badge--completado'; badgeText='Completado'; }
+    else if(status==='expirado'){ badgeClass='badge--expirado'; badgeText='Expirado'; }
+
+    const companyName = contract.companies?.name || contract.company_name || 'Empresa';
+    const position = contract.position || contract.title || 'Posicion';
+    const location = contract.location || '';
+    const salary = contract.salary ? '$'+Number(contract.salary).toLocaleString()+'/mes' : '';
+    const startDate = contract.start_date ? new Date(contract.start_date).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric'}) : '';
+    const endDate = contract.end_date ? new Date(contract.end_date).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric'}) : '';
+    const dateRange = startDate && endDate ? `${startDate} — ${endDate}` : '';
+    const description = contract.description || contract.terms || '';
+    const benefits = contract.benefits || [];
+    const benefitsHtml = Array.isArray(benefits) && benefits.length > 0
+      ? `<ul class="benefits-list">${benefits.map(b=>'<li>'+b+'</li>').join('')}</ul>`
+      : '';
+
+    const signBtnHtml = status==='pendiente'
+      ? `<button class="btn btn--primary btn--sm" data-h onclick="event.stopPropagation();openSignatureModal('${id}')">Firmar Digitalmente</button>`
+      : '';
+
+    const card = document.createElement('div');
+    card.className='contract-card';
+    card.id=id;
+    card.innerHTML=`
+      <div class="contract-card__header" onclick="toggleContract('${id}')">
+        <div class="contract-card__left">
+          <span class="contract-card__badge ${badgeClass}">${badgeText}</span>
+          <div class="contract-card__employer">${companyName}</div>
+          <div class="contract-card__position">${position}</div>
+          <div class="contract-card__meta">
+            ${location ? `<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> ${location}</span>` : ''}
+            ${dateRange ? `<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${dateRange}</span>` : ''}
+            ${salary ? `<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> ${salary}</span>` : ''}
+          </div>
+        </div>
+        <div class="contract-card__actions">
+          ${signBtnHtml}
+          <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('${id}')">Ver Contrato</button>
+        </div>
+      </div>
+      <div class="contract-card__detail">
+        <div class="contract-card__detail-inner">
+          ${description ? `<div class="detail-section"><div class="detail-section__title">Terminos del Contrato</div><div class="detail-section__text">${description}</div></div>` : ''}
+          ${benefitsHtml ? `<div class="detail-section"><div class="detail-section__title">Beneficios</div>${benefitsHtml}</div>` : ''}
+          <div class="detail-section">
+            <div class="detail-section__title">Verificacion Blockchain</div>
+            <div class="blockchain-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              ${contract.signed_at ? 'Verificado en Blockchain' : 'Pendiente de verificacion'}
+            </div>
+          </div>
+          <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar PDF
+          </button>
+        </div>
+      </div>
+    `;
+    contractSection.insertAdjacentElement('afterend',card);
+  });
+  // Insert in reverse so first contract is at top
+  // Actually they are appended after the section-title, we need to reverse the order
+  // Re-order: remove all, re-append in correct order
+  const parent = contractSection.parentNode;
+  const cards = Array.from(parent.querySelectorAll('.contract-card'));
+  cards.reverse().forEach(c=>{
+    contractSection.insertAdjacentElement('afterend',c);
+  });
+
+  bindHoverCursors();
+}
 
 /* ═══ CONTRACT EXPAND/COLLAPSE ═══ */
 window.toggleContract=function(id){
-  document.getElementById(id).classList.toggle('expanded');
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('expanded');
 };
 
 /* ═══ MODAL HELPERS ═══ */
@@ -1068,7 +1259,6 @@ function closeModal(id){
   m.classList.remove('show');
   setTimeout(()=>{
     m.style.display='none';
-    // Reset forms
     if(id==='remesaModal'){
       document.getElementById('remesaForm').style.display='';
       document.getElementById('remesaSuccess').classList.remove('show');
@@ -1086,7 +1276,6 @@ function closeModal(id){
 }
 window.closeModal=closeModal;
 
-// Close modal on overlay click
 document.querySelectorAll('.modal-overlay').forEach(o=>{
   o.addEventListener('click',e=>{
     if(e.target===o) closeModal(o.id);
@@ -1123,24 +1312,73 @@ window.selectPayment=function(el){
   el.classList.add('selected');
 };
 
-window.sendRemesa=function(){
+window.sendRemesa=async function(){
   const name=document.getElementById('recipientName').value;
   const country=document.getElementById('recipientCountry').value;
   const amount=parseFloat(document.getElementById('sendAmount').value);
-  if(!name||!country||!amount){alert('Por favor completa todos los campos.');return;}
+  if(!name||!country||!amount){
+    showToast('Por favor completa todos los campos.','warning');
+    return;
+  }
+  if(amount > walletBalance){
+    showToast('Saldo insuficiente.','error');
+    return;
+  }
 
-  // Save to localStorage
-  const txs=JSON.parse(localStorage.getItem('synera_transactions')||'[]');
-  txs.unshift({type:'out',desc:`Remesa a ${name}`,date:new Date().toISOString(),amount:-amount,status:'Completado'});
-  localStorage.setItem('synera_transactions',JSON.stringify(txs));
+  const btn=document.getElementById('btnEnviarRemesa');
+  const origText=btn.textContent;
+  btn.disabled=true;
+  btn.textContent='Enviando...';
 
-  // Show success
-  document.getElementById('remesaForm').style.display='none';
-  document.getElementById('remesaSuccess').classList.add('show');
-  document.getElementById('successDetail').textContent=`$${amount.toFixed(2)} enviados a ${name}.`;
+  try{
+    // Create transaction in Supabase
+    await SyneraTransactions.create({
+      user_id: currentUser.id,
+      type: 'out',
+      description: `Remesa a ${name} (${country})`,
+      amount: -Math.abs(amount),
+      status: 'completado'
+    });
 
-  // Confetti
-  spawnConfetti(document.getElementById('remesaSuccess'));
+    // Update wallet balance
+    const newBalance = walletBalance - amount;
+    await SyneraTransactions.updateBalance(currentUser.id, newBalance);
+    walletBalance = newBalance;
+
+    // Show success
+    document.getElementById('remesaForm').style.display='none';
+    document.getElementById('remesaSuccess').classList.add('show');
+    document.getElementById('successDetail').textContent=`$${amount.toFixed(2)} enviados a ${name}.`;
+    spawnConfetti(document.getElementById('remesaSuccess'));
+
+    // Add transaction to list without reload
+    const newTx = {
+      type:'out',
+      description:`Remesa a ${name} (${country})`,
+      created_at: new Date().toISOString(),
+      amount: -amount,
+      status:'completado'
+    };
+    allTransactions.unshift(newTx);
+    renderTransactions(allTransactions);
+
+    // Update balance display
+    animateBalance(walletBalance);
+
+    // Update EUR equivalent
+    const equivEl = document.querySelector('.balance-card__equiv');
+    if(equivEl){
+      const eurVal = (walletBalance * 0.93).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      equivEl.innerHTML=`&asymp; &euro;${eurVal} EUR`;
+    }
+
+  }catch(err){
+    console.error('Error sending remesa:',err);
+    showToast('Error al enviar la remesa. Intenta de nuevo.','error');
+  }finally{
+    btn.disabled=false;
+    btn.textContent=origText;
+  }
 };
 
 function spawnConfetti(container){
@@ -1158,19 +1396,23 @@ function spawnConfetti(container){
 /* ═══ SIGNATURE PAD ═══ */
 window.openSignatureModal=function(contractId){
   window._signContractId=contractId;
+  // Update modal text with contract company name
+  const card=document.getElementById(contractId);
+  if(card){
+    const employer=card.querySelector('.contract-card__employer');
+    const modalDesc=document.querySelector('#signForm p');
+    if(employer&&modalDesc){
+      modalDesc.textContent=`Dibuja tu firma en el area de abajo para firmar el contrato con ${employer.textContent}.`;
+    }
+  }
   openModal('signatureModal');
   initSignaturePad();
 };
-document.getElementById('btnFirmar')&&document.getElementById('btnFirmar').addEventListener('click',function(e){
-  e.stopPropagation();
-  window.openSignatureModal('contract-3');
-});
 
 let sigCanvas,sigCtx,sigDrawing=false;
 function initSignaturePad(){
   sigCanvas=document.getElementById('signatureCanvas');
   sigCtx=sigCanvas.getContext('2d');
-  // Set canvas size
   const rect=sigCanvas.getBoundingClientRect();
   sigCanvas.width=rect.width;
   sigCanvas.height=rect.height;
@@ -1178,12 +1420,10 @@ function initSignaturePad(){
   sigCtx.lineWidth=2.5;
   sigCtx.lineCap='round';
   sigCtx.lineJoin='round';
-  // Mouse events
   sigCanvas.addEventListener('mousedown',sigStart);
   sigCanvas.addEventListener('mousemove',sigMove);
   sigCanvas.addEventListener('mouseup',sigEnd);
   sigCanvas.addEventListener('mouseleave',sigEnd);
-  // Touch events
   sigCanvas.addEventListener('touchstart',e=>{e.preventDefault();sigStart(e.touches[0]);},{passive:false});
   sigCanvas.addEventListener('touchmove',e=>{e.preventDefault();sigMove(e.touches[0]);},{passive:false});
   sigCanvas.addEventListener('touchend',sigEnd);
@@ -1202,55 +1442,54 @@ function sigMove(e){
 }
 function sigEnd(){sigDrawing=false}
 window.clearSignature=function(){
-  if(sigCtx){
-    sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
-  }
+  if(sigCtx) sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
 };
-window.submitSignature=function(){
+
+window.submitSignature=async function(){
   // Check if canvas has content
   const pixels=sigCtx.getImageData(0,0,sigCanvas.width,sigCanvas.height).data;
   let drawn=false;
   for(let i=3;i<pixels.length;i+=4){if(pixels[i]>0){drawn=true;break;}}
-  if(!drawn){alert('Por favor dibuja tu firma.');return;}
+  if(!drawn){showToast('Por favor dibuja tu firma.','warning');return;}
 
-  // Save contract status
-  const contracts=JSON.parse(localStorage.getItem('synera_contracts')||'{}');
-  contracts[window._signContractId]='activo';
-  localStorage.setItem('synera_contracts',JSON.stringify(contracts));
+  const contractId=window._signContractId;
 
-  // Update UI
-  const card=document.getElementById(window._signContractId);
-  if(card){
-    const badge=card.querySelector('.contract-card__badge');
-    badge.className='contract-card__badge badge--activo';
-    badge.textContent='Activo';
-    const signBtn=card.querySelector('#btnFirmar');
-    if(signBtn)signBtn.remove();
-  }
+  try{
+    // Call Supabase to sign the contract
+    await SyneraContracts.sign(contractId);
 
-  // Show success
-  document.getElementById('signForm').style.display='none';
-  document.getElementById('signatureSuccess').classList.add('show');
-  spawnConfetti(document.getElementById('signatureSuccess'));
-};
-
-/* ═══ LOCAL STORAGE INIT ═══ */
-function loadFromStorage(){
-  const contracts=JSON.parse(localStorage.getItem('synera_contracts')||'{}');
-  Object.keys(contracts).forEach(id=>{
-    const card=document.getElementById(id);
-    if(card&&contracts[id]==='activo'){
+    // Update UI
+    const card=document.getElementById(contractId);
+    if(card){
       const badge=card.querySelector('.contract-card__badge');
-      if(badge&&badge.textContent.trim()==='Pendiente Firma'){
+      if(badge){
         badge.className='contract-card__badge badge--activo';
         badge.textContent='Activo';
-        const signBtn=card.querySelector('#btnFirmar');
-        if(signBtn)signBtn.remove();
       }
+      const signBtn=card.querySelector('.btn--primary');
+      if(signBtn && signBtn.textContent.includes('Firmar')) signBtn.remove();
     }
-  });
-}
-loadFromStorage();
+
+    // Update contract stats
+    const statNums=document.querySelectorAll('.cstat__num');
+    if(statNums[0]) statNums[0].textContent=parseInt(statNums[0].textContent)+1;
+    if(statNums[2]) statNums[2].textContent=Math.max(0,parseInt(statNums[2].textContent)-1);
+
+    // Show success
+    document.getElementById('signForm').style.display='none';
+    document.getElementById('signatureSuccess').classList.add('show');
+
+    const employer = card ? (card.querySelector('.contract-card__employer')?.textContent||'') : '';
+    document.querySelector('#signatureSuccess .success-anim__sub').textContent=
+      `El contrato con ${employer} ha sido firmado exitosamente y verificado en blockchain.`;
+
+    spawnConfetti(document.getElementById('signatureSuccess'));
+
+  }catch(err){
+    console.error('Error signing contract:',err);
+    showToast('Error al firmar el contrato. Intenta de nuevo.','error');
+  }
+};
 
 /* ═══ VIRTUAL CARD 3D TILT ═══ */
 const vcard=document.querySelector('.virtual-card');
@@ -1282,7 +1521,6 @@ document.querySelectorAll('.qaction').forEach(qa=>{
 });
 
 /* ═══ CONVERSION DISPLAY PULSE ═══ */
-const origUpdateConversion=updateConversion;
 const convDisplay=document.getElementById('conversionDisplay');
 if(convDisplay){
   const observer=new MutationObserver(()=>{
@@ -1299,6 +1537,97 @@ document.addEventListener('keydown',e=>{
     document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id));
   }
 });
+
+/* ═══════════════════════════════════════════
+   SUPABASE: PAGE INITIALIZATION
+   ═══════════════════════════════════════════ */
+async function initPage(){
+  try{
+    // 1. Check auth
+    const session = await SyneraAuth.requireAuth();
+    if(!session) return; // redirected to login
+
+    currentUser = session.user;
+    const userId = currentUser.id;
+
+    // 2. Load profile
+    try{
+      currentProfile = await SyneraProfiles.get(userId);
+    }catch(e){ console.warn('Profile not found, using auth metadata'); }
+
+    // Determine display name
+    const fullName = currentProfile?.full_name
+      || currentProfile?.name
+      || currentUser.user_metadata?.full_name
+      || currentUser.user_metadata?.name
+      || currentUser.email?.split('@')[0]
+      || 'Usuario';
+
+    const initials = fullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+    // Update UI with user name
+    const navAvatar=document.getElementById('navAvatar');
+    const navUserName=document.getElementById('navUserName');
+    const cardHolderName=document.getElementById('cardHolderName');
+    if(navAvatar) navAvatar.textContent=initials;
+    if(navUserName) navUserName.textContent=fullName;
+    if(cardHolderName) cardHolderName.textContent=fullName;
+
+    // 3. Load wallet balance
+    try{
+      const wallet = await SyneraTransactions.getBalance(userId);
+      if(wallet && wallet.balance != null){
+        walletBalance = parseFloat(wallet.balance);
+      }
+    }catch(e){
+      console.warn('Wallet not found, using default 0');
+      walletBalance = 0;
+    }
+
+    // Animate balance
+    setTimeout(()=>animateBalance(walletBalance),300);
+
+    // Update EUR equivalent
+    const equivEl = document.querySelector('.balance-card__equiv');
+    if(equivEl){
+      const eurVal = (walletBalance * 0.93).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      equivEl.innerHTML=`&asymp; &euro;${eurVal} EUR`;
+    }
+
+    // 4. Load transactions
+    try{
+      allTransactions = await SyneraTransactions.list(userId);
+      if(allTransactions && allTransactions.length > 0){
+        renderTransactions(allTransactions);
+      }
+      // If no transactions from DB, keep the static HTML as fallback
+    }catch(e){
+      console.warn('Could not load transactions:',e);
+    }
+
+    // 5. Load contracts
+    try{
+      allContracts = await SyneraContracts.list(userId);
+      if(allContracts && allContracts.length > 0){
+        renderContracts(allContracts);
+      }
+      // If no contracts from DB, keep the static HTML as fallback
+    }catch(e){
+      console.warn('Could not load contracts:',e);
+    }
+
+    // Mark page as loaded (remove skeleton state if any)
+    document.body.classList.add('skeleton-show');
+
+  }catch(err){
+    console.error('Page init error:',err);
+    // If auth fails, still show the page with static data
+    setTimeout(()=>animateBalance(4850),300);
+  }
+}
+
+// Run initialization
+initPage();
 
 })();
 </script>
