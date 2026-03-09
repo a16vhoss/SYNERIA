@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="nav-shared.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -16,43 +17,39 @@
   --font-d:'Syne',sans-serif;--font-b:'General Sans',sans-serif;
   --ease:cubic-bezier(0.76,0,0.24,1);--ease-out:cubic-bezier(0.16,1,0.3,1);
   --spring:linear(0,0.009,0.035 2.1%,0.141,0.281 6.7%,0.723 12.9%,0.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,0.991,0.977 51%,0.974 53.8%,0.975 57.1%,0.997 69.8%,1.003 76.9%,1);
+  --shadow-sm:0 1px 2px rgba(30,45,95,0.04),0 1px 3px rgba(30,45,95,0.06);
+  --shadow-md:0 4px 6px rgba(30,45,95,0.04),0 10px 15px rgba(30,45,95,0.06);
+  --shadow-lg:0 10px 25px rgba(30,45,95,0.06),0 20px 48px rgba(30,45,95,0.08);
 }
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--border) var(--bg)}
-body{background:var(--bg);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;cursor:none;font-weight:400;font-size:16px;line-height:1.7}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;font-weight:400;font-size:16px;line-height:1.7}
 ::selection{background:var(--accent);color:#fff}
-a{color:inherit;text-decoration:none}
+a{color:inherit;text-decoration:none;cursor:pointer}
+button{cursor:pointer}
 img{display:block;max-width:100%}
 
 /* ═══ SCROLL PROGRESS BAR ═══ */
 .scroll-progress{position:fixed;top:0;left:0;width:100%;height:3px;z-index:9999;background:transparent;pointer-events:none}
-.scroll-progress__bar{height:100%;width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transform-origin:left;animation:scrollScale auto linear;animation-timeline:scroll()}
-@keyframes scrollScale{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.scroll-progress__bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.1s linear;transform-origin:left}
 
 /* ═══ CURSOR ═══ */
-.cur{position:fixed;top:0;left:0;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.4);border-radius:50%;pointer-events:none;z-index:10000;mix-blend-mode:normal;transition:width 0.4s var(--ease-out),height 0.4s var(--ease-out),background 0.3s,border-color 0.3s}
-.cur.h{width:56px;height:56px;border-color:var(--accent);background:rgba(45,212,168,0.08)}
-.cur-d{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--text);border-radius:50%;pointer-events:none;z-index:10001}
-@media(hover:none){.cur,.cur-d{display:none}body{cursor:auto}}
+.cur{position:fixed;top:0;left:0;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.4);border-radius:50%;pointer-events:none;z-index:10000;mix-blend-mode:normal;transition:width 0.4s var(--ease-out),height 0.4s var(--ease-out),background 0.3s,border-color 0.3s,opacity 0.3s;will-change:transform;opacity:0.4}
+.cur.h{width:56px;height:56px;border-color:var(--accent);background:rgba(45,212,168,0.08);opacity:1}
+.cur.hidden{opacity:0!important}
+.cur-d{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--text);border-radius:50%;pointer-events:none;z-index:10001;will-change:transform}
+.cur-d.hidden{opacity:0!important}
+@media(hover:none){
+  .cur,.cur-d{display:none!important}
+  body,body *{cursor:auto!important}
+}
 
-/* ═══ NAV ═══ */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s}
-.nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,0.06)}
-.nav__logo{font-family:var(--font-d);font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:6px;color:var(--text)}
-.nav__logo span{color:var(--accent)}
-.nav__search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:8px 16px;width:320px;transition:border-color 0.3s}
-.nav__search:focus-within{border-color:var(--accent)}
-.nav__search input{border:none;background:transparent;outline:none;font-family:var(--font-b);font-size:14px;color:var(--text);width:100%}
-.nav__search input::placeholder{color:var(--muted)}
-.nav__right{display:flex;align-items:center;gap:16px}
-.nav__icon{width:40px;height:40px;border-radius:12px;border:1px solid var(--border);display:grid;place-items:center;cursor:none;transition:border-color 0.3s,background 0.3s;background:var(--card);position:relative}
-.nav__icon:hover{border-color:var(--accent);background:rgba(45,212,168,0.04)}
-.nav__icon .badge{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--card)}
-.nav__avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:none}
+/* ═══ NAV (replaced by nav-shared.css) ═══ */
 
 /* ═══ BACK BUTTON ═══ */
-.back-bar{padding:16px 5vw;margin-top:73px;display:flex;align-items:center;gap:16px}
-.back-link{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);font-weight:500;transition:color 0.3s,gap 0.4s var(--spring);cursor:none}
+.back-bar{padding:16px 5vw;margin-top:72px;display:flex;align-items:center;gap:16px}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);font-weight:500;transition:color 0.3s,gap 0.4s var(--spring);cursor:pointer}
 .back-link:hover{color:var(--accent);gap:12px}
+.back-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
 .back-link svg{width:18px;height:18px;transition:transform 0.4s var(--spring)}
 .back-link:hover svg{transform:translateX(-4px)}
 
@@ -62,30 +59,34 @@ img{display:block;max-width:100%}
   radial-gradient(ellipse 600px 400px at 15% 40%,rgba(45,212,168,0.04),transparent),
   radial-gradient(ellipse 500px 350px at 80% 20%,rgba(30,45,95,0.035),transparent),
   radial-gradient(ellipse 400px 300px at 50% 70%,rgba(59,158,206,0.03),transparent);pointer-events:none}
-.job-header__logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#1e2d5f,#3b9ece);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:2rem;font-weight:800;flex-shrink:0;transition:box-shadow 0.4s var(--spring)}
-.job-header__logo:hover{box-shadow:0 0 0 6px rgba(45,212,168,0.15),0 0 24px rgba(45,212,168,0.1)}
+.job-header__logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#1e2d5f,#3b9ece);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:2rem;font-weight:800;flex-shrink:0;transition:box-shadow 0.4s var(--spring),transform 0.4s var(--spring);cursor:pointer}
+.job-header__logo:hover{box-shadow:0 0 0 6px rgba(45,212,168,0.15),0 8px 30px rgba(45,212,168,0.15);transform:scale(1.05)}
 .job-header__info{flex:1;min-width:280px}
-.job-header__company{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:4px}
-.job-header__title{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:8px}
+.job-header__company{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.job-header__company-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;background:rgba(45,212,168,0.1);color:var(--accent);font-size:11px;font-weight:600}
+.job-header__title{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:8px;letter-spacing:-0.02em}
 .job-header__meta{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:13px;color:var(--muted);margin-bottom:16px}
 .job-header__meta svg{width:16px;height:16px;flex-shrink:0}
 .job-header__meta-item{display:flex;align-items:center;gap:4px}
 .job-header__tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.tag{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.02em;transition:background 0.3s,transform 0.3s var(--spring);cursor:default}
+.tag{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.02em;transition:background 0.3s,transform 0.3s var(--spring),box-shadow 0.3s;cursor:default}
+.tag:hover{transform:translateY(-1px)}
 .tag--green{background:rgba(45,212,168,0.1);color:#0d9b76;border:1px solid rgba(45,212,168,0.18)}
-.tag--green:hover{background:rgba(45,212,168,0.16)}
+.tag--green:hover{background:rgba(45,212,168,0.16);box-shadow:0 2px 8px rgba(45,212,168,0.15)}
 .tag--red{background:rgba(239,68,68,0.08);color:#dc2626;border:1px solid rgba(239,68,68,0.14)}
 .tag--red:hover{background:rgba(239,68,68,0.13)}
 .tag--blue{background:rgba(59,158,206,0.1);color:#2563eb;border:1px solid rgba(59,158,206,0.16)}
 .tag--blue:hover{background:rgba(59,158,206,0.16)}
 .tag--purple{background:rgba(139,92,246,0.1);color:#7c3aed;border:1px solid rgba(139,92,246,0.16)}
 .tag--purple:hover{background:rgba(139,92,246,0.16)}
-.job-header__salary{font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:var(--accent);margin-bottom:16px}
+.job-header__salary{font-family:var(--font-d);font-size:1.5rem;font-weight:800;margin-bottom:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block}
 .job-header__actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;font-family:var(--font-d);font-size:14px;font-weight:700;border-radius:14px;cursor:none;transition:transform 0.3s var(--spring),box-shadow 0.3s,background 0.3s,border-color 0.3s;border:none}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;font-family:var(--font-d);font-size:14px;font-weight:700;border-radius:14px;cursor:pointer;transition:transform 0.3s var(--spring),box-shadow 0.3s,background 0.3s,border-color 0.3s;border:none;position:relative;overflow:hidden}
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .btn--primary{background:var(--accent);color:#fff}
+.btn--primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transform:translateX(-100%);transition:transform 0.5s}
 .btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(45,212,168,0.3)}
+.btn--primary:hover::before{transform:translateX(100%)}
 .btn--outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
 .btn--outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
 .btn--outline.active{border-color:var(--accent);color:var(--accent);background:rgba(45,212,168,0.04)}
@@ -95,56 +96,63 @@ img{display:block;max-width:100%}
 .job-layout{display:grid;grid-template-columns:1fr 380px;gap:32px;padding:0 5vw 80px;align-items:start}
 
 /* ═══ LEFT CONTENT ═══ */
-.job-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;transition:box-shadow 0.3s;animation:sectionReveal auto linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
-@keyframes sectionReveal{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.job-section:hover{box-shadow:0 4px 24px rgba(0,0,0,0.04)}
-.job-section__title{font-family:var(--font-d);font-size:1.25rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.job-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;transition:box-shadow 0.4s var(--spring),border-color 0.3s}
+.job-section:hover{box-shadow:0 4px 24px rgba(0,0,0,0.04);border-color:rgba(45,212,168,0.15)}
+.job-section__title{font-family:var(--font-d);font-size:1.25rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .job-section__title svg{width:22px;height:22px;color:var(--accent)}
-.job-section p{color:var(--muted);line-height:1.8;margin-bottom:12px}
+.job-section p{color:var(--muted);line-height:1.8;margin-bottom:12px;font-size:0.95rem}
 .job-section ul{list-style:none;padding:0}
-.job-section ul li{padding:8px 0;padding-left:28px;position:relative;color:var(--muted);line-height:1.6}
-.job-section ul li::before{content:'';position:absolute;left:0;top:16px;width:8px;height:8px;border-radius:50%;background:rgba(45,212,168,0.3);border:2px solid var(--accent)}
+.job-section ul li{padding:10px 0;padding-left:32px;position:relative;color:var(--muted);line-height:1.7;font-size:0.95rem;transition:color 0.3s,transform 0.3s var(--spring)}
+.job-section ul li:hover{color:var(--text);transform:translateX(4px)}
+.job-section ul li::before{content:'';position:absolute;left:0;top:18px;width:8px;height:8px;border-radius:50%;background:rgba(45,212,168,0.3);border:2px solid var(--accent);transition:background 0.3s,box-shadow 0.3s}
+.job-section ul li:hover::before{background:var(--accent);box-shadow:0 0 0 4px rgba(45,212,168,0.1)}
+.job-section ul li+li{border-top:1px solid rgba(226,232,240,0.5)}
 
 /* Benefits Grid */
 .benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.benefit-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:border-color 0.3s,transform 0.5s var(--spring),box-shadow 0.3s;transform-style:preserve-3d;animation:benefitReveal auto linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
-.benefit-card:hover{border-color:var(--accent);box-shadow:0 8px 32px rgba(45,212,168,0.1)}
-@keyframes benefitReveal{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.benefit-card__icon{font-size:28px;margin-bottom:8px;filter:drop-shadow(0 0 8px rgba(45,212,168,0.25));transition:filter 0.3s}
-.benefit-card:hover .benefit-card__icon{filter:drop-shadow(0 0 12px rgba(45,212,168,0.4))}
+.benefit-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:border-color 0.3s,transform 0.5s var(--spring),box-shadow 0.3s;transform-style:preserve-3d;cursor:pointer}
+.benefit-card:hover{border-color:var(--accent);box-shadow:0 8px 32px rgba(45,212,168,0.1);transform:translateY(-4px)}
+.benefit-card__icon{font-size:28px;margin-bottom:8px;filter:drop-shadow(0 0 8px rgba(45,212,168,0.25));transition:filter 0.3s,transform 0.4s var(--spring)}
+.benefit-card:hover .benefit-card__icon{filter:drop-shadow(0 0 14px rgba(45,212,168,0.4));transform:scale(1.15)}
 .benefit-card__label{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--text)}
 .benefit-card__desc{font-size:12px;color:var(--muted);margin-top:4px}
 
 /* Timeline */
 .timeline{position:relative;padding-left:32px}
-.timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:var(--border)}
-.timeline::after{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2));transform-origin:top;animation:timelineFill auto linear both;animation-timeline:view();animation-range:entry 0% cover 80%}
-@keyframes timelineFill{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-.timeline__step{position:relative;margin-bottom:28px;animation:stepReveal auto linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
-.timeline__step:nth-child(2){animation-range:entry 10% entry 100%}
-.timeline__step:nth-child(3){animation-range:entry 20% entry 100%}
-.timeline__step:nth-child(4){animation-range:entry 30% entry 100%}
-@keyframes stepReveal{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+.timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:var(--border);border-radius:1px}
+.timeline__line-fill{position:absolute;left:11px;top:8px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:1px;height:0;transition:height 0.8s var(--ease-out)}
+.timeline__step{position:relative;margin-bottom:28px;opacity:0;transform:translateX(-16px);transition:opacity 0.6s var(--ease-out),transform 0.6s var(--ease-out)}
+.timeline__step.visible{opacity:1;transform:translateX(0)}
+.timeline__step:nth-child(2).visible{transition-delay:0.1s}
+.timeline__step:nth-child(3).visible{transition-delay:0.2s}
+.timeline__step:nth-child(4).visible{transition-delay:0.3s}
 .timeline__step:last-child{margin-bottom:0}
-.timeline__dot{position:absolute;left:-32px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--card);border:2px solid var(--accent);display:grid;place-items:center;transition:box-shadow 0.3s}
+.timeline__dot{position:absolute;left:-32px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--card);border:2px solid var(--border);display:grid;place-items:center;transition:box-shadow 0.3s,border-color 0.6s var(--ease-out)}
+.timeline__step.visible .timeline__dot{border-color:var(--accent)}
 .timeline__step:hover .timeline__dot{box-shadow:0 0 0 4px rgba(45,212,168,0.12)}
-.timeline__dot span{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.timeline__dot span{width:10px;height:10px;border-radius:50%;background:var(--border);transition:background 0.3s,transform 0.3s}
+.timeline__step.visible .timeline__dot span{background:var(--accent)}
+.timeline__step:hover .timeline__dot span{transform:scale(1.2)}
 .timeline__step-title{font-family:var(--font-d);font-size:15px;font-weight:700;margin-bottom:4px}
-.timeline__step-desc{font-size:13px;color:var(--muted)}
+.timeline__step-desc{font-size:13px;color:var(--muted);line-height:1.6}
 
 /* ═══ RIGHT SIDEBAR ═══ */
 .sidebar{position:sticky;top:90px}
-.sidebar-card{background:rgba(255,255,255,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(226,232,240,0.7);border-radius:20px;padding:28px;margin-bottom:20px;transition:box-shadow 0.4s var(--spring);box-shadow:0 2px 12px rgba(0,0,0,0.03)}
+.sidebar-card{background:rgba(255,255,255,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(226,232,240,0.7);border-radius:20px;padding:28px;margin-bottom:20px;transition:box-shadow 0.4s var(--spring),border-color 0.3s;box-shadow:0 2px 12px rgba(0,0,0,0.03);position:relative;overflow:hidden}
+.sidebar-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,transparent 40%,rgba(45,212,168,0.15),transparent 60%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity 0.4s;pointer-events:none}
 .sidebar-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.06)}
+.sidebar-card:hover::before{opacity:1}
 .sidebar-card__title{font-family:var(--font-d);font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.sidebar-card__row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(226,232,240,0.5)}
+.sidebar-card__row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(226,232,240,0.5);transition:background 0.2s}
+.sidebar-card__row:hover{background:rgba(45,212,168,0.02);border-radius:6px;padding-left:6px;padding-right:6px}
 .sidebar-card__row:last-child{border-bottom:none}
 .sidebar-card__label{font-size:13px;color:var(--muted)}
 .sidebar-card__value{font-size:13px;font-weight:600;color:var(--text);text-align:right}
 
 /* Company card */
 .company-brief{text-align:center}
-.company-brief__logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#1e2d5f,#3b9ece);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:1.4rem;font-weight:800;margin:0 auto 12px}
+.company-brief__logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#1e2d5f,#3b9ece);display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:1.4rem;font-weight:800;margin:0 auto 12px;transition:box-shadow 0.4s var(--spring),transform 0.4s var(--spring)}
+.company-brief__logo:hover{box-shadow:0 0 0 4px rgba(45,212,168,0.15);transform:scale(1.05)}
 .company-brief__name{font-family:var(--font-d);font-weight:700;margin-bottom:4px}
 .company-brief__desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}
 .company-brief__stats{display:flex;justify-content:center;gap:24px;margin-bottom:16px;font-size:13px}
@@ -153,48 +161,56 @@ img{display:block;max-width:100%}
 .company-brief__stat span{color:var(--muted);font-size:12px}
 
 /* Similar jobs */
-.similar-job{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:14px;margin-bottom:10px;transition:border-color 0.3s,transform 0.4s var(--spring),box-shadow 0.3s;cursor:none}
-.similar-job:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 6px 20px rgba(45,212,168,0.1)}
-.similar-job__logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:14px;font-weight:700;flex-shrink:0}
+.similar-job{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:14px;margin-bottom:10px;transition:border-color 0.3s,transform 0.4s var(--spring),box-shadow 0.3s;cursor:pointer}
+.similar-job:hover{border-color:var(--accent);transform:translateY(-3px) scale(1.01);box-shadow:0 6px 24px rgba(45,212,168,0.12)}
+.similar-job:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.similar-job__logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font-family:var(--font-d);font-size:14px;font-weight:700;flex-shrink:0;transition:transform 0.3s var(--spring)}
+.similar-job:hover .similar-job__logo{transform:scale(1.08)}
 .similar-job__info{flex:1;min-width:0}
 .similar-job__title{font-family:var(--font-d);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .similar-job__meta{font-size:11px;color:var(--muted)}
 
 /* ═══ MODAL ═══ */
-.modal-overlay{position:fixed;inset:0;background:rgba(30,45,95,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.modal-overlay{position:fixed;inset:0;background:rgba(30,45,95,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .modal-overlay.active{opacity:1;pointer-events:all}
-.modal{background:var(--card);border-radius:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:36px;transform:scale(0.95);opacity:0;transition:transform 0.5s var(--spring),opacity 0.35s var(--ease-out);box-shadow:0 24px 80px rgba(0,0,0,0.15)}
-.modal-overlay.active .modal{transform:scale(1);opacity:1}
-.modal-overlay.active .modal__field{animation:modalFieldIn 0.4s var(--spring) both}
-.modal-overlay.active .modal__field:nth-child(1){animation-delay:60ms}
-.modal-overlay.active .modal__field:nth-child(2){animation-delay:100ms}
-.modal-overlay.active .modal__field:nth-child(3){animation-delay:140ms}
-.modal-overlay.active .modal__field:nth-child(4){animation-delay:180ms}
-.modal-overlay.active #submitApp{animation:modalFieldIn 0.4s var(--spring) 220ms both}
+.modal{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(226,232,240,0.5);border-radius:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:36px;transform:scale(0.95) translateY(10px);opacity:0;transition:transform 0.5s var(--spring),opacity 0.35s var(--ease-out);box-shadow:0 24px 80px rgba(0,0,0,0.15)}
+.modal-overlay.active .modal{transform:scale(1) translateY(0);opacity:1}
+.modal-overlay.active .modal__field{opacity:0;transform:translateY(12px);animation:modalFieldIn 0.5s var(--spring) both}
+.modal-overlay.active .modal__field:nth-child(1){animation-delay:80ms}
+.modal-overlay.active .modal__field:nth-child(2){animation-delay:140ms}
+.modal-overlay.active .modal__field:nth-child(3){animation-delay:200ms}
+.modal-overlay.active .modal__field:nth-child(4){animation-delay:260ms}
+.modal-overlay.active #submitApp{animation:modalFieldIn 0.5s var(--spring) 320ms both}
 @keyframes modalFieldIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .modal__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
 .modal__title{font-family:var(--font-d);font-size:1.3rem;font-weight:700}
-.modal__close{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--bg);display:grid;place-items:center;cursor:none;transition:border-color 0.3s}
-.modal__close:hover{border-color:var(--accent)}
+.modal__close{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--bg);display:grid;place-items:center;cursor:pointer;transition:border-color 0.3s,transform 0.3s var(--spring)}
+.modal__close:hover{border-color:var(--accent);transform:rotate(90deg)}
+.modal__close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .modal__field{margin-bottom:20px}
 .modal__label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
-.modal__input,.modal__textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--font-b);font-size:14px;color:var(--text);background:var(--bg);transition:border-color 0.3s;outline:none}
-.modal__input:focus,.modal__textarea:focus{border-color:var(--accent)}
+.modal__input,.modal__textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:var(--font-b);font-size:14px;color:var(--text);background:var(--bg);transition:border-color 0.3s,box-shadow 0.3s;outline:none}
+.modal__input:focus,.modal__textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,168,0.1)}
 .modal__input:focus-visible,.modal__textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .modal__textarea{min-height:100px;resize:vertical}
 
 /* Upload area */
-.upload-area{border:2px dashed var(--border);border-radius:16px;padding:32px;text-align:center;transition:border-color 0.3s,background 0.3s;cursor:none}
-.upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:rgba(45,212,168,0.03)}
-.upload-area__icon{font-size:36px;margin-bottom:8px;color:var(--muted)}
+.upload-area{border:2px dashed var(--border);border-radius:16px;padding:32px;text-align:center;transition:border-color 0.3s,background 0.3s,transform 0.3s var(--spring);cursor:pointer;position:relative;overflow:hidden}
+.upload-area::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(45,212,168,0.03),rgba(59,158,206,0.03));opacity:0;transition:opacity 0.3s;pointer-events:none}
+.upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:rgba(45,212,168,0.02);transform:scale(1.01)}
+.upload-area:hover::before,.upload-area.dragover::before{opacity:1}
+.upload-area__icon{font-size:36px;margin-bottom:8px;color:var(--muted);transition:transform 0.4s var(--spring)}
+.upload-area:hover .upload-area__icon{transform:translateY(-4px)}
 .upload-area__text{font-size:14px;color:var(--muted)}
-.upload-area__text strong{color:var(--accent);cursor:none}
-.upload-area__file{margin-top:12px;display:none;font-size:13px;font-weight:600;color:var(--accent)}
+.upload-area__text strong{color:var(--accent);cursor:pointer}
+.upload-area__file{margin-top:12px;display:none;font-size:13px;font-weight:600;color:var(--accent);padding:6px 12px;background:rgba(45,212,168,0.08);border-radius:8px;display:inline-block}
+.upload-area__file:empty{display:none}
 
 /* Success */
 .modal__success{display:none;text-align:center;padding:40px 0}
 .modal__success.active{display:block;animation:fadeScaleIn 0.5s var(--spring)}
-.modal__success__icon{width:80px;height:80px;border-radius:50%;background:rgba(45,212,168,0.1);display:grid;place-items:center;margin:0 auto 20px;font-size:40px}
+.modal__success__icon{width:80px;height:80px;border-radius:50%;background:rgba(45,212,168,0.1);display:grid;place-items:center;margin:0 auto 20px;font-size:40px;animation:successPulse 2s ease-in-out infinite}
+@keyframes successPulse{0%,100%{box-shadow:0 0 0 0 rgba(45,212,168,0.2)}50%{box-shadow:0 0 0 12px rgba(45,212,168,0)}}
 .modal__success__title{font-family:var(--font-d);font-size:1.3rem;font-weight:700;margin-bottom:8px}
 .modal__success__text{font-size:14px;color:var(--muted)}
 .modal__form.hidden{display:none}
@@ -202,13 +218,19 @@ img{display:block;max-width:100%}
 
 /* ═══ SCROLL SPY ═══ */
 .job-section[data-section]{scroll-margin-top:100px}
-.section-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
-.section-nav__link{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--border);transition:all 0.3s;cursor:none}
-.section-nav__link.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.section-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;padding:4px;background:var(--card);border:1px solid var(--border);border-radius:14px;width:fit-content}
+.section-nav__link{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;color:var(--muted);border:none;background:transparent;transition:all 0.3s var(--ease-out);cursor:pointer;white-space:nowrap;position:relative}
+.section-nav__link:hover{color:var(--text);background:var(--bg)}
+.section-nav__link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.section-nav__link.active{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(45,212,168,0.25)}
 
 /* ═══ SHARE TOOLTIP ═══ */
 .share-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(0.9);background:var(--text);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s var(--spring)}
 .share-tooltip.show{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);padding:12px 24px;background:var(--text);color:#fff;font-size:0.875rem;font-weight:500;border-radius:12px;z-index:10002;opacity:0;transition:transform 0.5s var(--spring),opacity 0.3s;pointer-events:none;box-shadow:var(--shadow-lg)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:1024px){
@@ -224,6 +246,7 @@ img{display:block;max-width:100%}
   .job-header__actions{width:100%}
   .job-header__actions .btn{flex:1;justify-content:center}
   .modal{padding:24px;border-radius:20px}
+  .section-nav{width:100%}
 }
 @media(max-width:480px){
   .benefits-grid{grid-template-columns:1fr}
@@ -231,39 +254,32 @@ img{display:block;max-width:100%}
   .section-nav::-webkit-scrollbar{display:none}
 }
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+  .timeline__step{opacity:1;transform:none}
+  .timeline__line-fill{transition:none}
 }
+
+/* ═══ SECTION REVEAL ═══ */
+.section-reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s var(--ease-out),transform 0.7s var(--ease-out)}
+.section-reveal.visible{opacity:1;transform:translateY(0)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="nav-shared.js"></script>
 </head>
 <body>
 
 <!-- SCROLL PROGRESS -->
-<div class="scroll-progress"><div class="scroll-progress__bar"></div></div>
+<div class="scroll-progress"><div class="scroll-progress__bar" id="scrollBar"></div></div>
 
 <!-- CURSOR -->
 <div class="cur" id="cur"></div>
 <div class="cur-d" id="curD"></div>
 
-<!-- NAV -->
-<nav class="nav" id="nav">
-  <a href="synera.html" class="nav__logo" data-h>Synera<span>.</span></a>
-  <div class="nav__search" data-h>
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/></svg>
-    <input type="text" id="navSearchInput" placeholder="Buscar empleos, sectores, países..." onkeydown="if(event.key==='Enter'){window.location.href='dashboard.html?search='+encodeURIComponent(this.value)}">
-  </div>
-  <div class="nav__right">
-    <a href="dashboard.html" class="nav__icon" data-h title="Panel">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="4" height="7" rx="1"/><rect x="3" y="14" width="4" height="4" rx="1"/><rect x="11" y="14" width="7" height="4" rx="1"/></svg>
-    </a>
-    <a href="dashboard.html" class="nav__icon" data-h title="Notificaciones">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 16.5c.83 0 1.5-.67 1.5-1.5h-3c0 .83.67 1.5 1.5 1.5zM15 12l-1.5-2V6.5a4.5 4.5 0 0 0-9 0V10L3 12v1h12v-1z"/></svg>
-      <div class="badge" id="notifBadge" style="display:none"></div>
-    </a>
-    <a href="login.html" class="nav__avatar" id="navAvatar" data-h>?</a>
-  </div>
-</nav>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV replaced by floating nav-shared.js -->
 
 <!-- BACK BAR -->
 <div class="back-bar">
@@ -277,7 +293,10 @@ img{display:block;max-width:100%}
 <div class="job-header">
   <div class="job-header__logo" data-h>C</div>
   <div class="job-header__info">
-    <div class="job-header__company">Constructora Alpine S.A.</div>
+    <div class="job-header__company">
+      Constructora Alpine S.A.
+      <span class="job-header__company-badge">&#10003; Verificada</span>
+    </div>
     <h1 class="job-header__title">Ayudante de Construcción Senior</h1>
     <div class="job-header__meta">
       <span class="job-header__meta-item">
@@ -329,7 +348,7 @@ img{display:block;max-width:100%}
 <div class="job-layout">
   <!-- LEFT -->
   <div class="job-left">
-    <div class="job-section" id="sec-desc" data-section>
+    <div class="job-section section-reveal" id="sec-desc" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
         Descripción del Puesto
@@ -338,7 +357,7 @@ img{display:block;max-width:100%}
       <p>El candidato ideal tendrá experiencia sólida en obras de construcción, capacidad para trabajar en equipo multicultural y disposición para aprender nuevas técnicas de construcción europeas. Ofrecemos un entorno de trabajo seguro, equipamiento moderno y un paquete completo de beneficios que incluye alojamiento y patrocinio de visa.</p>
     </div>
 
-    <div class="job-section" id="sec-resp" data-section>
+    <div class="job-section section-reveal" id="sec-resp" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Responsabilidades
@@ -353,7 +372,7 @@ img{display:block;max-width:100%}
       </ul>
     </div>
 
-    <div class="job-section" id="sec-req" data-section>
+    <div class="job-section section-reveal" id="sec-req" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
         Requisitos
@@ -368,7 +387,7 @@ img{display:block;max-width:100%}
       </ul>
     </div>
 
-    <div class="job-section" id="sec-ben" data-section>
+    <div class="job-section section-reveal" id="sec-ben" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         Beneficios
@@ -407,12 +426,13 @@ img{display:block;max-width:100%}
       </div>
     </div>
 
-    <div class="job-section" id="sec-proc" data-section>
+    <div class="job-section section-reveal" id="sec-proc" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
         Proceso de Aplicación
       </h2>
-      <div class="timeline">
+      <div class="timeline" id="timeline">
+        <div class="timeline__line-fill" id="timelineFill"></div>
         <div class="timeline__step">
           <div class="timeline__dot"><span></span></div>
           <div class="timeline__step-title">1. Enviar CV</div>
@@ -566,6 +586,22 @@ img{display:block;max-width:100%}
 
 <script>
 (function(){
+  'use strict';
+
+  /* ═══ INIT FLOATING NAV ═══ */
+  SyneraNav.init({
+    mode: 'app',
+    active: 'Empleos',
+    items: [
+      { label: 'Dashboard', href: 'dashboard.html', icon: 'home' },
+      { label: 'Empleos', href: 'dashboard.html', icon: 'briefcase' },
+      { label: 'Wallet', href: 'wallet.html', icon: 'wallet' },
+      { label: 'Perfil', href: 'profile.html', icon: 'user' },
+    ],
+    showNotif: true,
+    showAvatar: true
+  });
+
   /* ═══ STATE ═══ */
   let currentUser = null;
   let currentJob = null;
@@ -573,10 +609,20 @@ img{display:block;max-width:100%}
   const params = new URLSearchParams(window.location.search);
   const jobId = params.get('id');
 
+  /* ═══ TOAST HELPER ═══ */
+  function showToast(msg, type) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
   /* ═══ INIT ═══ */
   async function init() {
     // Auth state
     try {
+      if (typeof SyneraAuth === 'undefined') return;
       const session = await SyneraAuth.getSession();
       if (session && session.user) {
         currentUser = session.user;
@@ -588,6 +634,7 @@ img{display:block;max-width:100%}
     // Load job from Supabase
     if (jobId) {
       try {
+        if (typeof SyneraJobs === 'undefined') return;
         currentJob = await SyneraJobs.get(jobId);
         if (currentJob) {
           populateJobData(currentJob);
@@ -621,29 +668,36 @@ img{display:block;max-width:100%}
     const company = job.companies || {};
     // Header
     const logoEl = document.querySelector('.job-header__logo');
-    if (company.name) logoEl.textContent = company.name.charAt(0).toUpperCase();
-    document.querySelector('.job-header__company').textContent = company.name || 'Empresa';
-    document.querySelector('.job-header__title').textContent = job.title || '';
+    if (logoEl && company.name) logoEl.textContent = company.name.charAt(0).toUpperCase();
+    const companyEl = document.querySelector('.job-header__company');
+    if (companyEl && company.name) {
+      companyEl.innerHTML = company.name + ' <span class="job-header__company-badge">&#10003; Verificada</span>';
+    }
+    const titleEl = document.querySelector('.job-header__title');
+    if (titleEl) titleEl.textContent = job.title || '';
 
     // Meta: location + date
     const metaItems = document.querySelectorAll('.job-header__meta-item');
     if (metaItems[0] && job.country) {
-      metaItems[0].innerHTML = metaItems[0].querySelector('svg').outerHTML + ' ' + (job.city ? job.city + ', ' : '') + job.country;
+      const svg = metaItems[0].querySelector('svg');
+      metaItems[0].innerHTML = (svg ? svg.outerHTML : '') + ' ' + (job.city ? job.city + ', ' : '') + job.country;
     }
     if (metaItems[1] && job.created_at) {
+      const svg = metaItems[1].querySelector('svg');
       const days = Math.floor((Date.now() - new Date(job.created_at).getTime()) / 86400000);
       const timeText = days === 0 ? 'Hoy' : days === 1 ? 'Hace 1 dia' : `Hace ${days} dias`;
-      metaItems[1].innerHTML = metaItems[1].querySelector('svg').outerHTML + ' ' + timeText;
+      metaItems[1].innerHTML = (svg ? svg.outerHTML : '') + ' ' + timeText;
     }
 
     // Salary
     if (job.salary) {
-      document.querySelector('.job-header__salary').textContent = job.salary;
+      const salaryEl = document.querySelector('.job-header__salary');
+      if (salaryEl) salaryEl.textContent = job.salary;
     }
 
     // Tags
     const tagsContainer = document.querySelector('.job-header__tags');
-    if (job.type || job.tags) {
+    if (tagsContainer && (job.type || job.tags)) {
       tagsContainer.innerHTML = '';
       if (job.type) tagsContainer.innerHTML += `<span class="tag tag--green">${job.type}</span>`;
       if (job.urgent) tagsContainer.innerHTML += '<span class="tag tag--red">Urgente</span>';
@@ -657,15 +711,16 @@ img{display:block;max-width:100%}
     // Description
     if (job.description) {
       const descSection = document.querySelector('#sec-desc');
-      const ps = descSection.querySelectorAll('p');
-      const paragraphs = job.description.split('\n').filter(p => p.trim());
-      ps.forEach((p, i) => { if (paragraphs[i]) p.textContent = paragraphs[i]; });
-      // Add extra paragraphs if needed
-      if (paragraphs.length > ps.length) {
-        for (let i = ps.length; i < paragraphs.length; i++) {
-          const p = document.createElement('p');
-          p.textContent = paragraphs[i];
-          descSection.appendChild(p);
+      if (descSection) {
+        const ps = descSection.querySelectorAll('p');
+        const paragraphs = job.description.split('\n').filter(p => p.trim());
+        ps.forEach((p, i) => { if (paragraphs[i]) p.textContent = paragraphs[i]; });
+        if (paragraphs.length > ps.length) {
+          for (let i = ps.length; i < paragraphs.length; i++) {
+            const p = document.createElement('p');
+            p.textContent = paragraphs[i];
+            descSection.appendChild(p);
+          }
         }
       }
     }
@@ -673,42 +728,52 @@ img{display:block;max-width:100%}
     // Responsibilities
     if (job.responsibilities && Array.isArray(job.responsibilities)) {
       const ul = document.querySelector('#sec-resp ul');
-      ul.innerHTML = '';
-      job.responsibilities.forEach(r => {
-        const li = document.createElement('li');
-        li.textContent = r;
-        ul.appendChild(li);
-      });
+      if (ul) {
+        ul.innerHTML = '';
+        job.responsibilities.forEach(r => {
+          const li = document.createElement('li');
+          li.textContent = r;
+          ul.appendChild(li);
+        });
+      }
     }
 
     // Requirements
     if (job.requirements && Array.isArray(job.requirements)) {
       const ul = document.querySelector('#sec-req ul');
-      ul.innerHTML = '';
-      job.requirements.forEach(r => {
-        const li = document.createElement('li');
-        li.textContent = r;
-        ul.appendChild(li);
-      });
+      if (ul) {
+        ul.innerHTML = '';
+        job.requirements.forEach(r => {
+          const li = document.createElement('li');
+          li.textContent = r;
+          ul.appendChild(li);
+        });
+      }
     }
 
     // Benefits
     if (job.benefits && Array.isArray(job.benefits)) {
       const grid = document.querySelector('.benefits-grid');
-      grid.innerHTML = '';
-      const icons = ['&#127758;','&#127968;','&#128153;','&#9992;&#65039;','&#127891;','&#128176;'];
-      job.benefits.forEach((b, i) => {
-        const label = typeof b === 'string' ? b : (b.label || b.name || '');
-        const desc = typeof b === 'object' ? (b.description || b.desc || '') : '';
-        grid.innerHTML += `
-          <div class="benefit-card" data-h>
-            <div class="benefit-card__icon">${icons[i % icons.length]}</div>
-            <div class="benefit-card__label">${label}</div>
-            ${desc ? `<div class="benefit-card__desc">${desc}</div>` : ''}
-          </div>`;
-      });
-      // Re-attach tilt
-      initBenefitTilt();
+      if (grid) {
+        grid.innerHTML = '';
+        const icons = ['&#127758;','&#127968;','&#128153;','&#9992;&#65039;','&#127891;','&#128176;'];
+        job.benefits.forEach((b, i) => {
+          const label = typeof b === 'string' ? b : (b.label || b.name || '');
+          const desc = typeof b === 'object' ? (b.description || b.desc || '') : '';
+          grid.innerHTML += `
+            <div class="benefit-card" data-h>
+              <div class="benefit-card__icon">${icons[i % icons.length]}</div>
+              <div class="benefit-card__label">${label}</div>
+              ${desc ? `<div class="benefit-card__desc">${desc}</div>` : ''}
+            </div>`;
+        });
+        initBenefitTilt();
+        // Re-attach cursor hover
+        grid.querySelectorAll('[data-h]').forEach(el => {
+          el.addEventListener('mouseenter', () => { if (cur) cur.classList.add('h'); });
+          el.addEventListener('mouseleave', () => { if (cur) cur.classList.remove('h'); });
+        });
+      }
     }
 
     // Sidebar - job summary
@@ -725,15 +790,16 @@ img{display:block;max-width:100%}
     const companyName = document.querySelector('.company-brief__name');
     const companyDesc = document.querySelector('.company-brief__desc');
     if (company.name) {
-      companyLogo.textContent = company.name.charAt(0).toUpperCase();
-      companyName.textContent = company.name;
+      if (companyLogo) companyLogo.textContent = company.name.charAt(0).toUpperCase();
+      if (companyName) companyName.textContent = company.name;
     }
-    if (company.description) companyDesc.textContent = company.description;
+    if (company.description && companyDesc) companyDesc.textContent = company.description;
   }
 
   /* ═══ SIMILAR JOBS ═══ */
   async function loadSimilarJobs(job) {
     try {
+      if (typeof SyneraJobs === 'undefined') return;
       const colors = [
         'linear-gradient(135deg,#2dd4a8,#3b9ece)',
         'linear-gradient(135deg,#7c3aed,#ec4899)',
@@ -741,7 +807,6 @@ img{display:block;max-width:100%}
         'linear-gradient(135deg,#3b82f6,#8b5cf6)',
         'linear-gradient(135deg,#10b981,#059669)'
       ];
-      // Try by sector first, then by country
       let similar = [];
       if (job.sector) {
         similar = await SyneraJobs.list({ sector: job.sector, limit: 4, status: 'active' });
@@ -751,14 +816,14 @@ img{display:block;max-width:100%}
         const ids = new Set(similar.map(j => j.id));
         byCountry.forEach(j => { if (!ids.has(j.id)) similar.push(j); });
       }
-      // Remove current job
       similar = similar.filter(j => j.id !== job.id).slice(0, 3);
 
       if (similar.length > 0) {
         const container = document.querySelector('.sidebar-card:last-child');
+        if (!container) return;
         const title = container.querySelector('.sidebar-card__title');
         container.innerHTML = '';
-        container.appendChild(title);
+        if (title) container.appendChild(title);
         similar.forEach((sj, i) => {
           const comp = sj.companies || {};
           const a = document.createElement('a');
@@ -773,10 +838,9 @@ img{display:block;max-width:100%}
             </div>`;
           container.appendChild(a);
         });
-        // Re-attach hover cursor
         container.querySelectorAll('[data-h]').forEach(el => {
-          el.addEventListener('mouseenter', () => cur.classList.add('h'));
-          el.addEventListener('mouseleave', () => cur.classList.remove('h'));
+          el.addEventListener('mouseenter', () => { if (cur) cur.classList.add('h'); });
+          el.addEventListener('mouseleave', () => { if (cur) cur.classList.remove('h'); });
         });
       }
     } catch(e) { console.warn('Similar jobs load failed:', e); }
@@ -784,107 +848,173 @@ img{display:block;max-width:100%}
 
   /* ═══ NAV USER STATE ═══ */
   function updateNavForUser(user, profile) {
-    const avatar = document.getElementById('navAvatar');
+    let name = '';
+    let initials = '?';
     if (profile && profile.full_name) {
-      const parts = profile.full_name.trim().split(' ');
-      const initials = parts.length >= 2
+      name = profile.full_name;
+      const parts = name.trim().split(' ');
+      initials = parts.length >= 2
         ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
         : parts[0].substring(0, 2).toUpperCase();
-      avatar.textContent = initials;
     } else if (user.email) {
-      avatar.textContent = user.email.substring(0, 2).toUpperCase();
+      name = user.email.split('@')[0];
+      initials = user.email.substring(0, 2).toUpperCase();
     }
-    avatar.href = 'dashboard.html';
+    SyneraNav.setUser(name, initials, 0);
   }
 
   /* ═══ BOOKMARK ═══ */
   function updateBookmarkUI(state) {
     const bookmarkBtn = document.getElementById('bookmarkBtn');
+    if (!bookmarkBtn) return;
     bookmarkBtn.classList.toggle('active', state);
     const svg = bookmarkBtn.querySelector('svg');
-    svg.setAttribute('fill', state ? 'currentColor' : 'none');
+    if (svg) svg.setAttribute('fill', state ? 'currentColor' : 'none');
     const textNode = bookmarkBtn.childNodes[bookmarkBtn.childNodes.length - 1];
     if (textNode) textNode.textContent = state ? ' Guardado' : ' Guardar';
   }
 
   /* ═══ CURSOR ═══ */
-  const cur = document.getElementById('cur'), curD = document.getElementById('curD');
+  const cur = document.getElementById('cur');
+  const curD = document.getElementById('curD');
   let mx = 0, my = 0, cx = 0, cy = 0, dx = 0, dy = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  (function loop(){
-    cx += (mx - cx) * 0.15; cy += (my - cy) * 0.15;
-    dx += (mx - dx) * 0.35; dy += (my - dy) * 0.35;
-    cur.style.transform = `translate(${cx - 10}px,${cy - 10}px)`;
-    curD.style.transform = `translate(${dx - 2.5}px,${dy - 2.5}px)`;
-    requestAnimationFrame(loop);
-  })();
-  document.querySelectorAll('[data-h]').forEach(el => {
-    el.addEventListener('mouseenter', () => cur.classList.add('h'));
-    el.addEventListener('mouseleave', () => cur.classList.remove('h'));
-  });
+  let cursorVisible = true;
+  const prefersTouch = window.matchMedia('(hover:none)').matches;
 
-  /* ═══ NAV SCROLL ═══ */
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 10);
-  }, { passive: true });
+  if (!prefersTouch && cur && curD) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      if (!cursorVisible) { cursorVisible = true; cur.classList.remove('hidden'); curD.classList.remove('hidden'); }
+    });
+    document.addEventListener('mouseleave', () => { cursorVisible = false; cur.classList.add('hidden'); curD.classList.add('hidden'); });
+    document.addEventListener('mouseenter', () => { cursorVisible = true; cur.classList.remove('hidden'); curD.classList.remove('hidden'); });
+
+    (function loop(){
+      cx += (mx - cx) * 0.15; cy += (my - cy) * 0.15;
+      dx += (mx - dx) * 0.35; dy += (my - dy) * 0.35;
+      cur.style.transform = `translate(${cx - 10}px,${cy - 10}px)`;
+      curD.style.transform = `translate(${dx - 2.5}px,${dy - 2.5}px)`;
+      requestAnimationFrame(loop);
+    })();
+
+    document.querySelectorAll('[data-h],a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('h'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('h'));
+    });
+  }
+
+  /* ═══ NAV SCROLL — handled by nav-shared.js ═══ */
+
+  /* ═══ SCROLL PROGRESS BAR ═══ */
+  const scrollBar = document.getElementById('scrollBar');
+  if (scrollBar) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      scrollBar.style.width = progress + '%';
+    }, { passive: true });
+  }
 
   /* ═══ SCROLL SPY ═══ */
   const sections = document.querySelectorAll('[data-section]');
   const spyLinks = document.querySelectorAll('[data-spy]');
-  const observer = new IntersectionObserver(entries => {
+  if (sections.length && spyLinks.length) {
+    const spyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          spyLinks.forEach(l => l.classList.remove('active'));
+          const link = document.querySelector(`[data-spy="${entry.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
+    sections.forEach(s => spyObserver.observe(s));
+    spyLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(link.dataset.spy);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  }
+
+  /* ═══ SECTION REVEAL ═══ */
+  const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        spyLinks.forEach(l => l.classList.remove('active'));
-        const link = document.querySelector(`[data-spy="${entry.target.id}"]`);
-        if (link) link.classList.add('active');
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
       }
     });
-  }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
-  sections.forEach(s => observer.observe(s));
-  spyLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.getElementById(link.dataset.spy);
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.section-reveal').forEach(el => revealObserver.observe(el));
+
+  /* ═══ TIMELINE ANIMATION ═══ */
+  const timeline = document.getElementById('timeline');
+  const timelineFill = document.getElementById('timelineFill');
+  if (timeline && timelineFill) {
+    const timelineObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const steps = timeline.querySelectorAll('.timeline__step');
+          const totalHeight = timeline.offsetHeight;
+          // Animate steps in sequence
+          steps.forEach((step, i) => {
+            setTimeout(() => {
+              step.classList.add('visible');
+            }, i * 200);
+          });
+          // Animate fill line
+          setTimeout(() => {
+            timelineFill.style.height = (totalHeight - 16) + 'px';
+          }, 100);
+          timelineObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    timelineObserver.observe(timeline);
+  }
 
   /* ═══ BOOKMARK BUTTON ═══ */
   const bookmarkBtn = document.getElementById('bookmarkBtn');
-  bookmarkBtn.addEventListener('click', async () => {
-    if (!currentUser) {
-      window.location.href = 'login.html';
-      return;
-    }
-    const targetJobId = jobId || 'fallback';
-    bookmarked = !bookmarked;
-    updateBookmarkUI(bookmarked);
-    try {
-      if (bookmarked) {
-        await supabase.from('saved_jobs').insert({ user_id: currentUser.id, job_id: targetJobId });
-        showToast('Empleo guardado');
-      } else {
-        await supabase.from('saved_jobs').delete().eq('user_id', currentUser.id).eq('job_id', targetJobId);
-        showToast('Empleo removido de guardados');
+  if (bookmarkBtn) {
+    bookmarkBtn.addEventListener('click', async () => {
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
       }
-    } catch(e) {
-      // Revert on error
+      const targetJobId = jobId || 'fallback';
       bookmarked = !bookmarked;
       updateBookmarkUI(bookmarked);
-      showToast('Error al guardar', 'error');
-    }
-  });
+      try {
+        if (typeof supabase === 'undefined') return;
+        if (bookmarked) {
+          await supabase.from('saved_jobs').insert({ user_id: currentUser.id, job_id: targetJobId });
+          showToast('Empleo guardado');
+        } else {
+          await supabase.from('saved_jobs').delete().eq('user_id', currentUser.id).eq('job_id', targetJobId);
+          showToast('Empleo removido de guardados');
+        }
+      } catch(e) {
+        bookmarked = !bookmarked;
+        updateBookmarkUI(bookmarked);
+        showToast('Error al guardar', 'error');
+      }
+    });
+  }
 
   /* ═══ SHARE BUTTON ═══ */
   const shareBtn = document.getElementById('shareBtn');
   const shareTooltip = document.getElementById('shareTooltip');
-  shareBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      shareTooltip.classList.add('show');
-      setTimeout(() => shareTooltip.classList.remove('show'), 2000);
-    }).catch(() => {});
-  });
+  if (shareBtn && shareTooltip) {
+    shareBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        shareTooltip.classList.add('show');
+        setTimeout(() => shareTooltip.classList.remove('show'), 2000);
+      }).catch(() => {});
+    });
+  }
 
   /* ═══ APPLICATION MODAL ═══ */
   const overlay = document.getElementById('modalOverlay');
@@ -894,27 +1024,33 @@ img{display:block;max-width:100%}
   const modalClose = document.getElementById('modalClose');
 
   function openModal() {
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    if (overlay) {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
   }
   function closeModal() {
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
-    setTimeout(() => {
-      modalForm.classList.remove('hidden');
-      modalSuccess.classList.remove('active');
-    }, 300);
+    if (overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (modalForm) modalForm.classList.remove('hidden');
+        if (modalSuccess) modalSuccess.classList.remove('active');
+      }, 300);
+    }
   }
 
-  applyBtn.addEventListener('click', async () => {
-    if (!currentUser) {
-      window.location.href = 'login.html';
-      return;
-    }
-    openModal();
-  });
-  modalClose.addEventListener('click', closeModal);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  if (applyBtn) {
+    applyBtn.addEventListener('click', async () => {
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+      }
+      openModal();
+    });
+  }
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   /* ═══ UPLOAD AREA ═══ */
@@ -922,98 +1058,109 @@ img{display:block;max-width:100%}
   const fileInput = document.getElementById('fileInput');
   const uploadFileName = document.getElementById('uploadFileName');
 
-  uploadArea.addEventListener('click', () => fileInput.click());
-  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
-  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
-  uploadArea.addEventListener('drop', e => {
-    e.preventDefault(); uploadArea.classList.remove('dragover');
-    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-  });
-  fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+  if (uploadArea && fileInput) {
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault(); uploadArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+  }
 
   function handleFile(file) {
-    uploadFileName.textContent = file.name;
-    uploadFileName.style.display = 'block';
+    if (uploadFileName) {
+      uploadFileName.textContent = file.name;
+      uploadFileName.style.display = 'inline-block';
+    }
   }
 
   /* ═══ SUBMIT APPLICATION ═══ */
-  document.getElementById('submitApp').addEventListener('click', async () => {
-    if (!currentUser) {
-      window.location.href = 'login.html';
-      return;
-    }
-    const targetJobId = jobId || null;
-    if (!targetJobId) {
-      showToast('No se pudo identificar el empleo', 'error');
-      return;
-    }
-
-    const submitBtn = document.getElementById('submitApp');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<svg width="18" height="18" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Enviando...';
-
-    try {
-      await SyneraApplications.create({
-        job_id: targetJobId,
-        user_id: currentUser.id,
-        cover_letter: document.getElementById('coverLetter').value,
-        motivation: document.getElementById('motivation').value,
-        availability: document.getElementById('availability').value || null,
-        status: 'pending'
-      });
-
-      modalForm.classList.add('hidden');
-      modalSuccess.classList.add('active');
-
-      // Update apply button to show already applied
-      applyBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> Aplicacion Enviada';
-      applyBtn.disabled = true;
-      applyBtn.style.opacity = '0.7';
-
-      showToast('Aplicacion enviada exitosamente');
-    } catch(e) {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar Aplicacion';
-      if (e.message && e.message.includes('duplicate')) {
-        showToast('Ya has aplicado a este empleo', 'warning');
-        modalForm.classList.add('hidden');
-        modalSuccess.classList.add('active');
-      } else {
-        showToast('Error al enviar aplicacion: ' + (e.message || ''), 'error');
+  const submitApp = document.getElementById('submitApp');
+  if (submitApp) {
+    submitApp.addEventListener('click', async () => {
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
       }
-    }
-  });
+      const targetJobId = jobId || null;
+      if (!targetJobId) {
+        showToast('No se pudo identificar el empleo', 'error');
+        return;
+      }
+
+      submitApp.disabled = true;
+      submitApp.innerHTML = '<svg width="18" height="18" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Enviando...';
+
+      try {
+        if (typeof SyneraApplications === 'undefined') throw new Error('SyneraApplications not available');
+        await SyneraApplications.create({
+          job_id: targetJobId,
+          user_id: currentUser.id,
+          cover_letter: document.getElementById('coverLetter') ? document.getElementById('coverLetter').value : '',
+          motivation: document.getElementById('motivation') ? document.getElementById('motivation').value : '',
+          availability: document.getElementById('availability') ? document.getElementById('availability').value || null : null,
+          status: 'pending'
+        });
+
+        if (modalForm) modalForm.classList.add('hidden');
+        if (modalSuccess) modalSuccess.classList.add('active');
+
+        if (applyBtn) {
+          applyBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> Aplicacion Enviada';
+          applyBtn.disabled = true;
+          applyBtn.style.opacity = '0.7';
+        }
+
+        showToast('Aplicacion enviada exitosamente');
+      } catch(e) {
+        submitApp.disabled = false;
+        submitApp.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar Aplicacion';
+        if (e.message && e.message.includes('duplicate')) {
+          showToast('Ya has aplicado a este empleo', 'warning');
+          if (modalForm) modalForm.classList.add('hidden');
+          if (modalSuccess) modalSuccess.classList.add('active');
+        } else {
+          showToast('Error al enviar aplicacion: ' + (e.message || ''), 'error');
+        }
+      }
+    });
+  }
 
   /* ═══ BENEFIT CARD 3D TILT ═══ */
   function initBenefitTilt() {
+    if (prefersTouch) return;
     document.querySelectorAll('.benefit-card').forEach(card => {
       card.addEventListener('mousemove', e => {
         const r = card.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
         const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-2px)`;
+        card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px)`;
       });
       card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateY(0)';
+        card.style.transform = '';
       });
     });
   }
   initBenefitTilt();
 
   /* ═══ MAGNETIC BACK BUTTON ═══ */
-  const backLink = document.querySelector('.back-link');
-  if (backLink) {
-    backLink.addEventListener('mousemove', e => {
-      const r = backLink.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width / 2;
-      const y = e.clientY - r.top - r.height / 2;
-      backLink.style.transform = `translate(${x * 0.15}px,${y * 0.15}px)`;
-    });
-    backLink.addEventListener('mouseleave', () => {
-      backLink.style.transform = 'translate(0,0)';
-      backLink.style.transition = 'transform 0.4s var(--spring)';
-      setTimeout(() => { backLink.style.transition = ''; }, 400);
-    });
+  if (!prefersTouch) {
+    const backLink = document.querySelector('.back-link');
+    if (backLink) {
+      backLink.addEventListener('mousemove', e => {
+        const r = backLink.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        backLink.style.transform = `translate(${x * 0.15}px,${y * 0.15}px)`;
+      });
+      backLink.addEventListener('mouseleave', () => {
+        backLink.style.transform = 'translate(0,0)';
+        backLink.style.transition = 'transform 0.4s var(--spring)';
+        setTimeout(() => { backLink.style.transition = ''; }, 400);
+      });
+    }
   }
 
   /* ═══ KICK OFF ═══ */

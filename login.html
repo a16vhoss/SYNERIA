@@ -11,16 +11,22 @@
 /* ========== @property for aurora ========== */
 @property --aurora-a{syntax:'<angle>';initial-value:0deg;inherits:false}
 @property --aurora-b{syntax:'<angle>';initial-value:120deg;inherits:false}
+@property --glow-opacity{syntax:'<number>';initial-value:0;inherits:false}
+@property --sweep{syntax:'<percentage>';initial-value:0%;inherits:false}
+@property --tab-x{syntax:'<percentage>';initial-value:0%;inherits:false}
 
 /* ========== RESET & BASE ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 ::selection{background:var(--primary);color:#fff}
 :root{
-  --bg:#fafbfc;--surface:#ffffff;--primary:#1e2d5f;--accent:#2dd4a8;--accent-hover:#25b893;
-  --secondary:#3b9ece;--muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--warning:#f59e0b;--success:#22c55e;
+  --bg:#f8f9fb;--surface:#ffffff;--primary:#1e2d5f;--accent:oklch(0.78 0.16 168);--accent-hover:oklch(0.72 0.15 168);
+  --accent-glow:oklch(0.78 0.16 168 / 0.25);--accent-subtle:oklch(0.78 0.16 168 / 0.08);
+  --secondary:oklch(0.68 0.12 230);--muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--warning:#f59e0b;--success:#22c55e;
   --font-heading:'Syne',sans-serif;--font-body:'General Sans','Inter',system-ui,sans-serif;
   --spring:linear(0,0.006,0.025 2.8%,0.101 6.1%,0.539 18.9%,0.721 25.3%,0.849 31.5%,0.937 38.1%,0.968 41.8%,0.991 45.7%,1.006 50.1%,1.015 55%,1.017 63.9%,1.001 85.6%,1);
   --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --card-bg:rgba(255,255,255,0.65);
+  --card-border:rgba(255,255,255,0.5);
 }
 
 /* ========== SCROLL PROGRESS BAR ========== */
@@ -28,53 +34,84 @@
 .scroll-progress::after{content:'';display:block;height:100%;background:var(--accent);transform-origin:left;transform:scaleX(0);animation:scrollProgress auto linear;animation-timeline:scroll()}
 @keyframes scrollProgress{to{transform:scaleX(1)}}
 html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{font-family:var(--font-body);background:var(--bg);color:var(--primary);overflow-x:hidden;cursor:none}
+
+/* BASE CURSOR: default, only none when custom cursor is confirmed active via JS */
+body{font-family:var(--font-body);background:var(--bg);color:var(--primary);overflow-x:hidden;cursor:default}
+body.custom-cursor-active{cursor:none}
 
 /* ========== CUSTOM CURSOR ========== */
-.cursor{position:fixed;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.4);border-radius:50%;pointer-events:none;
-  z-index:10000;transform:translate(-50%,-50%);transition:width .25s var(--spring),height .25s var(--spring),border-color .25s,opacity .25s;will-change:transform}
-.cursor.hovering{width:44px;height:44px;border-color:var(--accent);opacity:.7}
-.cursor-dot{position:fixed;width:5px;height:5px;background:rgba(30,45,95,0.6);border-radius:50%;pointer-events:none;
-  z-index:10001;transform:translate(-50%,-50%);transition:background .2s;will-change:transform}
-@media(hover:none){.cursor,.cursor-dot{display:none}body{cursor:auto}}
+.cur{position:fixed;width:20px;height:20px;border:1.5px solid rgba(30,45,95,0.35);border-radius:50%;pointer-events:none;
+  z-index:10000;transform:translate(-50%,-50%);transition:width .25s var(--spring),height .25s var(--spring),border-color .25s,opacity .25s,background .25s;
+  will-change:transform;opacity:0;background:transparent}
+.cur.visible{opacity:1}
+.cur.hovering{width:48px;height:48px;border-color:var(--accent);opacity:.6;background:oklch(0.78 0.16 168 / 0.06)}
+.cur-d{position:fixed;width:5px;height:5px;background:rgba(30,45,95,0.5);border-radius:50%;pointer-events:none;
+  z-index:10001;transform:translate(-50%,-50%);transition:background .2s,transform .2s;will-change:transform;opacity:0}
+.cur-d.visible{opacity:1}
+.cur.clicking{transform:translate(-50%,-50%) scale(0.85)}
+
+/* Hide custom cursor on touch devices + ensure system cursor works */
+@media(hover:none){
+  .cur,.cur-d{display:none!important}
+  body,body.custom-cursor-active{cursor:auto!important}
+}
+@media(pointer:coarse){
+  .cur,.cur-d{display:none!important}
+  body,body.custom-cursor-active{cursor:auto!important}
+}
+
+/* ALL interactive elements get pointer fallback */
+a,button,input,select,textarea,label[for],[data-hover],[role="button"]{cursor:pointer}
+body.custom-cursor-active a,
+body.custom-cursor-active button,
+body.custom-cursor-active input,
+body.custom-cursor-active select,
+body.custom-cursor-active textarea,
+body.custom-cursor-active label[for],
+body.custom-cursor-active [data-hover],
+body.custom-cursor-active [role="button"]{cursor:none}
 
 /* ========== GRAIN OVERLAY ========== */
-.grain{position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.035;
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:128px 128px}
 
-/* ========== NAV ========== */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
-  padding:1.25rem 2.5rem;background:rgba(250,251,252,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border)}
-.nav-logo{font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--primary);text-decoration:none;letter-spacing:-.02em}
-.nav-logo span{color:var(--accent)}
-.nav-back{font-family:var(--font-body);font-size:.875rem;font-weight:500;color:var(--muted);text-decoration:none;
-  display:flex;align-items:center;gap:.5rem;transition:color .3s}
-.nav-back:hover{color:var(--primary)}
-.nav-back svg{width:18px;height:18px;transition:transform .3s var(--spring)}
-.nav-back:hover svg{transform:translateX(-3px)}
+/* Old nav CSS removed — now using nav-shared.css */
 
 /* ========== MAIN LAYOUT ========== */
 .page{display:flex;min-height:100vh;padding-top:65px}
-.panel-left{width:60%;position:relative;background:linear-gradient(135deg,var(--primary) 0%,#162348 50%,#0f1a38 100%);
+.panel-left{width:58%;position:relative;background:linear-gradient(145deg,#1a2a54 0%,#14203f 40%,#0e1730 100%);
   display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4rem;overflow:hidden}
-.panel-right{width:40%;display:flex;align-items:center;justify-content:center;padding:3rem 2rem;background:var(--bg);position:relative}
+.panel-right{width:42%;display:flex;align-items:center;justify-content:center;padding:3rem 2rem;
+  background:var(--bg);position:relative;overflow:hidden}
+
+/* Right panel subtle aurora background */
+.panel-right::before{content:'';position:absolute;top:-40%;right:-30%;width:600px;height:600px;
+  background:radial-gradient(circle,oklch(0.78 0.16 168 / 0.06) 0%,transparent 70%);
+  animation:rightAurora 15s ease-in-out infinite;will-change:transform;pointer-events:none}
+.panel-right::after{content:'';position:absolute;bottom:-30%;left:-20%;width:500px;height:500px;
+  background:radial-gradient(circle,oklch(0.68 0.12 230 / 0.05) 0%,transparent 70%);
+  animation:rightAurora 20s ease-in-out infinite reverse;will-change:transform;pointer-events:none}
+@keyframes rightAurora{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-20px) scale(1.05)}
+  66%{transform:translate(-20px,30px) scale(0.97)}
+}
 
 /* ========== LEFT PANEL CONTENT ========== */
 .panel-aurora{position:absolute;inset:0;overflow:hidden}
 .panel-aurora::before{content:'';position:absolute;inset:-50%;
-  background:conic-gradient(from var(--aurora-a),rgba(45,212,168,0.12) 0%,rgba(30,45,95,0.08) 25%,rgba(45,212,168,0.1) 50%,rgba(30,45,95,0.06) 75%,rgba(45,212,168,0.12) 100%);
+  background:conic-gradient(from var(--aurora-a),oklch(0.78 0.16 168 / 0.14) 0%,rgba(30,45,95,0.08) 25%,oklch(0.78 0.16 168 / 0.12) 50%,rgba(30,45,95,0.06) 75%,oklch(0.78 0.16 168 / 0.14) 100%);
   animation:auroraRotate 20s linear infinite;will-change:transform}
 .panel-aurora::after{content:'';position:absolute;inset:-50%;
-  background:conic-gradient(from var(--aurora-b),rgba(59,158,206,0.1) 0%,rgba(45,212,168,0.06) 30%,rgba(30,45,95,0.08) 60%,rgba(59,158,206,0.1) 100%);
+  background:conic-gradient(from var(--aurora-b),oklch(0.68 0.12 230 / 0.12) 0%,oklch(0.78 0.16 168 / 0.07) 30%,rgba(30,45,95,0.08) 60%,oklch(0.68 0.12 230 / 0.12) 100%);
   animation:auroraRotateB 28s linear infinite reverse;will-change:transform}
 @keyframes auroraRotate{to{--aurora-a:360deg}}
 @keyframes auroraRotateB{to{--aurora-b:360deg}}
-.aurora-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.3;animation:auroraFloat 12s ease-in-out infinite;will-change:transform}
-.aurora-blob:nth-child(1){width:500px;height:500px;background:var(--accent);top:-10%;left:-10%;animation-delay:0s}
-.aurora-blob:nth-child(2){width:400px;height:400px;background:var(--secondary);bottom:-15%;right:-10%;animation-delay:-4s}
-.aurora-blob:nth-child(3){width:350px;height:350px;background:#7c3aed;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-8s}
+.aurora-blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;animation:auroraFloat 12s ease-in-out infinite;will-change:transform}
+.aurora-blob:nth-child(1){width:500px;height:500px;background:oklch(0.78 0.16 168);top:-10%;left:-10%;animation-delay:0s}
+.aurora-blob:nth-child(2){width:400px;height:400px;background:oklch(0.68 0.12 230);bottom:-15%;right:-10%;animation-delay:-4s}
+.aurora-blob:nth-child(3){width:350px;height:350px;background:oklch(0.55 0.18 290);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-8s}
 @keyframes auroraFloat{
   0%,100%{transform:translate(0,0) scale(1)}
   25%{transform:translate(40px,-30px) scale(1.1)}
@@ -82,20 +119,21 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   75%{transform:translate(30px,20px) scale(1.05)}
 }
 .panel-grid{position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
   background-size:60px 60px;animation:gridDrift 30s linear infinite;will-change:transform}
 @keyframes gridDrift{0%{transform:translate(0,0)}50%{transform:translate(-30px,-30px)}100%{transform:translate(0,0)}}
-/* Animated mesh dots */
 .panel-grid::after{content:'';position:absolute;inset:0;
-  background-image:radial-gradient(rgba(45,212,168,0.2) 1px,transparent 1px);
+  background-image:radial-gradient(oklch(0.78 0.16 168 / 0.22) 1px,transparent 1px);
   background-size:60px 60px;background-position:30px 30px;animation:gridDrift 25s linear infinite reverse}
 .panel-content{position:relative;z-index:2;text-align:center;max-width:520px}
-.panel-eyebrow{font-family:var(--font-body);font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+.panel-eyebrow{font-family:var(--font-body);font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
   color:var(--accent);margin-bottom:1.5rem;opacity:0;animation:fadeSlideUp .8s var(--spring) .3s forwards}
-.panel-headline{font-family:var(--font-heading);font-size:3rem;font-weight:800;line-height:1.1;color:#fff;letter-spacing:-.03em;
+.panel-headline{font-family:var(--font-heading);font-size:3rem;font-weight:800;line-height:1.08;color:#fff;letter-spacing:-.03em;
   margin-bottom:1.5rem;opacity:0;animation:fadeSlideUp .8s var(--spring) .5s forwards}
-.panel-headline em{font-style:normal;color:var(--accent)}
-.panel-sub{font-size:1.05rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:3rem;
+.panel-headline em{font-style:normal;
+  background:linear-gradient(135deg,oklch(0.78 0.16 168) 0%,oklch(0.72 0.14 200) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.panel-sub{font-size:1.05rem;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:3rem;
   opacity:0;animation:fadeSlideUp .8s var(--spring) .7s forwards}
 
 /* Rotating Stats */
@@ -103,31 +141,56 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 .stat-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s var(--spring)}
 .stat-item.active{opacity:1;transform:translateY(0)}
-.stat-number{font-family:var(--font-heading);font-size:2.5rem;font-weight:800;color:var(--accent)}
-.stat-label{font-size:.85rem;color:rgba(255,255,255,.5);margin-top:.25rem}
+.stat-number{font-family:var(--font-heading);font-size:2.5rem;font-weight:800;
+  background:linear-gradient(135deg,oklch(0.78 0.16 168),oklch(0.72 0.14 200));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.85rem;color:rgba(255,255,255,.45);margin-top:.25rem;letter-spacing:.02em}
 
 /* Testimonials */
-.testimonials{margin-top:2rem;position:relative;height:80px;overflow:hidden;opacity:0;animation:fadeSlideUp .8s var(--spring) 1.1s forwards}
+.testimonials{margin-top:2.5rem;position:relative;height:90px;overflow:hidden;opacity:0;animation:fadeSlideUp .8s var(--spring) 1.1s forwards}
 .testimonial{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   opacity:0;transform:translateY(15px);transition:opacity .6s,transform .6s var(--spring)}
 .testimonial.active{opacity:1;transform:translateY(0)}
-.testimonial q{font-size:.9rem;color:rgba(255,255,255,.7);font-style:italic;line-height:1.6;max-width:400px}
-.testimonial cite{font-size:.75rem;color:rgba(255,255,255,.4);margin-top:.5rem;font-style:normal}
+.testimonial q{font-size:.9rem;color:rgba(255,255,255,.65);font-style:italic;line-height:1.7;max-width:400px;
+  quotes:"\201C" "\201D"}
+.testimonial q::before{content:open-quote;font-size:1.4em;color:var(--accent);font-weight:700;vertical-align:-.15em;margin-right:.1em}
+.testimonial q::after{content:close-quote;font-size:1.4em;color:var(--accent);font-weight:700;vertical-align:-.15em;margin-left:.1em}
+.testimonial cite{font-size:.75rem;color:rgba(255,255,255,.35);margin-top:.6rem;font-style:normal;letter-spacing:.03em}
+
+/* Carousel dots */
+.carousel-dots{display:flex;gap:6px;justify-content:center;margin-top:1.5rem;opacity:0;animation:fadeSlideUp .8s var(--spring) 1.3s forwards}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);border:none;padding:0;
+  transition:background .3s,transform .3s var(--spring)}
+.carousel-dot.active{background:var(--accent);transform:scale(1.3)}
 
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-/* ========== FORM CONTAINER ========== */
+/* ========== FORM CONTAINER — Glassmorphism ========== */
 .form-wrapper{width:100%;max-width:420px;opacity:0;animation:fadeSlideUp .8s var(--spring) .4s forwards;
-  background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(30,45,95,0.06);border-radius:24px;padding:2.5rem;
-  box-shadow:0 8px 32px rgba(30,45,95,0.08)}
+  background:var(--card-bg);backdrop-filter:blur(28px) saturate(1.3);-webkit-backdrop-filter:blur(28px) saturate(1.3);
+  border:1px solid var(--card-border);border-radius:28px;padding:2.5rem;position:relative;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.1) inset,
+    0 4px 6px rgba(30,45,95,0.03),
+    0 12px 24px rgba(30,45,95,0.06),
+    0 24px 48px rgba(30,45,95,0.04)}
+/* Subtle shine on card */
+.form-wrapper::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.8) 50%,transparent 100%);border-radius:28px 28px 0 0}
 
-/* Tab Toggle */
-.tab-toggle{display:flex;background:var(--bg);border-radius:999px;padding:4px;margin-bottom:2rem;border:1px solid var(--border)}
+/* Tab Toggle with sliding indicator */
+.tab-toggle{display:flex;background:var(--bg);border-radius:999px;padding:4px;margin-bottom:2rem;border:1px solid var(--border);
+  position:relative}
+.tab-indicator{position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);
+  background:var(--surface);border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  transition:transform .45s var(--spring);will-change:transform;z-index:0}
+.tab-toggle[data-active="register"] .tab-indicator{transform:translateX(100%)}
 .tab-btn{flex:1;padding:.75rem 1rem;border:none;background:none;font-family:var(--font-body);font-size:.875rem;
-  font-weight:600;color:var(--muted);cursor:none;border-radius:999px;transition:all .4s var(--spring);position:relative}
-.tab-btn.active{background:var(--surface);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  font-weight:600;color:var(--muted);cursor:pointer;border-radius:999px;transition:color .35s var(--spring);
+  position:relative;z-index:1}
+.tab-btn.active{color:var(--primary)}
 .tab-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tab-btn:hover:not(.active){color:var(--primary)}
 
 /* Forms — clip-path transition */
 .form-panel{position:absolute;width:100%;clip-path:circle(0% at 50% 0%);opacity:0;transform:translateY(8px);
@@ -137,29 +200,31 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 .form-title{font-family:var(--font-heading);font-size:1.75rem;font-weight:700;color:var(--primary);margin-bottom:.5rem;letter-spacing:-.02em}
 .form-subtitle{font-size:.9rem;color:var(--muted);margin-bottom:2rem;line-height:1.5}
 
-/* Input Groups */
+/* Input Groups — with floating labels & glow */
 .input-group{position:relative;margin-bottom:1.25rem}
 .input-group label{position:absolute;left:44px;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--muted);
-  pointer-events:none;transition:top .4s var(--spring),font-size .4s var(--spring),font-weight .3s,color .3s;background:var(--surface);padding:0 6px}
+  pointer-events:none;transition:top .35s var(--spring),font-size .35s var(--spring),font-weight .3s,color .3s,letter-spacing .3s;
+  background:linear-gradient(to bottom,transparent 48%,var(--surface) 48%);padding:0 6px}
 .input-group input:focus ~ label,
 .input-group input:not(:placeholder-shown) ~ label,
 .input-group select:focus ~ label,
 .input-group select:valid ~ label{
-  top:0;font-size:.72rem;font-weight:600;color:var(--accent)}
+  top:0;font-size:.7rem;font-weight:600;color:var(--accent);letter-spacing:.04em}
 .input-group .input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);
-  transition:color .3s}
-.input-group input:focus ~ .input-icon{color:var(--accent)}
+  transition:color .3s,transform .3s var(--spring)}
+.input-group input:focus ~ .input-icon{color:var(--accent);transform:translateY(-50%) scale(1.08)}
 .input-group input,
 .input-group select{width:100%;padding:.875rem .875rem .875rem 44px;border:1.5px solid var(--border);border-radius:14px;
   font-family:var(--font-body);font-size:.9rem;color:var(--primary);background:var(--surface);
-  transition:border-color .3s,box-shadow .3s;outline:none;cursor:none;appearance:none;-webkit-appearance:none}
+  transition:border-color .35s,box-shadow .35s var(--spring);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none}
 .input-group input:focus,
-.input-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,168,.15)}
+.input-group select:focus{border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-glow),0 0 20px oklch(0.78 0.16 168 / 0.08)}
 .input-group input:focus-visible,
 .input-group select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.input-group input.error{border-color:var(--danger)}
-.input-group input.success{border-color:var(--success)}
-.input-group select{cursor:none;padding-right:2.5rem;
+.input-group input.error{border-color:var(--danger);box-shadow:0 0 0 3px rgba(239,68,68,0.12)}
+.input-group input.success{border-color:var(--success);box-shadow:0 0 0 3px rgba(34,197,94,0.12)}
+.input-group select{cursor:pointer;padding-right:2.5rem;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6l3.5 4 3.5-4z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 14px center}
 
@@ -172,50 +237,64 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 
 /* Password toggle */
 .pass-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;
-  cursor:none;color:var(--muted);padding:4px;transition:color .3s}
-.pass-toggle:hover{color:var(--primary)}
+  cursor:pointer;color:var(--muted);padding:4px;transition:color .3s,transform .2s var(--spring);border-radius:6px}
+.pass-toggle:hover{color:var(--primary);transform:translateY(-50%) scale(1.1)}
+.pass-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .pass-toggle svg{width:20px;height:20px}
 
-/* Password strength */
+/* Password strength — smooth gradients */
 .strength-bar{display:flex;gap:4px;margin-top:.5rem;padding-left:44px}
-.strength-segment{height:4px;flex:1;border-radius:99px;background:var(--border);
-  transition:background .4s var(--spring),transform .4s var(--spring);transform:scaleX(1)}
-.strength-segment.weak{background:linear-gradient(90deg,var(--danger),#f87171);transform:scaleX(1)}
-.strength-segment.medium{background:linear-gradient(90deg,var(--warning),#fbbf24);transform:scaleX(1)}
-.strength-segment.strong{background:linear-gradient(90deg,var(--success),#4ade80);transform:scaleX(1)}
-.strength-text{font-size:.72rem;margin-top:.25rem;padding-left:44px;color:var(--muted)}
+.strength-segment{height:4px;flex:1;border-radius:99px;background:var(--border);overflow:hidden;position:relative;
+  transition:background .5s var(--spring)}
+.strength-segment::after{content:'';position:absolute;inset:0;border-radius:inherit;opacity:0;
+  transition:opacity .5s var(--spring);background:inherit}
+.strength-segment.weak{background:linear-gradient(90deg,#ef4444,#f87171)}
+.strength-segment.medium{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.strength-segment.strong{background:linear-gradient(90deg,#22c55e,oklch(0.78 0.16 168))}
+.strength-text{font-size:.72rem;margin-top:.3rem;padding-left:44px;color:var(--muted);transition:color .3s}
+.strength-text.weak-text{color:var(--danger)}
+.strength-text.medium-text{color:var(--warning)}
+.strength-text.strong-text{color:var(--success)}
 
 /* Role selector */
 .role-selector{display:flex;gap:.75rem;margin-bottom:1.5rem}
 .role-btn{flex:1;padding:.875rem;border:1.5px solid var(--border);border-radius:14px;background:var(--surface);
-  font-family:var(--font-body);font-size:.85rem;font-weight:600;color:var(--muted);cursor:none;
-  transition:all .35s var(--spring);text-align:center;display:flex;flex-direction:column;align-items:center;gap:.5rem}
-.role-btn svg{width:28px;height:28px;transition:transform .35s var(--spring)}
-.role-btn.active{border-color:var(--accent);color:var(--primary);background:rgba(45,212,168,.06)}
-.role-btn.active svg{transform:scale(1.1);color:var(--accent)}
-.role-btn:hover:not(.active){border-color:var(--muted)}
+  font-family:var(--font-body);font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;
+  transition:all .35s var(--spring);text-align:center;display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  position:relative;overflow:hidden}
+.role-btn::before{content:'';position:absolute;inset:0;background:var(--accent-subtle);opacity:0;transition:opacity .35s;border-radius:inherit}
+.role-btn svg{width:28px;height:28px;transition:transform .35s var(--spring),color .3s}
+.role-btn.active{border-color:var(--accent);color:var(--primary)}
+.role-btn.active::before{opacity:1}
+.role-btn.active svg{transform:scale(1.12);color:var(--accent)}
+.role-btn:hover:not(.active){border-color:var(--muted);transform:translateY(-1px)}
 .role-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* Checkbox */
 .checkbox-row{display:flex;align-items:center;gap:.6rem;margin-bottom:1.5rem}
-.checkbox-row input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent);cursor:none;border-radius:4px}
-.checkbox-row label{font-size:.82rem;color:var(--muted);cursor:none}
-.checkbox-row a{color:var(--accent);text-decoration:none;font-weight:500}
-.checkbox-row a:hover{text-decoration:underline}
+.checkbox-row input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;border-radius:4px;flex-shrink:0}
+.checkbox-row label{font-size:.82rem;color:var(--muted);cursor:pointer}
+.checkbox-row a{color:var(--accent);text-decoration:none;font-weight:500;transition:color .2s}
+.checkbox-row a:hover{text-decoration:underline;color:var(--accent-hover)}
+.checkbox-row a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
 
-/* Buttons */
-.btn-primary{width:100%;padding:1rem;border:none;border-radius:999px;background:var(--accent);color:#fff;
-  font-family:var(--font-body);font-size:.95rem;font-weight:600;cursor:none;position:relative;overflow:hidden;
-  transition:transform .4s var(--spring),box-shadow .3s;z-index:1}
-.btn-primary::before{content:'';position:absolute;inset:0;background:var(--accent-hover);border-radius:inherit;
-  transform:scaleX(0);transform-origin:left;transition:transform .45s var(--spring);z-index:-1}
+/* Buttons — sweep fill animation */
+.btn-primary{width:100%;padding:1rem;border:none;border-radius:999px;
+  background:linear-gradient(135deg,oklch(0.78 0.16 168),oklch(0.72 0.14 200));color:#fff;
+  font-family:var(--font-body);font-size:.95rem;font-weight:600;cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .4s var(--spring),box-shadow .4s var(--spring);z-index:1;
+  box-shadow:0 4px 16px oklch(0.78 0.16 168 / 0.2)}
+.btn-primary::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,oklch(0.72 0.15 168),oklch(0.65 0.13 200));
+  border-radius:inherit;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--spring);z-index:-1}
 .btn-primary:hover::before{transform:scaleX(1)}
-.btn-primary:hover{transform:scale(1.02);box-shadow:0 8px 30px rgba(45,212,168,.3)}
-.btn-primary:active{transform:scale(.98)}
+.btn-primary:hover{transform:translateY(-2px) scale(1.01);
+  box-shadow:0 8px 32px oklch(0.78 0.16 168 / 0.35),0 2px 8px oklch(0.78 0.16 168 / 0.2)}
+.btn-primary:active{transform:translateY(0) scale(.98);box-shadow:0 2px 8px oklch(0.78 0.16 168 / 0.2)}
 .btn-primary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .btn-primary:disabled{opacity:.5;pointer-events:none}
-.btn-primary .btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);
-  animation:ripple .6s linear;z-index:2}
+.btn-primary .btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.25);transform:scale(0);
+  animation:ripple .6s linear;z-index:2;pointer-events:none}
 @keyframes ripple{to{transform:scale(4);opacity:0}}
 
 /* Divider */
@@ -223,22 +302,31 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
 .divider span{font-size:.78rem;color:var(--muted);font-weight:500;white-space:nowrap}
 
-/* Social buttons */
+/* Social buttons — polished */
 .social-btns{display:flex;gap:.75rem;margin-bottom:1.5rem}
 .btn-social{flex:1;padding:.75rem;border:1.5px solid var(--border);border-radius:14px;background:var(--surface);
-  font-family:var(--font-body);font-size:.82rem;font-weight:500;color:var(--primary);cursor:none;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;transition:border-color .3s var(--spring),background .3s,box-shadow .3s var(--spring)}
-.btn-social:hover{border-color:rgba(45,212,168,0.4);background:var(--bg);box-shadow:0 0 0 3px rgba(45,212,168,0.08),0 4px 16px rgba(45,212,168,0.1)}
+  font-family:var(--font-body);font-size:.82rem;font-weight:500;color:var(--primary);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;position:relative;overflow:hidden;
+  transition:border-color .35s var(--spring),background .3s,box-shadow .35s var(--spring),transform .35s var(--spring)}
+.btn-social::before{content:'';position:absolute;inset:0;background:var(--accent-subtle);opacity:0;
+  transition:opacity .35s;border-radius:inherit}
+.btn-social:hover{border-color:oklch(0.78 0.16 168 / 0.45);transform:translateY(-1px);
+  box-shadow:0 0 0 3px oklch(0.78 0.16 168 / 0.08),0 6px 20px oklch(0.78 0.16 168 / 0.1)}
+.btn-social:hover::before{opacity:1}
+.btn-social:active{transform:translateY(0) scale(.98)}
 .btn-social:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.btn-social svg{width:20px;height:20px}
+.btn-social svg{width:20px;height:20px;position:relative;z-index:1}
+.btn-social span,.btn-social{position:relative;z-index:1}
 
 /* Links */
 .form-link{display:block;text-align:center;font-size:.82rem;color:var(--muted);margin-top:1rem}
 .form-link a{color:var(--accent);font-weight:600;text-decoration:none;transition:color .2s}
 .form-link a:hover{color:var(--accent-hover);text-decoration:underline}
+.form-link a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
 .forgot-link{text-align:right;margin-bottom:1.25rem}
 .forgot-link a{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s}
 .forgot-link a:hover{color:var(--accent)}
+.forgot-link a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
 
 /* ========== RESPONSIVE ========== */
 @media(max-width:1024px){
@@ -254,8 +342,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   .stats-carousel{height:70px}
   .stat-number{font-size:2rem}
   .testimonials{display:none}
-  .nav{padding:1rem 1.5rem}
-  .form-wrapper{max-width:100%;padding:1.75rem}
+  .carousel-dots{display:none}
+  .form-wrapper{max-width:100%;padding:1.75rem;border-radius:22px}
 }
 @media(max-width:480px){
   .panel-left{padding:2rem 1.25rem 1.5rem}
@@ -269,10 +357,14 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .aurora-blob,.panel-aurora::before,.panel-aurora::after,.panel-grid,.panel-grid::after{animation:none!important}
+  .panel-right::before,.panel-right::after{animation:none!important}
   .form-panel{clip-path:none!important;transition:none!important}
   .form-panel.active{clip-path:none!important}
   .btn-primary::before{transition:none!important}
   .scroll-progress::after{animation:none!important}
+  .tab-indicator{transition:none!important}
+  .cur,.cur-d{display:none!important}
+  body{cursor:auto!important}
 }
 
 /* ========== STAGGER ENTRY ANIMATIONS ========== */
@@ -297,7 +389,11 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn-primary.loading .btn-text{display:none}
 .btn-primary.loading .btn-spinner{display:block}
+
+/* ========== FOCUS fadeIn for form errors ========== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 </style>
+<link rel="stylesheet" href="nav-shared.css">
 </head>
 <body>
 
@@ -308,19 +404,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 <div class="grain"></div>
 
 <!-- Custom cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-dot" id="cursorDot"></div>
+<div class="cur" id="cursor"></div>
+<div class="cur-d" id="cursorDot"></div>
 
-<!-- Navigation -->
-<nav class="nav">
-  <a href="synera.html" class="nav-logo" data-hover>Synera<span>.</span></a>
-  <a href="synera.html" class="nav-back" data-hover>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
-    </svg>
-    Volver al inicio
-  </a>
-</nav>
+<!-- Navigation is now rendered by nav-shared.js -->
 
 <!-- Page -->
 <main class="page">
@@ -372,6 +459,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
           <cite>— Carlos M., Disenador UX</cite>
         </div>
       </div>
+
+      <div class="carousel-dots" id="carouselDots">
+        <button class="carousel-dot active" aria-label="Testimonio 1"></button>
+        <button class="carousel-dot" aria-label="Testimonio 2"></button>
+        <button class="carousel-dot" aria-label="Testimonio 3"></button>
+      </div>
     </div>
   </section>
 
@@ -379,8 +472,9 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   <section class="panel-right">
     <div class="form-wrapper">
 
-      <!-- Tab Toggle -->
-      <div class="tab-toggle">
+      <!-- Tab Toggle with sliding indicator -->
+      <div class="tab-toggle" data-active="login">
+        <div class="tab-indicator"></div>
         <button class="tab-btn active" data-tab="login" data-hover>Iniciar Sesion</button>
         <button class="tab-btn" data-tab="register" data-hover>Registrarse</button>
       </div>
@@ -614,13 +708,18 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="nav-shared.js"></script>
 <script>
 (function(){
   'use strict';
 
+  // ========== INIT FLOATING NAV ==========
+  SyneraNav.init({ mode: 'public', active: '', ctaText: 'Registrarse', ctaHref: '#', items: [{ label: 'Inicio', href: 'synera.html' }, { label: 'Empleos', href: 'dashboard.html' }] });
+
   // ========== CHECK IF ALREADY LOGGED IN ==========
   (async function checkExistingSession() {
     try {
+      if (typeof SyneraAuth === 'undefined') return;
       const session = await SyneraAuth.getSession();
       if (session && session.user) {
         const role = session.user.user_metadata?.role || 'worker';
@@ -634,11 +733,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
 
   // ========== FORM ERROR DISPLAY HELPER ==========
   function showFormError(formEl, message) {
+    if (!formEl) return;
     let errorDiv = formEl.querySelector('.form-error-msg');
     if (!errorDiv) {
       errorDiv = document.createElement('div');
       errorDiv.className = 'form-error-msg';
-      errorDiv.style.cssText = 'background:rgba(239,68,68,0.1);border:1px solid var(--danger);color:var(--danger);padding:12px 16px;border-radius:12px;font-size:0.875rem;font-weight:500;margin-bottom:1rem;text-align:center;animation:fadeIn 0.3s ease;';
+      errorDiv.style.cssText = 'background:rgba(239,68,68,0.08);border:1px solid var(--danger);color:var(--danger);padding:12px 16px;border-radius:14px;font-size:0.85rem;font-weight:500;margin-bottom:1rem;text-align:center;animation:fadeIn 0.3s ease;';
       formEl.insertBefore(errorDiv, formEl.firstChild);
     }
     errorDiv.textContent = message;
@@ -646,16 +746,18 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   }
 
   function hideFormError(formEl) {
+    if (!formEl) return;
     const errorDiv = formEl.querySelector('.form-error-msg');
     if (errorDiv) errorDiv.style.display = 'none';
   }
 
   function showFormSuccess(formEl, message) {
+    if (!formEl) return;
     let successDiv = formEl.querySelector('.form-success-msg');
     if (!successDiv) {
       successDiv = document.createElement('div');
       successDiv.className = 'form-success-msg';
-      successDiv.style.cssText = 'background:rgba(34,197,94,0.1);border:1px solid var(--success);color:var(--success);padding:12px 16px;border-radius:12px;font-size:0.875rem;font-weight:500;margin-bottom:1rem;text-align:center;animation:fadeIn 0.3s ease;';
+      successDiv.style.cssText = 'background:rgba(34,197,94,0.08);border:1px solid var(--success);color:var(--success);padding:12px 16px;border-radius:14px;font-size:0.85rem;font-weight:500;margin-bottom:1rem;text-align:center;animation:fadeIn 0.3s ease;';
       formEl.insertBefore(successDiv, formEl.firstChild);
     }
     successDiv.textContent = message;
@@ -663,94 +765,178 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   }
 
   function resetBtn(btn) {
+    if (!btn) return;
     btn.classList.remove('loading');
     btn.disabled = false;
   }
 
-  // ========== CUSTOM CURSOR ==========
+  // ========== CUSTOM CURSOR — ROBUST IMPLEMENTATION ==========
   const cursor = document.getElementById('cursor');
   const cursorDot = document.getElementById('cursorDot');
-  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
 
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
-  });
+  // Only activate custom cursor on devices that support hover
+  const supportsHover = window.matchMedia('(hover:hover)').matches;
+  const isCoarsePointer = window.matchMedia('(pointer:coarse)').matches;
+  let cursorActive = supportsHover && !isCoarsePointer;
+  let mouseX = -100, mouseY = -100, curX = -100, curY = -100;
+  let cursorVisible = false;
+  let rafId = null;
 
-  function animateCursor() {
-    curX += (mouseX - curX) * 0.15;
-    curY += (mouseY - curY) * 0.15;
-    cursor.style.left = curX + 'px';
-    cursor.style.top = curY + 'px';
-    requestAnimationFrame(animateCursor);
+  function enableCustomCursor() {
+    if (!cursorActive || !cursor || !cursorDot) return;
+    document.body.classList.add('custom-cursor-active');
   }
-  animateCursor();
 
-  // Hover effect on interactive elements
-  document.querySelectorAll('[data-hover], a, button, input, select, label[for]').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+  function disableCustomCursor() {
+    document.body.classList.remove('custom-cursor-active');
+    if (cursor) { cursor.classList.remove('visible'); cursor.style.left = '-100px'; cursor.style.top = '-100px'; }
+    if (cursorDot) { cursorDot.classList.remove('visible'); cursorDot.style.left = '-100px'; cursorDot.style.top = '-100px'; }
+    cursorVisible = false;
+  }
+
+  if (cursorActive && cursor && cursorDot) {
+    enableCustomCursor();
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+      }
+      if (!cursorVisible) {
+        cursorVisible = true;
+        cursor.classList.add('visible');
+        cursorDot.classList.add('visible');
+        curX = mouseX;
+        curY = mouseY;
+      }
+    }, { passive: true });
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', function() {
+      cursorVisible = false;
+      cursor.classList.remove('visible');
+      cursorDot.classList.remove('visible');
+    });
+
+    // Show cursor when entering window
+    document.addEventListener('mouseenter', function() {
+      cursorVisible = true;
+      cursor.classList.add('visible');
+      cursorDot.classList.add('visible');
+    });
+
+    // Click feedback
+    document.addEventListener('mousedown', function() {
+      cursor.classList.add('clicking');
+      cursorDot.style.transform = 'translate(-50%,-50%) scale(0.7)';
+    });
+    document.addEventListener('mouseup', function() {
+      cursor.classList.remove('clicking');
+      cursorDot.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+
+    // Handle visibility change (tab switch)
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        cursor.classList.remove('visible');
+        cursorDot.classList.remove('visible');
+        cursorVisible = false;
+      }
+    });
+
+    function animateCursor() {
+      curX += (mouseX - curX) * 0.15;
+      curY += (mouseY - curY) * 0.15;
+      if (cursor) {
+        cursor.style.left = curX + 'px';
+        cursor.style.top = curY + 'px';
+      }
+      rafId = requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover effect on interactive elements
+    document.querySelectorAll('[data-hover], a, button, input, select, label[for]').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { if (cursor) cursor.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function() { if (cursor) cursor.classList.remove('hovering'); });
+    });
+  } else {
+    // No custom cursor — hide elements
+    disableCustomCursor();
+  }
+
+  // Listen for media query changes (e.g., connecting mouse to tablet)
+  window.matchMedia('(hover:hover)').addEventListener('change', function(e) {
+    cursorActive = e.matches && !window.matchMedia('(pointer:coarse)').matches;
+    if (cursorActive) { enableCustomCursor(); } else { disableCustomCursor(); }
   });
 
   // ========== MAGNETIC BUTTON EFFECT ==========
-  document.querySelectorAll('.btn-primary').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.02)`;
+  document.querySelectorAll('.btn-primary').forEach(function(btn) {
+    btn.addEventListener('mousemove', function(e) {
+      if (btn.classList.contains('loading')) return;
+      var rect = btn.getBoundingClientRect();
+      var x = e.clientX - rect.left - rect.width / 2;
+      var y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = 'translate(' + (x * 0.12) + 'px, ' + (y * 0.12) + 'px) scale(1.01)';
     });
-    btn.addEventListener('mouseleave', () => {
+    btn.addEventListener('mouseleave', function() {
       btn.style.transform = '';
     });
     // Ripple
-    btn.addEventListener('click', e => {
-      const ripple = document.createElement('span');
+    btn.addEventListener('click', function(e) {
+      var ripple = document.createElement('span');
       ripple.classList.add('btn-ripple');
-      const rect = btn.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
+      var rect = btn.getBoundingClientRect();
+      var size = Math.max(rect.width, rect.height);
       ripple.style.width = ripple.style.height = size + 'px';
       ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
       ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
       btn.appendChild(ripple);
-      ripple.addEventListener('animationend', () => ripple.remove());
+      ripple.addEventListener('animationend', function() { ripple.remove(); });
     });
   });
 
-  // ========== TAB SWITCHING ==========
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const panels = document.querySelectorAll('.form-panel');
+  // ========== TAB SWITCHING WITH SLIDING INDICATOR ==========
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.form-panel');
+  var tabToggle = document.querySelector('.tab-toggle');
 
   function switchTab(tabName) {
-    tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
-    panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + tabName));
+    tabBtns.forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tabName); });
+    panels.forEach(function(p) { p.classList.toggle('active', p.id === 'panel-' + tabName); });
+    if (tabToggle) tabToggle.setAttribute('data-active', tabName);
   }
 
-  tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+  tabBtns.forEach(function(btn) { btn.addEventListener('click', function() { switchTab(btn.dataset.tab); }); });
 
   // Switch links
-  document.querySelectorAll('[data-switch]').forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); switchTab(link.dataset.switch); });
+  document.querySelectorAll('[data-switch]').forEach(function(link) {
+    link.addEventListener('click', function(e) { e.preventDefault(); switchTab(link.dataset.switch); });
   });
 
   // ========== PASSWORD SHOW/HIDE ==========
-  document.querySelectorAll('.pass-toggle').forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const input = document.getElementById(toggle.dataset.target);
-      const isPassword = input.type === 'password';
+  document.querySelectorAll('.pass-toggle').forEach(function(toggle) {
+    toggle.addEventListener('click', function() {
+      var input = document.getElementById(toggle.dataset.target);
+      if (!input) return;
+      var isPassword = input.type === 'password';
       input.type = isPassword ? 'text' : 'password';
-      toggle.querySelector('.eye-open').style.display = isPassword ? 'none' : 'block';
-      toggle.querySelector('.eye-closed').style.display = isPassword ? 'block' : 'none';
+      var eyeOpen = toggle.querySelector('.eye-open');
+      var eyeClosed = toggle.querySelector('.eye-closed');
+      if (eyeOpen) eyeOpen.style.display = isPassword ? 'none' : 'block';
+      if (eyeClosed) eyeClosed.style.display = isPassword ? 'block' : 'none';
       toggle.setAttribute('aria-label', isPassword ? 'Ocultar contrasena' : 'Mostrar contrasena');
     });
   });
 
   // ========== ROLE SELECTOR ==========
-  let selectedRole = 'worker';
-  document.querySelectorAll('.role-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  var selectedRole = 'worker';
+  document.querySelectorAll('.role-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.role-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       selectedRole = btn.dataset.role;
     });
@@ -762,26 +948,29 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   }
 
   function showMsg(el, text, type) {
+    if (!el) return;
     el.textContent = text;
     el.className = 'field-msg show ' + type;
   }
   function hideMsg(el) {
+    if (!el) return;
     el.className = 'field-msg';
     el.textContent = '';
   }
 
   function setInputState(input, state) {
+    if (!input) return;
     input.classList.remove('error', 'success');
     if (state) input.classList.add(state);
   }
 
   // ========== PASSWORD STRENGTH ==========
-  const strengthBar = document.getElementById('strengthBar');
-  const strengthText = document.getElementById('strengthText');
-  const regPassword = document.getElementById('regPassword');
+  var strengthBar = document.getElementById('strengthBar');
+  var strengthText = document.getElementById('strengthText');
+  var regPassword = document.getElementById('regPassword');
 
   function checkStrength(pw) {
-    let score = 0;
+    var score = 0;
     if (pw.length >= 6) score++;
     if (pw.length >= 10) score++;
     if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
@@ -790,85 +979,93 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
     return Math.min(score, 4);
   }
 
-  regPassword.addEventListener('input', () => {
-    const pw = regPassword.value;
-    const score = pw.length === 0 ? 0 : checkStrength(pw);
-    const segments = strengthBar.querySelectorAll('.strength-segment');
-    const labels = ['', 'Debil', 'Regular', 'Buena', 'Fuerte'];
-    const classes = ['', 'weak', 'weak', 'medium', 'strong'];
+  if (regPassword && strengthBar && strengthText) {
+    regPassword.addEventListener('input', function() {
+      var pw = regPassword.value;
+      var score = pw.length === 0 ? 0 : checkStrength(pw);
+      var segments = strengthBar.querySelectorAll('.strength-segment');
+      var labels = ['', 'Debil', 'Regular', 'Buena', 'Fuerte'];
+      var classes = ['', 'weak', 'weak', 'medium', 'strong'];
+      var textClasses = ['', 'weak-text', 'weak-text', 'medium-text', 'strong-text'];
 
-    segments.forEach((seg, i) => {
-      seg.className = 'strength-segment';
-      if (i < score) seg.classList.add(classes[score]);
+      segments.forEach(function(seg, i) {
+        seg.className = 'strength-segment';
+        if (i < score) seg.classList.add(classes[score]);
+      });
+      strengthText.textContent = pw.length > 0 ? labels[score] : '';
+      strengthText.className = 'strength-text' + (pw.length > 0 && textClasses[score] ? ' ' + textClasses[score] : '');
     });
-    strengthText.textContent = pw.length > 0 ? labels[score] : '';
-  });
+  }
 
   // ========== REAL-TIME VALIDATION ==========
-  // Login email
-  const loginEmail = document.getElementById('loginEmail');
-  const loginEmailMsg = document.getElementById('loginEmailMsg');
-  loginEmail.addEventListener('blur', () => {
-    if (loginEmail.value && !isValidEmail(loginEmail.value)) {
-      showMsg(loginEmailMsg, 'Correo electronico invalido', 'error');
-      setInputState(loginEmail, 'error');
-    } else if (loginEmail.value) {
-      hideMsg(loginEmailMsg);
-      setInputState(loginEmail, 'success');
-    }
-  });
-  loginEmail.addEventListener('input', () => { hideMsg(loginEmailMsg); setInputState(loginEmail, null); });
+  var loginEmail = document.getElementById('loginEmail');
+  var loginEmailMsg = document.getElementById('loginEmailMsg');
+  if (loginEmail && loginEmailMsg) {
+    loginEmail.addEventListener('blur', function() {
+      if (loginEmail.value && !isValidEmail(loginEmail.value)) {
+        showMsg(loginEmailMsg, 'Correo electronico invalido', 'error');
+        setInputState(loginEmail, 'error');
+      } else if (loginEmail.value) {
+        hideMsg(loginEmailMsg);
+        setInputState(loginEmail, 'success');
+      }
+    });
+    loginEmail.addEventListener('input', function() { hideMsg(loginEmailMsg); setInputState(loginEmail, null); });
+  }
 
-  // Register email
-  const regEmail = document.getElementById('regEmail');
-  const regEmailMsg = document.getElementById('regEmailMsg');
-  regEmail.addEventListener('blur', () => {
-    if (regEmail.value && !isValidEmail(regEmail.value)) {
-      showMsg(regEmailMsg, 'Correo electronico invalido', 'error');
-      setInputState(regEmail, 'error');
-    } else if (regEmail.value) {
-      hideMsg(regEmailMsg);
-      setInputState(regEmail, 'success');
-    }
-  });
-  regEmail.addEventListener('input', () => { hideMsg(regEmailMsg); setInputState(regEmail, null); });
+  var regEmail = document.getElementById('regEmail');
+  var regEmailMsg = document.getElementById('regEmailMsg');
+  if (regEmail && regEmailMsg) {
+    regEmail.addEventListener('blur', function() {
+      if (regEmail.value && !isValidEmail(regEmail.value)) {
+        showMsg(regEmailMsg, 'Correo electronico invalido', 'error');
+        setInputState(regEmail, 'error');
+      } else if (regEmail.value) {
+        hideMsg(regEmailMsg);
+        setInputState(regEmail, 'success');
+      }
+    });
+    regEmail.addEventListener('input', function() { hideMsg(regEmailMsg); setInputState(regEmail, null); });
+  }
 
-  // Register name
-  const regName = document.getElementById('regName');
-  const regNameMsg = document.getElementById('regNameMsg');
-  regName.addEventListener('blur', () => {
-    if (regName.value && regName.value.trim().length < 2) {
-      showMsg(regNameMsg, 'El nombre debe tener al menos 2 caracteres', 'error');
-      setInputState(regName, 'error');
-    } else if (regName.value) {
-      hideMsg(regNameMsg);
-      setInputState(regName, 'success');
-    }
-  });
+  var regName = document.getElementById('regName');
+  var regNameMsg = document.getElementById('regNameMsg');
+  if (regName && regNameMsg) {
+    regName.addEventListener('blur', function() {
+      if (regName.value && regName.value.trim().length < 2) {
+        showMsg(regNameMsg, 'El nombre debe tener al menos 2 caracteres', 'error');
+        setInputState(regName, 'error');
+      } else if (regName.value) {
+        hideMsg(regNameMsg);
+        setInputState(regName, 'success');
+      }
+    });
+  }
 
-  // Confirm password
-  const regConfirmPassword = document.getElementById('regConfirmPassword');
-  const regConfirmMsg = document.getElementById('regConfirmMsg');
-  regConfirmPassword.addEventListener('input', () => {
-    if (regConfirmPassword.value && regConfirmPassword.value !== regPassword.value) {
-      showMsg(regConfirmMsg, 'Las contrasenas no coinciden', 'error');
-      setInputState(regConfirmPassword, 'error');
-    } else if (regConfirmPassword.value) {
-      showMsg(regConfirmMsg, 'Las contrasenas coinciden', 'success');
-      setInputState(regConfirmPassword, 'success');
-    } else {
-      hideMsg(regConfirmMsg);
-      setInputState(regConfirmPassword, null);
-    }
-  });
+  var regConfirmPassword = document.getElementById('regConfirmPassword');
+  var regConfirmMsg = document.getElementById('regConfirmMsg');
+  if (regConfirmPassword && regConfirmMsg && regPassword) {
+    regConfirmPassword.addEventListener('input', function() {
+      if (regConfirmPassword.value && regConfirmPassword.value !== regPassword.value) {
+        showMsg(regConfirmMsg, 'Las contrasenas no coinciden', 'error');
+        setInputState(regConfirmPassword, 'error');
+      } else if (regConfirmPassword.value) {
+        showMsg(regConfirmMsg, 'Las contrasenas coinciden', 'success');
+        setInputState(regConfirmPassword, 'success');
+      } else {
+        hideMsg(regConfirmMsg);
+        setInputState(regConfirmPassword, null);
+      }
+    });
+  }
 
   // ========== FORGOT PASSWORD ==========
-  const forgotLink = document.querySelector('.forgot-link a');
-  if (forgotLink) {
+  var forgotLink = document.querySelector('.forgot-link a');
+  if (forgotLink && loginEmail) {
     forgotLink.addEventListener('click', async function(e) {
       e.preventDefault();
-      const email = loginEmail.value.trim();
-      const loginForm = document.getElementById('loginForm');
+      var email = loginEmail.value.trim();
+      var loginForm = document.getElementById('loginForm');
 
       if (!email || !isValidEmail(email)) {
         showFormError(loginForm, 'Ingresa tu correo electronico arriba para recuperar tu contrasena.');
@@ -881,10 +1078,11 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
       forgotLink.style.pointerEvents = 'none';
 
       try {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        if (typeof supabase === 'undefined') throw new Error('Supabase no disponible');
+        var result = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin + '/reset-password.html'
         });
-        if (error) throw error;
+        if (result.error) throw result.error;
         hideFormError(loginForm);
         showFormSuccess(loginForm, 'Te enviamos un enlace de recuperacion a ' + email + '. Revisa tu bandeja de entrada.');
       } catch (err) {
@@ -897,186 +1095,192 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   }
 
   // ========== LOGIN FORM SUBMIT ==========
-  document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const email = loginEmail.value.trim();
-    const password = document.getElementById('loginPassword').value;
-    let valid = true;
+  var loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var email = loginEmail ? loginEmail.value.trim() : '';
+      var loginPasswordEl = document.getElementById('loginPassword');
+      var password = loginPasswordEl ? loginPasswordEl.value : '';
+      var valid = true;
 
-    hideFormError(this);
+      hideFormError(this);
 
-    if (!email || !isValidEmail(email)) {
-      showMsg(loginEmailMsg, 'Ingresa un correo electronico valido', 'error');
-      setInputState(loginEmail, 'error');
-      valid = false;
-    }
-    if (!password) {
-      showMsg(document.getElementById('loginPasswordMsg'), 'Ingresa tu contrasena', 'error');
-      setInputState(document.getElementById('loginPassword'), 'error');
-      valid = false;
-    }
-
-    if (!valid) return;
-
-    const btn = this.querySelector('.btn-primary');
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    try {
-      const data = await SyneraAuth.signIn(email, password);
-      const user = data.user;
-      const role = user.user_metadata?.role || 'worker';
-      const fullName = user.user_metadata?.full_name || email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-
-      // Store in localStorage for backward compatibility
-      const userData = {
-        id: user.id,
-        name: fullName,
-        email: user.email,
-        role: role,
-        country: user.user_metadata?.country || '',
-        loggedIn: true
-      };
-      localStorage.setItem('synera_user', JSON.stringify(userData));
-      sessionStorage.setItem('synera_user', JSON.stringify(userData));
-
-      // Redirect based on role
-      if (role === 'employer') {
-        window.location.href = 'employer.html';
-      } else {
-        window.location.href = 'dashboard.html';
+      if (!email || !isValidEmail(email)) {
+        showMsg(loginEmailMsg, 'Ingresa un correo electronico valido', 'error');
+        setInputState(loginEmail, 'error');
+        valid = false;
       }
-    } catch (err) {
-      resetBtn(btn);
-      let message = 'Error al iniciar sesion. Intenta de nuevo.';
-      if (err.message) {
-        if (err.message.includes('Invalid login credentials')) {
-          message = 'Correo o contrasena incorrectos. Verifica tus datos.';
-        } else if (err.message.includes('Email not confirmed')) {
-          message = 'Tu correo aun no ha sido confirmado. Revisa tu bandeja de entrada.';
-        } else {
-          message = err.message;
-        }
+      if (!password) {
+        showMsg(document.getElementById('loginPasswordMsg'), 'Ingresa tu contrasena', 'error');
+        setInputState(loginPasswordEl, 'error');
+        valid = false;
       }
-      showFormError(this, message);
-    }
-  });
 
-  // ========== REGISTER FORM SUBMIT ==========
-  document.getElementById('registerForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const name = regName.value.trim();
-    const email = regEmail.value.trim();
-    const password = regPassword.value;
-    const confirmPassword = regConfirmPassword.value;
-    const country = document.getElementById('regCountry').value;
-    const terms = document.getElementById('regTerms').checked;
-    let valid = true;
+      if (!valid) return;
 
-    hideFormError(this);
+      var btn = this.querySelector('.btn-primary');
+      btn.classList.add('loading');
+      btn.disabled = true;
 
-    if (!name || name.length < 2) {
-      showMsg(regNameMsg, 'Ingresa tu nombre completo', 'error');
-      setInputState(regName, 'error');
-      valid = false;
-    }
-    if (!email || !isValidEmail(email)) {
-      showMsg(regEmailMsg, 'Ingresa un correo electronico valido', 'error');
-      setInputState(regEmail, 'error');
-      valid = false;
-    }
-    if (!password || password.length < 6) {
-      showMsg(document.querySelector('#regPassword + .input-icon + .pass-toggle + .strength-bar + .strength-text') || strengthText,
-        'La contrasena debe tener al menos 6 caracteres', 'error');
-      valid = false;
-    }
-    if (password !== confirmPassword) {
-      showMsg(regConfirmMsg, 'Las contrasenas no coinciden', 'error');
-      setInputState(regConfirmPassword, 'error');
-      valid = false;
-    }
-    if (!country) {
-      valid = false;
-    }
-    if (!terms) {
-      valid = false;
-      document.getElementById('regTerms').focus();
-    }
+      try {
+        if (typeof SyneraAuth === 'undefined') throw new Error('Sistema de autenticacion no disponible');
+        var data = await SyneraAuth.signIn(email, password);
+        var user = data.user;
+        var role = user.user_metadata?.role || 'worker';
+        var fullName = user.user_metadata?.full_name || email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
 
-    if (!valid) return;
-
-    const btn = this.querySelector('.btn-primary');
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    try {
-      const data = await SyneraAuth.signUp(email, password, {
-        full_name: name,
-        role: selectedRole,
-        country: country
-      });
-
-      const user = data.user;
-
-      // If email confirmation is required, Supabase returns a user but no session
-      if (data.session) {
-        // Auto-confirmed: store user and redirect
-        const userData = {
+        var userData = {
           id: user.id,
-          name: name,
+          name: fullName,
           email: user.email,
-          role: selectedRole,
-          country: country,
+          role: role,
+          country: user.user_metadata?.country || '',
           loggedIn: true
         };
         localStorage.setItem('synera_user', JSON.stringify(userData));
         sessionStorage.setItem('synera_user', JSON.stringify(userData));
 
-        if (selectedRole === 'worker') {
-          window.location.href = 'dashboard.html';
-        } else {
+        if (role === 'employer') {
           window.location.href = 'employer.html';
-        }
-      } else {
-        // Email confirmation required
-        resetBtn(btn);
-        hideFormError(this);
-        showFormSuccess(this, 'Cuenta creada. Revisa tu correo electronico para confirmar tu cuenta antes de iniciar sesion.');
-      }
-    } catch (err) {
-      resetBtn(btn);
-      let message = 'Error al crear la cuenta. Intenta de nuevo.';
-      if (err.message) {
-        if (err.message.includes('already registered') || err.message.includes('already been registered')) {
-          message = 'Este correo ya esta registrado. Intenta iniciar sesion.';
-        } else if (err.message.includes('Password should be')) {
-          message = 'La contrasena debe tener al menos 6 caracteres.';
         } else {
-          message = err.message;
+          window.location.href = 'dashboard.html';
         }
+      } catch (err) {
+        resetBtn(btn);
+        var message = 'Error al iniciar sesion. Intenta de nuevo.';
+        if (err.message) {
+          if (err.message.includes('Invalid login credentials')) {
+            message = 'Correo o contrasena incorrectos. Verifica tus datos.';
+          } else if (err.message.includes('Email not confirmed')) {
+            message = 'Tu correo aun no ha sido confirmado. Revisa tu bandeja de entrada.';
+          } else {
+            message = err.message;
+          }
+        }
+        showFormError(this, message);
       }
-      showFormError(this, message);
-    }
-  });
+    });
+  }
+
+  // ========== REGISTER FORM SUBMIT ==========
+  var registerForm = document.getElementById('registerForm');
+  if (registerForm) {
+    registerForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var name = regName ? regName.value.trim() : '';
+      var email = regEmail ? regEmail.value.trim() : '';
+      var password = regPassword ? regPassword.value : '';
+      var confirmPassword = regConfirmPassword ? regConfirmPassword.value : '';
+      var country = document.getElementById('regCountry') ? document.getElementById('regCountry').value : '';
+      var termsEl = document.getElementById('regTerms');
+      var terms = termsEl ? termsEl.checked : false;
+      var valid = true;
+
+      hideFormError(this);
+
+      if (!name || name.length < 2) {
+        showMsg(regNameMsg, 'Ingresa tu nombre completo', 'error');
+        setInputState(regName, 'error');
+        valid = false;
+      }
+      if (!email || !isValidEmail(email)) {
+        showMsg(regEmailMsg, 'Ingresa un correo electronico valido', 'error');
+        setInputState(regEmail, 'error');
+        valid = false;
+      }
+      if (!password || password.length < 6) {
+        if (strengthText) {
+          showMsg(strengthText, 'La contrasena debe tener al menos 6 caracteres', 'error');
+        }
+        valid = false;
+      }
+      if (password !== confirmPassword) {
+        showMsg(regConfirmMsg, 'Las contrasenas no coinciden', 'error');
+        setInputState(regConfirmPassword, 'error');
+        valid = false;
+      }
+      if (!country) {
+        valid = false;
+      }
+      if (!terms) {
+        valid = false;
+        if (termsEl) termsEl.focus();
+      }
+
+      if (!valid) return;
+
+      var btn = this.querySelector('.btn-primary');
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      try {
+        if (typeof SyneraAuth === 'undefined') throw new Error('Sistema de autenticacion no disponible');
+        var data = await SyneraAuth.signUp(email, password, {
+          full_name: name,
+          role: selectedRole,
+          country: country
+        });
+
+        var user = data.user;
+
+        if (data.session) {
+          var userData = {
+            id: user.id,
+            name: name,
+            email: user.email,
+            role: selectedRole,
+            country: country,
+            loggedIn: true
+          };
+          localStorage.setItem('synera_user', JSON.stringify(userData));
+          sessionStorage.setItem('synera_user', JSON.stringify(userData));
+
+          if (selectedRole === 'worker') {
+            window.location.href = 'dashboard.html';
+          } else {
+            window.location.href = 'employer.html';
+          }
+        } else {
+          resetBtn(btn);
+          hideFormError(this);
+          showFormSuccess(this, 'Cuenta creada. Revisa tu correo electronico para confirmar tu cuenta antes de iniciar sesion.');
+        }
+      } catch (err) {
+        resetBtn(btn);
+        var message = 'Error al crear la cuenta. Intenta de nuevo.';
+        if (err.message) {
+          if (err.message.includes('already registered') || err.message.includes('already been registered')) {
+            message = 'Este correo ya esta registrado. Intenta iniciar sesion.';
+          } else if (err.message.includes('Password should be')) {
+            message = 'La contrasena debe tener al menos 6 caracteres.';
+          } else {
+            message = err.message;
+          }
+        }
+        showFormError(this, message);
+      }
+    });
+  }
 
   // ========== SOCIAL LOGIN BUTTONS ==========
-  const socialBtns = document.querySelectorAll('.btn-social');
-  socialBtns.forEach(btn => {
+  document.querySelectorAll('.btn-social').forEach(function(btn) {
     btn.addEventListener('click', async function() {
-      const text = btn.textContent.trim();
-      let provider = null;
+      var text = btn.textContent.trim();
+      var provider = null;
       if (text.includes('Google')) provider = 'google';
       else if (text.includes('LinkedIn')) provider = 'linkedin_oidc';
 
       if (provider) {
         try {
-          const { error } = await supabase.auth.signInWithOAuth({
+          if (typeof supabase === 'undefined') throw new Error('Supabase no disponible');
+          var result = await supabase.auth.signInWithOAuth({
             provider: provider,
             options: { redirectTo: window.location.origin + '/dashboard.html' }
           });
-          if (error) throw error;
+          if (result.error) throw result.error;
         } catch (err) {
-          const form = document.querySelector('.form-panel.active form') || document.getElementById('loginForm');
+          var form = document.querySelector('.form-panel.active form') || document.getElementById('loginForm');
           showFormError(form, err.message || 'Error con el inicio de sesion social.');
         }
       }
@@ -1084,22 +1288,40 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--primary);over
   });
 
   // ========== STATS CAROUSEL ==========
-  const statsItems = document.querySelectorAll('.stat-item');
-  let statsIndex = 0;
-  setInterval(() => {
-    statsItems[statsIndex].classList.remove('active');
-    statsIndex = (statsIndex + 1) % statsItems.length;
-    statsItems[statsIndex].classList.add('active');
-  }, 3500);
+  var statsItems = document.querySelectorAll('.stat-item');
+  var statsIndex = 0;
+  if (statsItems.length > 1) {
+    setInterval(function() {
+      statsItems[statsIndex].classList.remove('active');
+      statsIndex = (statsIndex + 1) % statsItems.length;
+      statsItems[statsIndex].classList.add('active');
+    }, 3500);
+  }
 
-  // ========== TESTIMONIALS CAROUSEL ==========
-  const testItems = document.querySelectorAll('.testimonial');
-  let testIndex = 0;
-  setInterval(() => {
-    testItems[testIndex].classList.remove('active');
-    testIndex = (testIndex + 1) % testItems.length;
-    testItems[testIndex].classList.add('active');
-  }, 5000);
+  // ========== TESTIMONIALS CAROUSEL WITH DOTS ==========
+  var testItems = document.querySelectorAll('.testimonial');
+  var testDots = document.querySelectorAll('.carousel-dot');
+  var testIndex = 0;
+  if (testItems.length > 1) {
+    setInterval(function() {
+      testItems[testIndex].classList.remove('active');
+      if (testDots[testIndex]) testDots[testIndex].classList.remove('active');
+      testIndex = (testIndex + 1) % testItems.length;
+      testItems[testIndex].classList.add('active');
+      if (testDots[testIndex]) testDots[testIndex].classList.add('active');
+    }, 5000);
+  }
+
+  // Dot click navigation
+  testDots.forEach(function(dot, i) {
+    dot.addEventListener('click', function() {
+      testItems[testIndex].classList.remove('active');
+      if (testDots[testIndex]) testDots[testIndex].classList.remove('active');
+      testIndex = i;
+      testItems[testIndex].classList.add('active');
+      if (testDots[testIndex]) testDots[testIndex].classList.add('active');
+    });
+  });
 
 })();
 </script>
