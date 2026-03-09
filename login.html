@@ -1124,7 +1124,6 @@ body.custom-cursor-active [role="button"]{cursor:none}
       btn.disabled = true;
 
       try {
-        if (typeof SyneraAuth === 'undefined') throw new Error('Sistema de autenticacion no disponible');
         var data = await SyneraAuth.signIn(email, password);
         var user = data.user;
         var role = user.user_metadata?.role || 'worker';
@@ -1215,7 +1214,6 @@ body.custom-cursor-active [role="button"]{cursor:none}
       btn.disabled = true;
 
       try {
-        if (typeof SyneraAuth === 'undefined') throw new Error('Sistema de autenticacion no disponible');
         var data = await SyneraAuth.signUp(email, password, {
           full_name: name,
           role: selectedRole,
