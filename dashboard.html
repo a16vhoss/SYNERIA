@@ -1554,8 +1554,10 @@ try {
 } catch(err){ console.warn('Logout error',err); }
 window.location.href = 'login.html';
 }
-document.getElementById('sidebarLogout').addEventListener('click',handleLogout);
-document.getElementById('dropdownLogout').addEventListener('click',handleLogout);
+var _sidebarLogout = document.getElementById('sidebarLogout');
+var _dropdownLogout = document.getElementById('dropdownLogout');
+if (_sidebarLogout) _sidebarLogout.addEventListener('click',handleLogout);
+if (_dropdownLogout) _dropdownLogout.addEventListener('click',handleLogout);
 
 // ======== SALARY SLIDER INIT ========
 document.getElementById('salaryVal').textContent = '$0';
@@ -1605,11 +1607,13 @@ try {
   let unreadCount = 0;
   try { unreadCount = await SyneraNotifications.getUnreadCount(user.id); } catch(e){ console.warn('Notifs error',e); }
   const badge = document.getElementById('notifBadge');
-  if(unreadCount > 0){
-    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
-    badge.style.display = 'flex';
-  } else {
-    badge.style.display = 'none';
+  if(badge) {
+    if(unreadCount > 0){
+      badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
   }
 
   // 6. Update stats

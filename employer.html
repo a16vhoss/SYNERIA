@@ -1324,23 +1324,31 @@ function toggleMobileSidebar(){
   document.getElementById('sidebar').classList.toggle('mobile-open');
 }
 
-/* ========== DROPDOWNS ========== */
+/* ========== DROPDOWNS (legacy — elements may not exist) ========== */
 function toggleNotifDropdown(){
-  document.getElementById('notifDropdown').classList.toggle('show');
-  document.getElementById('userDropdown').classList.remove('show');
+  var nd = document.getElementById('notifDropdown');
+  var ud = document.getElementById('userDropdown');
+  if(nd) nd.classList.toggle('show');
+  if(ud) ud.classList.remove('show');
 }
 function toggleUserDropdown(){
-  document.getElementById('userDropdown').classList.toggle('show');
-  document.getElementById('userChevron').classList.toggle('open');
-  document.getElementById('notifDropdown').classList.remove('show');
+  var ud = document.getElementById('userDropdown');
+  var uc = document.getElementById('userChevron');
+  var nd = document.getElementById('notifDropdown');
+  if(ud) ud.classList.toggle('show');
+  if(uc) uc.classList.toggle('open');
+  if(nd) nd.classList.remove('show');
 }
 document.addEventListener('click', e => {
   if(!e.target.closest('.topnav__notif') && !e.target.closest('.notif-dropdown')){
-    document.getElementById('notifDropdown').classList.remove('show');
+    var nd = document.getElementById('notifDropdown');
+    if(nd) nd.classList.remove('show');
   }
   if(!e.target.closest('.topnav__user')){
-    document.getElementById('userDropdown').classList.remove('show');
-    document.getElementById('userChevron').classList.remove('open');
+    var ud = document.getElementById('userDropdown');
+    var uc = document.getElementById('userChevron');
+    if(ud) ud.classList.remove('show');
+    if(uc) uc.classList.remove('open');
   }
 });
 
