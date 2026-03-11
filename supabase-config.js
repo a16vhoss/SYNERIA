@@ -4,7 +4,7 @@
    Falls back to localStorage if Supabase CDN fails
    ═══════════════════════════════════════════ */
 
-const SUPABASE_URL = 'https://ophcddxrcjcntwvhvpuzy.supabase.co';
+const SUPABASE_URL = 'https://ophcddxrcjcntwhvpuzy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9waGNkZHhyY2pjbnR3aHZwdXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjU1NzIsImV4cCI6MjA4ODYwMTU3Mn0.aPm_enMTEnzomByecAVuZNV-BlH83gjO6lE9UHa7768';
 
 /* ── Try to init Supabase client (non-blocking) ── */

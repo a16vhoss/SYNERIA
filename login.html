@@ -1078,8 +1078,8 @@ body.custom-cursor-active [role="button"]{cursor:none}
       forgotLink.style.pointerEvents = 'none';
 
       try {
-        if (typeof supabase === 'undefined') throw new Error('Supabase no disponible');
-        var result = await supabase.auth.resetPasswordForEmail(email, {
+        if (!SUPABASE_READY || !_syneriaSupabase) throw new Error('Supabase no disponible. Intenta de nuevo mas tarde.');
+        var result = await _syneriaSupabase.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin + '/reset-password.html'
         });
         if (result.error) throw result.error;
@@ -1271,8 +1271,8 @@ body.custom-cursor-active [role="button"]{cursor:none}
 
       if (provider) {
         try {
-          if (typeof supabase === 'undefined') throw new Error('Supabase no disponible');
-          var result = await supabase.auth.signInWithOAuth({
+          if (!SUPABASE_READY || !_syneriaSupabase) throw new Error('Supabase no disponible. Intenta de nuevo mas tarde.');
+          var result = await _syneriaSupabase.auth.signInWithOAuth({
             provider: provider,
             options: { redirectTo: window.location.origin + '/dashboard.html' }
           });

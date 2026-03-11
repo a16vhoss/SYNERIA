@@ -199,56 +199,85 @@ ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE saved_jobs ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: users can read all profiles, update their own
+DROP POLICY IF EXISTS "Profiles are viewable by everyone" ON profiles;
 CREATE POLICY "Profiles are viewable by everyone" ON profiles FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
+DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
 CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Companies: everyone can read, owners can manage
+DROP POLICY IF EXISTS "Companies are viewable by everyone" ON companies;
 CREATE POLICY "Companies are viewable by everyone" ON companies FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Owners can manage companies" ON companies;
 CREATE POLICY "Owners can manage companies" ON companies FOR ALL USING (auth.uid() = owner_id);
 
 -- Jobs: everyone can read active jobs, employers can manage their own
+DROP POLICY IF EXISTS "Active jobs are viewable by everyone" ON jobs;
 CREATE POLICY "Active jobs are viewable by everyone" ON jobs FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Employers can manage own jobs" ON jobs;
 CREATE POLICY "Employers can manage own jobs" ON jobs FOR INSERT WITH CHECK (auth.uid() = employer_id);
+DROP POLICY IF EXISTS "Employers can update own jobs" ON jobs;
 CREATE POLICY "Employers can update own jobs" ON jobs FOR UPDATE USING (auth.uid() = employer_id);
+DROP POLICY IF EXISTS "Employers can delete own jobs" ON jobs;
 CREATE POLICY "Employers can delete own jobs" ON jobs FOR DELETE USING (auth.uid() = employer_id);
 
 -- Applications: users see their own, employers see for their jobs
+DROP POLICY IF EXISTS "Users see own applications" ON applications;
 CREATE POLICY "Users see own applications" ON applications FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Employers see job applications" ON applications;
 CREATE POLICY "Employers see job applications" ON applications FOR SELECT USING (
   EXISTS (SELECT 1 FROM jobs WHERE jobs.id = applications.job_id AND jobs.employer_id = auth.uid())
 );
+DROP POLICY IF EXISTS "Users can create applications" ON applications;
 CREATE POLICY "Users can create applications" ON applications FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Employers can update application status" ON applications;
 CREATE POLICY "Employers can update application status" ON applications FOR UPDATE USING (
   EXISTS (SELECT 1 FROM jobs WHERE jobs.id = applications.job_id AND jobs.employer_id = auth.uid())
 );
 
 -- Wallets: users see and manage their own
+DROP POLICY IF EXISTS "Users see own wallet" ON wallets;
 CREATE POLICY "Users see own wallet" ON wallets FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can manage own wallet" ON wallets;
 CREATE POLICY "Users can manage own wallet" ON wallets FOR ALL USING (auth.uid() = user_id);
 
 -- Transactions: users see their own
+DROP POLICY IF EXISTS "Users see own transactions" ON transactions;
 CREATE POLICY "Users see own transactions" ON transactions FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can create transactions" ON transactions;
 CREATE POLICY "Users can create transactions" ON transactions FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Contracts: workers see their own
+DROP POLICY IF EXISTS "Workers see own contracts" ON contracts;
 CREATE POLICY "Workers see own contracts" ON contracts FOR SELECT USING (auth.uid() = worker_id);
+DROP POLICY IF EXISTS "Contracts can be created" ON contracts;
 CREATE POLICY "Contracts can be created" ON contracts FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Workers can update own contracts" ON contracts;
 CREATE POLICY "Workers can update own contracts" ON contracts FOR UPDATE USING (auth.uid() = worker_id);
 
 -- Notifications: users see their own
+DROP POLICY IF EXISTS "Users see own notifications" ON notifications;
 CREATE POLICY "Users see own notifications" ON notifications FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Notifications can be created" ON notifications;
 CREATE POLICY "Notifications can be created" ON notifications FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Users can update own notifications" ON notifications;
 CREATE POLICY "Users can update own notifications" ON notifications FOR UPDATE USING (auth.uid() = user_id);
 
 -- Messages: users see messages they sent or received
+DROP POLICY IF EXISTS "Users see own messages" ON messages;
 CREATE POLICY "Users see own messages" ON messages FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
+DROP POLICY IF EXISTS "Users can send messages" ON messages;
 CREATE POLICY "Users can send messages" ON messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
+DROP POLICY IF EXISTS "Users can update received messages" ON messages;
 CREATE POLICY "Users can update received messages" ON messages FOR UPDATE USING (auth.uid() = receiver_id);
 
 -- Saved jobs: users manage their own
+DROP POLICY IF EXISTS "Users see own saved jobs" ON saved_jobs;
 CREATE POLICY "Users see own saved jobs" ON saved_jobs FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can save jobs" ON saved_jobs;
 CREATE POLICY "Users can save jobs" ON saved_jobs FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can unsave jobs" ON saved_jobs;
 CREATE POLICY "Users can unsave jobs" ON saved_jobs FOR DELETE USING (auth.uid() = user_id);
 
 -- ═══════════════════════════════════════════
