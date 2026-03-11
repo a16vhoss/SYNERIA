@@ -1584,8 +1584,12 @@ function initSearchBar(){
 /* ========== MOBILE MENU BTN VISIBILITY ========== */
 function checkMobile(){
   const btn = document.querySelector('.mobile-menu-btn');
-  if(window.innerWidth <= 768){ btn.style.display = 'flex'; }
-  else { btn.style.display = 'none'; document.getElementById('sidebar').classList.remove('mobile-open'); }
+  if(btn){
+    if(window.innerWidth <= 768){ btn.style.display = 'flex'; }
+    else { btn.style.display = 'none'; document.getElementById('sidebar').classList.remove('mobile-open'); }
+  } else {
+    if(window.innerWidth > 768) document.getElementById('sidebar').classList.remove('mobile-open');
+  }
 }
 window.addEventListener('resize', checkMobile);
 
