@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Panel del Trabajador</title>
+<title>Syneria — Panel del Trabajador</title>
 <link rel="stylesheet" href="nav-shared.css">
 <style>
 @import url('https://fonts.cdnfonts.com/css/general-sans');
@@ -1101,7 +1101,7 @@ Perfil
 'use strict';
 
 // ======== INIT FLOATING NAV ========
-SyneraNav.init({
+SyneriaNav.init({
   mode: 'app',
   active: 'Dashboard',
   items: [
@@ -1118,7 +1118,7 @@ SyneraNav.init({
 
 // ======== STATE ========
 let allJobs = [];
-let savedJobs = JSON.parse(localStorage.getItem('synera_saved') || '[]');
+let savedJobs = JSON.parse(localStorage.getItem('syneria_saved') || '[]');
 let currentSort = 'recent';
 let visibleCount = 8;
 let currentUserId = null;
@@ -1126,7 +1126,7 @@ let currentUserId = null;
 function toggleSave(id){
 const i = savedJobs.indexOf(id);
 if(i>-1) savedJobs.splice(i,1); else savedJobs.push(id);
-localStorage.setItem('synera_saved',JSON.stringify(savedJobs));
+localStorage.setItem('syneria_saved',JSON.stringify(savedJobs));
 }
 window._toggleSave = toggleSave;
 
@@ -1550,7 +1550,7 @@ initCardTilt(document.getElementById('resultsGrid'),'.result-card');
 async function handleLogout(e){
 e.preventDefault();
 try {
-  await SyneraAuth.signOut();
+  await SyneriaAuth.signOut();
 } catch(err){ console.warn('Logout error',err); }
 window.location.href = 'login.html';
 }
@@ -1566,7 +1566,7 @@ document.getElementById('salaryVal').textContent = '$0';
 async function init(){
 try {
   // 1. Check auth
-  const session = await SyneraAuth.requireAuth();
+  const session = await SyneriaAuth.requireAuth();
   if(!session) return; // redirecting to login
 
   const user = session.user;
@@ -1574,18 +1574,18 @@ try {
 
   // 2. Load profile
   let profile = null;
-  try { profile = await SyneraProfiles.get(user.id); } catch(e){ console.warn('Profile load error',e); }
+  try { profile = await SyneriaProfiles.get(user.id); } catch(e){ console.warn('Profile load error',e); }
 
   const userName = (profile && profile.full_name) ? profile.full_name : (user.user_metadata && user.user_metadata.name) ? user.user_metadata.name : user.email.split('@')[0];
   const initials = userName.split(' ').map(w=>w.charAt(0).toUpperCase()).slice(0,2).join('');
 
   document.getElementById('welcomeName').textContent = userName.split(' ')[0];
   // Update floating nav with user data
-  SyneraNav.setUser(userName, initials, 0);
+  SyneriaNav.setUser(userName, initials, 0);
 
   // 3. Load jobs
   let jobs = [];
-  try { jobs = await SyneraJobs.list(); } catch(e){ console.warn('Jobs load error',e); }
+  try { jobs = await SyneriaJobs.list(); } catch(e){ console.warn('Jobs load error',e); }
   if(!jobs || !Array.isArray(jobs)) jobs = [];
   allJobs = jobs.map(normalizeJob);
 
@@ -1599,13 +1599,13 @@ try {
 
   // 4. Load applications
   let apps = [];
-  try { apps = await SyneraApplications.listByUser(user.id); } catch(e){ console.warn('Apps load error',e); }
+  try { apps = await SyneriaApplications.listByUser(user.id); } catch(e){ console.warn('Apps load error',e); }
   if(!apps || !Array.isArray(apps)) apps = [];
   renderApplications(apps);
 
   // 5. Load notifications count
   let unreadCount = 0;
-  try { unreadCount = await SyneraNotifications.getUnreadCount(user.id); } catch(e){ console.warn('Notifs error',e); }
+  try { unreadCount = await SyneriaNotifications.getUnreadCount(user.id); } catch(e){ console.warn('Notifs error',e); }
   const badge = document.getElementById('notifBadge');
   if(badge) {
     if(unreadCount > 0){

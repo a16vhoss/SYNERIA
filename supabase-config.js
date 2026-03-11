@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   SYNERA — Supabase Configuration
+   SYNERIA — Supabase Configuration
    Shared across all pages
    Falls back to localStorage if Supabase CDN fails
    ═══════════════════════════════════════════ */
@@ -8,7 +8,7 @@ const SUPABASE_URL = 'https://ophcddxrcjcntwvhvpuzy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9waGNkZHhyY2pjbnR3aHZwdXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjU1NzIsImV4cCI6MjA4ODYwMTU3Mn0.aPm_enMTEnzomByecAVuZNV-BlH83gjO6lE9UHa7768';
 
 /* ── Try to init Supabase client (non-blocking) ── */
-var _syneraSupabase = null;
+var _syneriaSupabase = null;
 var SUPABASE_READY = false;
 
 // Try to init if CDN already loaded
@@ -16,7 +16,7 @@ var SUPABASE_READY = false;
   try {
     var _sb = window.supabase;
     var fn = _sb && (_sb.createClient || (_sb.default && _sb.default.createClient));
-    if (fn) { _syneraSupabase = fn(SUPABASE_URL, SUPABASE_ANON_KEY); SUPABASE_READY = true; console.log('Supabase: connected'); return; }
+    if (fn) { _syneriaSupabase = fn(SUPABASE_URL, SUPABASE_ANON_KEY); SUPABASE_READY = true; console.log('Supabase: connected'); return; }
   } catch(e) {}
   console.log('Supabase: using local mode (offline-capable)');
 })();
@@ -32,45 +32,45 @@ function _lsSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val))
 function _uuid() { return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); }); }
 
 /* ═══ AUTH HELPERS ═══ */
-const SyneraAuth = {
+const SyneriaAuth = {
   async signUp(email, password, metadata = {}) {
     if (SUPABASE_READY) {
-      const { data, error } = await _syneraSupabase.auth.signUp({ email, password, options: { data: metadata } });
+      const { data, error } = await _syneriaSupabase.auth.signUp({ email, password, options: { data: metadata } });
       if (error) throw error;
       // Store locally for compatibility
       const user = data.user || { id: _uuid(), email, user_metadata: metadata };
-      _lsSet('synera_user', { id: user.id, email, name: metadata.full_name || email.split('@')[0], role: metadata.role || 'worker', country: metadata.country || '' });
+      _lsSet('syneria_user', { id: user.id, email, name: metadata.full_name || email.split('@')[0], role: metadata.role || 'worker', country: metadata.country || '' });
       return data;
     }
     // Local fallback
     const id = _uuid();
     const user = { id, email, user_metadata: metadata, created_at: new Date().toISOString() };
     const session = { user, access_token: 'local_' + id };
-    _lsSet('synera_user', { id, email, name: metadata.full_name || email.split('@')[0], role: metadata.role || 'worker', country: metadata.country || '' });
-    _lsSet('synera_session', session);
+    _lsSet('syneria_user', { id, email, name: metadata.full_name || email.split('@')[0], role: metadata.role || 'worker', country: metadata.country || '' });
+    _lsSet('syneria_session', session);
     // Create local profile
-    const profiles = _lsGet('synera_profiles', {});
+    const profiles = _lsGet('syneria_profiles', {});
     profiles[id] = { id, email, full_name: metadata.full_name || '', role: metadata.role || 'worker', country: metadata.country || '', skills: [], languages: [], experience_years: 0, created_at: new Date().toISOString() };
-    _lsSet('synera_profiles', profiles);
+    _lsSet('syneria_profiles', profiles);
     // Create local wallet
-    const wallets = _lsGet('synera_wallets', {});
+    const wallets = _lsGet('syneria_wallets', {});
     wallets[id] = { user_id: id, balance: 4850, currency: 'USD' };
-    _lsSet('synera_wallets', wallets);
+    _lsSet('syneria_wallets', wallets);
     return { user, session };
   },
 
   async signIn(email, password) {
     if (SUPABASE_READY) {
-      const { data, error } = await _syneraSupabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await _syneriaSupabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       const user = data.user;
-      _lsSet('synera_user', { id: user.id, email: user.email, name: user.user_metadata?.full_name || email.split('@')[0], role: user.user_metadata?.role || 'worker' });
+      _lsSet('syneria_user', { id: user.id, email: user.email, name: user.user_metadata?.full_name || email.split('@')[0], role: user.user_metadata?.role || 'worker' });
       return data;
     }
     // Local fallback — check stored session
-    const stored = _lsGet('synera_user', null);
+    const stored = _lsGet('syneria_user', null);
     if (stored && stored.email === email) {
-      const session = _lsGet('synera_session', null);
+      const session = _lsGet('syneria_session', null);
       return { user: { id: stored.id, email, user_metadata: { full_name: stored.name, role: stored.role } }, session };
     }
     // Auto-create on first local login
@@ -78,47 +78,47 @@ const SyneraAuth = {
     const name = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     const user = { id, email, user_metadata: { full_name: name, role: 'worker' } };
     const session = { user, access_token: 'local_' + id };
-    _lsSet('synera_user', { id, email, name, role: 'worker' });
-    _lsSet('synera_session', session);
-    const profiles = _lsGet('synera_profiles', {});
+    _lsSet('syneria_user', { id, email, name, role: 'worker' });
+    _lsSet('syneria_session', session);
+    const profiles = _lsGet('syneria_profiles', {});
     profiles[id] = { id, email, full_name: name, role: 'worker', skills: [], languages: [], experience_years: 0 };
-    _lsSet('synera_profiles', profiles);
-    const wallets = _lsGet('synera_wallets', {});
+    _lsSet('syneria_profiles', profiles);
+    const wallets = _lsGet('syneria_wallets', {});
     wallets[id] = { user_id: id, balance: 4850, currency: 'USD' };
-    _lsSet('synera_wallets', wallets);
+    _lsSet('syneria_wallets', wallets);
     return { user, session };
   },
 
   async signOut() {
-    if (SUPABASE_READY) { try { await _syneraSupabase.auth.signOut(); } catch(e) {} }
-    localStorage.removeItem('synera_user');
-    localStorage.removeItem('synera_session');
-    sessionStorage.removeItem('synera_user');
+    if (SUPABASE_READY) { try { await _syneriaSupabase.auth.signOut(); } catch(e) {} }
+    localStorage.removeItem('syneria_user');
+    localStorage.removeItem('syneria_session');
+    sessionStorage.removeItem('syneria_user');
   },
 
   async getUser() {
     if (SUPABASE_READY) {
-      try { const { data: { user } } = await _syneraSupabase.auth.getUser(); return user; } catch(e) {}
+      try { const { data: { user } } = await _syneriaSupabase.auth.getUser(); return user; } catch(e) {}
     }
-    const stored = _lsGet('synera_user', null);
+    const stored = _lsGet('syneria_user', null);
     if (!stored) return null;
     return { id: stored.id, email: stored.email, user_metadata: { full_name: stored.name, role: stored.role, country: stored.country } };
   },
 
   async getSession() {
     if (SUPABASE_READY) {
-      try { const { data: { session } } = await _syneraSupabase.auth.getSession(); if (session) return session; } catch(e) {}
+      try { const { data: { session } } = await _syneriaSupabase.auth.getSession(); if (session) return session; } catch(e) {}
     }
-    const stored = _lsGet('synera_session', null);
+    const stored = _lsGet('syneria_session', null);
     if (stored) return stored;
     // Check old format
-    const user = _lsGet('synera_user', null);
+    const user = _lsGet('syneria_user', null);
     if (user) return { user: { id: user.id, email: user.email, user_metadata: { full_name: user.name, role: user.role } }, access_token: 'local' };
     return null;
   },
 
   onAuthStateChange(callback) {
-    if (SUPABASE_READY) return _syneraSupabase.auth.onAuthStateChange(callback);
+    if (SUPABASE_READY) return _syneriaSupabase.auth.onAuthStateChange(callback);
     return { data: { subscription: { unsubscribe: () => {} } } };
   },
 
@@ -130,36 +130,36 @@ const SyneraAuth = {
 };
 
 /* ═══ PROFILE HELPERS ═══ */
-const SyneraProfiles = {
+const SyneriaProfiles = {
   async get(userId) {
     if (SUPABASE_READY) {
       try {
-        const { data, error } = await _syneraSupabase.from('profiles').select('*').eq('id', userId).single();
+        const { data, error } = await _syneriaSupabase.from('profiles').select('*').eq('id', userId).single();
         if (data) return data;
       } catch(e) {}
     }
-    const profiles = _lsGet('synera_profiles', {});
+    const profiles = _lsGet('syneria_profiles', {});
     return profiles[userId] || null;
   },
 
   async upsert(profile) {
     if (SUPABASE_READY) {
       try {
-        const { data, error } = await _syneraSupabase.from('profiles').upsert(profile, { onConflict: 'id' }).select().single();
+        const { data, error } = await _syneriaSupabase.from('profiles').upsert(profile, { onConflict: 'id' }).select().single();
         if (data) return data;
       } catch(e) {}
     }
-    const profiles = _lsGet('synera_profiles', {});
+    const profiles = _lsGet('syneria_profiles', {});
     profiles[profile.id] = { ...profiles[profile.id], ...profile, updated_at: new Date().toISOString() };
-    _lsSet('synera_profiles', profiles);
+    _lsSet('syneria_profiles', profiles);
     return profiles[profile.id];
   },
 
   async getByRole(role) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('profiles').select('*').eq('role', role); return data || []; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('profiles').select('*').eq('role', role); return data || []; } catch(e) {}
     }
-    return Object.values(_lsGet('synera_profiles', {})).filter(p => p.role === role);
+    return Object.values(_lsGet('syneria_profiles', {})).filter(p => p.role === role);
   }
 };
 
@@ -175,11 +175,11 @@ const _SEED_JOBS = [
   { id: '88888888-8888-8888-8888-888888888888', title: 'Soldador Certificado', company_name: 'Skanska AB', companies: { name: 'Skanska AB', logo_letter: 'S', logo_gradient: 'linear-gradient(135deg,#f59e0b,#ef4444)', rating: 4.5, employees_count: 700 }, sector: 'Construccion', country: 'Suecia', city: 'Estocolmo', salary_display: '$3,600-4,000/mes', salary_min: 3600, job_type: 'full_time', visa_sponsorship: true, housing_included: true, urgent: false, status: 'active', tags: ['Jornada Completa','Visa Sponsorship','Alojamiento Incluido'], description: 'Skanska AB busca soldadores certificados para Estocolmo.', responsibilities: ['Soldadura MIG/TIG','Lectura de planos','Inspeccion de calidad'], requirements: ['Certificacion AWS','4+ anos experiencia','Estructuras metalicas'], benefits: ['Seguro completo','Alojamiento','Equipamiento','Vuelo de ida'], experience_required: '4+ anos', duration: '12 meses', start_date: '2026-05-15', created_at: '2026-03-05' }
 ];
 
-const SyneraJobs = {
+const SyneriaJobs = {
   async list(filters = {}) {
     if (SUPABASE_READY) {
       try {
-        let q = _syneraSupabase.from('jobs').select('*, companies(*)');
+        let q = _syneriaSupabase.from('jobs').select('*, companies(*)');
         if (filters.status) q = q.eq('status', filters.status);
         if (filters.sector) q = q.eq('sector', filters.sector);
         if (filters.country) q = q.eq('country', filters.country);
@@ -201,64 +201,64 @@ const SyneraJobs = {
 
   async get(jobId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('jobs').select('*, companies(*)').eq('id', jobId).single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('jobs').select('*, companies(*)').eq('id', jobId).single(); if (data) return data; } catch(e) {}
     }
     return _SEED_JOBS.find(j => j.id === jobId) || null;
   },
 
   async create(job) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('jobs').insert(job).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('jobs').insert(job).select().single(); if (data) return data; } catch(e) {}
     }
     const newJob = { ...job, id: _uuid(), created_at: new Date().toISOString() };
-    const jobs = _lsGet('synera_local_jobs', []);
+    const jobs = _lsGet('syneria_local_jobs', []);
     jobs.push(newJob);
-    _lsSet('synera_local_jobs', jobs);
+    _lsSet('syneria_local_jobs', jobs);
     return newJob;
   },
 
   async update(jobId, updates) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('jobs').update(updates).eq('id', jobId).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('jobs').update(updates).eq('id', jobId).select().single(); if (data) return data; } catch(e) {}
     }
     return { id: jobId, ...updates };
   }
 };
 
 /* ═══ APPLICATIONS HELPERS ═══ */
-const SyneraApplications = {
+const SyneriaApplications = {
   async create(application) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('applications').insert(application).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('applications').insert(application).select().single(); if (data) return data; } catch(e) {}
     }
     const app = { ...application, id: _uuid(), status: 'pending', created_at: new Date().toISOString() };
-    const apps = _lsGet('synera_applications', []);
+    const apps = _lsGet('syneria_applications', []);
     apps.push(app);
-    _lsSet('synera_applications', apps);
+    _lsSet('syneria_applications', apps);
     return app;
   },
 
   async listByUser(userId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('applications').select('*, jobs(*, companies(*))').eq('user_id', userId).order('created_at', { ascending: false }); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('applications').select('*, jobs(*, companies(*))').eq('user_id', userId).order('created_at', { ascending: false }); if (data) return data; } catch(e) {}
     }
-    return _lsGet('synera_applications', []).filter(a => a.user_id === userId);
+    return _lsGet('syneria_applications', []).filter(a => a.user_id === userId);
   },
 
   async listByJob(jobId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('applications').select('*, profiles(*)').eq('job_id', jobId).order('created_at', { ascending: false }); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('applications').select('*, profiles(*)').eq('job_id', jobId).order('created_at', { ascending: false }); if (data) return data; } catch(e) {}
     }
-    return _lsGet('synera_applications', []).filter(a => a.job_id === jobId);
+    return _lsGet('syneria_applications', []).filter(a => a.job_id === jobId);
   },
 
   async updateStatus(applicationId, status) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('applications').update({ status }).eq('id', applicationId).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('applications').update({ status }).eq('id', applicationId).select().single(); if (data) return data; } catch(e) {}
     }
-    const apps = _lsGet('synera_applications', []);
+    const apps = _lsGet('syneria_applications', []);
     const app = apps.find(a => a.id === applicationId);
-    if (app) { app.status = status; _lsSet('synera_applications', apps); }
+    if (app) { app.status = status; _lsSet('syneria_applications', apps); }
     return app;
   }
 };
@@ -273,11 +273,11 @@ const _SEED_TX = [
   { id: 't6', type: 'bonus', amount: 50, description: 'Bono de bienvenida', status: 'completed', created_at: '2026-01-15' }
 ];
 
-const SyneraTransactions = {
+const SyneriaTransactions = {
   async list(userId, filters = {}) {
     if (SUPABASE_READY) {
       try {
-        let q = _syneraSupabase.from('transactions').select('*').eq('user_id', userId);
+        let q = _syneriaSupabase.from('transactions').select('*').eq('user_id', userId);
         if (filters.type) q = q.eq('type', filters.type);
         q = q.order('created_at', { ascending: false });
         if (filters.limit) q = q.limit(filters.limit);
@@ -285,37 +285,37 @@ const SyneraTransactions = {
         if (data && data.length > 0) return data;
       } catch(e) {}
     }
-    let tx = [..._SEED_TX, ..._lsGet('synera_local_tx', [])];
+    let tx = [..._SEED_TX, ..._lsGet('syneria_local_tx', [])];
     if (filters.type) tx = tx.filter(t => t.type === filters.type);
     return tx;
   },
 
   async create(transaction) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('transactions').insert(transaction).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('transactions').insert(transaction).select().single(); if (data) return data; } catch(e) {}
     }
     const tx = { ...transaction, id: _uuid(), created_at: new Date().toISOString() };
-    const list = _lsGet('synera_local_tx', []);
+    const list = _lsGet('syneria_local_tx', []);
     list.unshift(tx);
-    _lsSet('synera_local_tx', list);
+    _lsSet('syneria_local_tx', list);
     return tx;
   },
 
   async getBalance(userId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('wallets').select('*').eq('user_id', userId).single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('wallets').select('*').eq('user_id', userId).single(); if (data) return data; } catch(e) {}
     }
-    const wallets = _lsGet('synera_wallets', {});
+    const wallets = _lsGet('syneria_wallets', {});
     return wallets[userId] || { user_id: userId, balance: 4850, currency: 'USD' };
   },
 
   async updateBalance(userId, amount) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('wallets').upsert({ user_id: userId, balance: amount, updated_at: new Date().toISOString() }, { onConflict: 'user_id' }).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('wallets').upsert({ user_id: userId, balance: amount, updated_at: new Date().toISOString() }, { onConflict: 'user_id' }).select().single(); if (data) return data; } catch(e) {}
     }
-    const wallets = _lsGet('synera_wallets', {});
+    const wallets = _lsGet('syneria_wallets', {});
     wallets[userId] = { user_id: userId, balance: amount, currency: 'USD' };
-    _lsSet('synera_wallets', wallets);
+    _lsSet('syneria_wallets', wallets);
     return wallets[userId];
   }
 };
@@ -327,24 +327,24 @@ const _SEED_CONTRACTS = [
   { id: 'c3', employer_name: 'Finca Stuttgart', companies: { name: 'Finca Stuttgart' }, position: 'Recolector', country: 'Alemania', city: 'Stuttgart', salary: 2800, salary_display: '$2,800/mes', start_date: '2026-04-01', end_date: '2026-10-31', status: 'pendiente', terms: 'Contrato de temporada para recoleccion agricola.', benefits: ['Alojamiento incluido','3 comidas diarias','Seguro completo','Transporte aeropuerto','Bono productividad','Certificado experiencia'], blockchain_hash: '' }
 ];
 
-const SyneraContracts = {
+const SyneriaContracts = {
   async list(userId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('contracts').select('*, companies(*)').eq('worker_id', userId).order('created_at', { ascending: false }); if (data && data.length > 0) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('contracts').select('*, companies(*)').eq('worker_id', userId).order('created_at', { ascending: false }); if (data && data.length > 0) return data; } catch(e) {}
     }
     return _SEED_CONTRACTS;
   },
 
   async get(contractId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('contracts').select('*, companies(*)').eq('id', contractId).single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('contracts').select('*, companies(*)').eq('id', contractId).single(); if (data) return data; } catch(e) {}
     }
     return _SEED_CONTRACTS.find(c => c.id === contractId) || null;
   },
 
   async sign(contractId) {
     if (SUPABASE_READY) {
-      try { const { data } = await _syneraSupabase.from('contracts').update({ status: 'activo', signed_at: new Date().toISOString() }).eq('id', contractId).select().single(); if (data) return data; } catch(e) {}
+      try { const { data } = await _syneriaSupabase.from('contracts').update({ status: 'activo', signed_at: new Date().toISOString() }).eq('id', contractId).select().single(); if (data) return data; } catch(e) {}
     }
     const contract = _SEED_CONTRACTS.find(c => c.id === contractId);
     if (contract) { contract.status = 'activo'; contract.signed_at = new Date().toISOString(); }
@@ -353,57 +353,57 @@ const SyneraContracts = {
 };
 
 /* ═══ COMPANIES HELPERS ═══ */
-const SyneraCompanies = {
+const SyneriaCompanies = {
   async get(companyId) {
-    if (SUPABASE_READY) { try { const { data } = await _syneraSupabase.from('companies').select('*').eq('id', companyId).single(); if (data) return data; } catch(e) {} }
+    if (SUPABASE_READY) { try { const { data } = await _syneriaSupabase.from('companies').select('*').eq('id', companyId).single(); if (data) return data; } catch(e) {} }
     return null;
   },
   async getByOwner(userId) {
-    if (SUPABASE_READY) { try { const { data } = await _syneraSupabase.from('companies').select('*').eq('owner_id', userId).single(); if (data) return data; } catch(e) {} }
-    return _lsGet('synera_company_' + userId, null);
+    if (SUPABASE_READY) { try { const { data } = await _syneriaSupabase.from('companies').select('*').eq('owner_id', userId).single(); if (data) return data; } catch(e) {} }
+    return _lsGet('syneria_company_' + userId, null);
   },
   async upsert(company) {
-    if (SUPABASE_READY) { try { const { data } = await _syneraSupabase.from('companies').upsert(company).select().single(); if (data) return data; } catch(e) {} }
-    if (company.owner_id) _lsSet('synera_company_' + company.owner_id, company);
+    if (SUPABASE_READY) { try { const { data } = await _syneriaSupabase.from('companies').upsert(company).select().single(); if (data) return data; } catch(e) {} }
+    if (company.owner_id) _lsSet('syneria_company_' + company.owner_id, company);
     return company;
   }
 };
 
 /* ═══ NOTIFICATIONS HELPERS ═══ */
-const SyneraNotifications = {
+const SyneriaNotifications = {
   async list(userId) {
-    if (SUPABASE_READY) { try { const { data } = await _syneraSupabase.from('notifications').select('*').eq('user_id', userId).order('created_at', { ascending: false }).limit(20); if (data) return data; } catch(e) {} }
+    if (SUPABASE_READY) { try { const { data } = await _syneriaSupabase.from('notifications').select('*').eq('user_id', userId).order('created_at', { ascending: false }).limit(20); if (data) return data; } catch(e) {} }
     return [
-      { id: 'n1', title: 'Bienvenido a Synera', message: 'Tu cuenta ha sido creada. Completa tu perfil.', type: 'success', read: false, created_at: new Date().toISOString() },
+      { id: 'n1', title: 'Bienvenido a Syneria', message: 'Tu cuenta ha sido creada. Completa tu perfil.', type: 'success', read: false, created_at: new Date().toISOString() },
       { id: 'n2', title: 'Nuevo empleo disponible', message: 'Hay nuevas oportunidades en Alemania que coinciden con tu perfil.', type: 'job', read: false, created_at: new Date().toISOString() }
     ];
   },
-  async markRead(notifId) { if (SUPABASE_READY) { try { await _syneraSupabase.from('notifications').update({ read: true }).eq('id', notifId); } catch(e) {} } },
-  async markAllRead(userId) { if (SUPABASE_READY) { try { await _syneraSupabase.from('notifications').update({ read: true }).eq('user_id', userId).eq('read', false); } catch(e) {} } },
+  async markRead(notifId) { if (SUPABASE_READY) { try { await _syneriaSupabase.from('notifications').update({ read: true }).eq('id', notifId); } catch(e) {} } },
+  async markAllRead(userId) { if (SUPABASE_READY) { try { await _syneriaSupabase.from('notifications').update({ read: true }).eq('user_id', userId).eq('read', false); } catch(e) {} } },
   async getUnreadCount(userId) {
-    if (SUPABASE_READY) { try { const { count } = await _syneraSupabase.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('read', false); return count || 0; } catch(e) {} }
+    if (SUPABASE_READY) { try { const { count } = await _syneriaSupabase.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('read', false); return count || 0; } catch(e) {} }
     return 2;
   }
 };
 
 /* ═══ MESSAGES HELPERS ═══ */
-const SyneraMessages = {
+const SyneriaMessages = {
   async listConversations(userId) {
-    if (SUPABASE_READY) { try { const { data } = await _syneraSupabase.from('messages').select('*, sender:profiles!sender_id(*), receiver:profiles!receiver_id(*)').or(`sender_id.eq.${userId},receiver_id.eq.${userId}`).order('created_at', { ascending: false }); if (data) return data; } catch(e) {} }
+    if (SUPABASE_READY) { try { const { data } = await _syneriaSupabase.from('messages').select('*, sender:profiles!sender_id(*), receiver:profiles!receiver_id(*)').or(`sender_id.eq.${userId},receiver_id.eq.${userId}`).order('created_at', { ascending: false }); if (data) return data; } catch(e) {} }
     return [];
   },
   async send(message) {
-    if (SUPABASE_READY) { try { const { data } = await _syneraSupabase.from('messages').insert(message).select().single(); if (data) return data; } catch(e) {} }
+    if (SUPABASE_READY) { try { const { data } = await _syneriaSupabase.from('messages').insert(message).select().single(); if (data) return data; } catch(e) {} }
     return { ...message, id: _uuid(), created_at: new Date().toISOString() };
   }
 };
 
 /* ═══ UTILITY: Show toast notification ═══ */
 function showToast(message, type = 'success') {
-  const existing = document.querySelector('.synera-toast');
+  const existing = document.querySelector('.syneria-toast');
   if (existing) existing.remove();
   const toast = document.createElement('div');
-  toast.className = 'synera-toast';
+  toast.className = 'syneria-toast';
   const bgColor = type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3A7D5C';
   toast.style.cssText = `position:fixed;bottom:24px;right:24px;z-index:99999;padding:14px 24px;border-radius:12px;background:${bgColor};color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.15);transform:translateY(20px);opacity:0;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;`;
   toast.textContent = message;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Panel de Empleador</title>
+<title>Syneria — Panel de Empleador</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -986,7 +986,7 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
 
 <script>
 /* ========== INIT FLOATING NAV ========== */
-SyneraNav.init({
+SyneriaNav.init({
   mode: 'employer',
   active: 'Dashboard',
   items: [
@@ -1062,7 +1062,7 @@ async function toggleStatus(id){
   const cur = v.status || 'activa';
   const next = (cur === 'activa' || cur === 'active') ? 'pausada' : 'activa';
   try {
-    await SyneraJobs.update(id, { status: next });
+    await SyneriaJobs.update(id, { status: next });
     v.status = next;
     filterVacancies();
     showToast(next === 'activa' ? 'Vacante activada' : 'Vacante pausada');
@@ -1105,7 +1105,7 @@ function editVacancy(id){
 async function viewCandidatesForJob(jobId){
   document.querySelector('.candidates-section').scrollIntoView({behavior:'smooth'});
   try {
-    const apps = await SyneraApplications.listByJob(jobId);
+    const apps = await SyneriaApplications.listByJob(jobId);
     renderCandidatesFromApps(apps);
   } catch(err){
     console.error(err);
@@ -1211,7 +1211,7 @@ function toggleCandidateDetail(i){
 /* ========== UPDATE APPLICATION STATUS ========== */
 async function updateAppStatus(appId, newStatus, btnEl){
   try {
-    await SyneraApplications.updateStatus(appId, newStatus);
+    await SyneriaApplications.updateStatus(appId, newStatus);
     showToast(newStatus === 'accepted' ? 'Candidato aceptado' : 'Candidato rechazado');
     // Reload all applications
     await loadAllApplications();
@@ -1427,10 +1427,10 @@ async function submitVacancy(e){
 
   try {
     if(editId){
-      await SyneraJobs.update(editId, jobData);
+      await SyneriaJobs.update(editId, jobData);
       showToast('Vacante actualizada correctamente');
     } else {
-      await SyneraJobs.create(jobData);
+      await SyneriaJobs.create(jobData);
       showToast('Vacante publicada correctamente');
     }
     // Reload jobs from Supabase
@@ -1496,7 +1496,7 @@ function initSidebarLinks(){
     logoutLink.addEventListener('click', async e => {
       e.preventDefault();
       try {
-        await SyneraAuth.signOut();
+        await SyneriaAuth.signOut();
         window.location.href = 'login.html';
       } catch(err){
         showToast('Error al cerrar sesión', 'error');
@@ -1523,7 +1523,7 @@ function initUserDropdownLinks(){
       link.addEventListener('click', async e => {
         e.preventDefault();
         try {
-          await SyneraAuth.signOut();
+          await SyneriaAuth.signOut();
           window.location.href = 'login.html';
         } catch(err){
           showToast('Error al cerrar sesión', 'error');
@@ -1559,7 +1559,7 @@ function initNotificationActions(){
       e.stopPropagation();
       if(currentUser){
         try {
-          await SyneraNotifications.markAllRead(currentUser.id);
+          await SyneriaNotifications.markAllRead(currentUser.id);
           showToast('Notificaciones marcadas como leídas');
           const badge = document.querySelector('.topnav__notif-badge');
           if(badge) badge.style.display = 'none';
@@ -1656,12 +1656,12 @@ function initMagneticButtons(){
 async function loadJobs(){
   try {
     if(!currentUser || !currentUser.id){ vacancies = []; return; }
-    const jobs = await SyneraJobs.list({ employer_id: currentUser.id });
+    const jobs = await SyneriaJobs.list({ employer_id: currentUser.id });
     if(!Array.isArray(jobs)){ vacancies = []; return; }
     // For each job, get application count
     for(let job of jobs){
       try {
-        const apps = await SyneraApplications.listByJob(job.id);
+        const apps = await SyneriaApplications.listByJob(job.id);
         job._appCount = Array.isArray(apps) ? apps.length : 0;
       } catch(e){ job._appCount = 0; }
     }
@@ -1677,7 +1677,7 @@ async function loadAllApplications(){
   if(!Array.isArray(vacancies)) return;
   for(let job of vacancies){
     try {
-      const apps = await SyneraApplications.listByJob(job.id);
+      const apps = await SyneriaApplications.listByJob(job.id);
       if(!Array.isArray(apps)) continue;
       apps.forEach(a => { a._jobTitle = job.title || ''; });
       allApplications.push(...apps);
@@ -1817,7 +1817,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Auth check
   try {
-    const session = await SyneraAuth.requireAuth();
+    const session = await SyneriaAuth.requireAuth();
     if(!session) return; // redirected to login
     currentUser = session.user;
   } catch(err){
@@ -1830,7 +1830,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load company
   try {
-    currentCompany = await SyneraCompanies.getByOwner(currentUser.id);
+    currentCompany = await SyneriaCompanies.getByOwner(currentUser.id);
   } catch(err){ console.error('Company load error:', err); }
 
   updateWelcomeBanner();

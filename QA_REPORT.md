@@ -1,4 +1,4 @@
-# QA Report — Synera Platform
+# QA Report — Syneria Platform
 Generated: 2026-03-08
 
 ## Summary
@@ -18,13 +18,13 @@ Generated: 2026-03-08
 
 ### Phase 2: Build
 - [✅] Static HTML — no build step required
-- [✅] All 8 files present: index.html, synera.html, login.html, dashboard.html, job-detail.html, profile.html, employer.html, wallet.html
+- [✅] All 8 files present: index.html, syneria.html, login.html, dashboard.html, job-detail.html, profile.html, employer.html, wallet.html
 - [✅] Total size: ~355KB (reasonable for 8 self-contained pages)
 
 ### Phase 3: Runtime
 - [✅] All 8 pages return HTTP 200
 - [✅] All pages have proper titles and substantial content (38KB-68KB each)
-- [✅] index.html mirrors synera.html correctly
+- [✅] index.html mirrors syneria.html correctly
 
 ### Phase 4: Integration
 - [✅] Landing → Login: Nav CTA links to login.html
@@ -46,7 +46,7 @@ Generated: 2026-03-08
 - [✅] localStorage key consistency verified
 
 ## Auto-Fixes Applied
-1. **dashboard.html — localStorage JSON parse**: Fixed `synera_user` reading to properly `JSON.parse()` the stored object and extract `name` or `email`, with sessionStorage fallback
+1. **dashboard.html — localStorage JSON parse**: Fixed `syneria_user` reading to properly `JSON.parse()` the stored object and extract `name` or `email`, with sessionStorage fallback
 2. **dashboard.html — General Sans font**: Removed broken `@font-face` with wrong `format('woff2')`, replaced with `@import url('https://fonts.cdnfonts.com/css/general-sans')`
 3. **wallet.html — Sidebar navigation**: Fixed all `href="#"` placeholders to point to correct pages (dashboard.html, profile.html, etc.)
 4. **employer.html — General Sans font**: Replaced invalid Google Fonts link with cdnfonts.com CDN
@@ -54,7 +54,7 @@ Generated: 2026-03-08
 
 ## Remaining Warnings
 - No `<meta name="description">` on app pages (login, dashboard, profile, employer, wallet, job-detail) — SEO impact only
-- `synera_jobs` localStorage key is read in job-detail.html but never written by any page — dynamic job loading from params won't populate
+- `syneria_jobs` localStorage key is read in job-detail.html but never written by any page — dynamic job loading from params won't populate
 - `localStorage.clear()` on logout wipes ALL app data, not just session — could lose saved jobs, transactions, profile data
 - Mensajes and Configuracion sidebar links remain as `#` placeholders (features not yet built)
 
@@ -62,5 +62,5 @@ Generated: 2026-03-08
 - Add a service worker for offline support
 - Implement actual backend API endpoints to replace localStorage mock data
 - Add `<meta name="description">` tags for SEO
-- Scope logout to only clear `synera_user` key instead of all localStorage
+- Scope logout to only clear `syneria_user` key instead of all localStorage
 - Add a "Cerrar Sesion" link to wallet.html sidebar

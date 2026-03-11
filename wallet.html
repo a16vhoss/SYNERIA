@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Wallet & Contratos</title>
+<title>Syneria — Wallet & Contratos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -406,7 +406,7 @@ img{display:block;max-width:100%}
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <a href="synera.html" class="sidebar__logo" data-h>Synera<span>.</span></a>
+  <a href="syneria.html" class="sidebar__logo" data-h>Syneria<span>.</span></a>
   <nav class="sidebar__nav">
     <div class="sidebar__section">Principal</div>
     <a href="dashboard.html" class="sidebar__link" data-h>
@@ -447,7 +447,7 @@ img{display:block;max-width:100%}
   <div class="sidebar__bottom">
     <div class="sidebar__upgrade" data-h>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Synera Premium
+      Syneria Premium
     </div>
   </div>
 </aside>
@@ -606,7 +606,7 @@ img{display:block;max-width:100%}
         <div>
           <div class="virtual-card">
             <div>
-              <div class="virtual-card__logo">Synera<span>.</span></div>
+              <div class="virtual-card__logo">Syneria<span>.</span></div>
               <div class="virtual-card__chip"></div>
             </div>
             <div class="virtual-card__number">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4829</div>
@@ -895,7 +895,7 @@ img{display:block;max-width:100%}
 
 <!-- ═══ TOAST STYLE (for inline toasts) ═══ -->
 <style>
-.synera-toast{position:fixed;bottom:24px;right:24px;z-index:99999;padding:14px 24px;border-radius:12px;color:#fff;font-family:var(--font-d);font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.15);transform:translateY(20px);opacity:0;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s}
+.syneria-toast{position:fixed;bottom:24px;right:24px;z-index:99999;padding:14px 24px;border-radius:12px;color:#fff;font-family:var(--font-d);font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.15);transform:translateY(20px);opacity:0;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s}
 </style>
 
 <!-- ═══ ENVIAR REMESA MODAL ═══ -->
@@ -929,10 +929,10 @@ img{display:block;max-width:100%}
       <div class="conversion-display" id="conversionDisplay" style="display:none">
         <div class="conversion-display__rate" id="convRate">Tasa de cambio: --</div>
         <div class="conversion-display__fee">
-          <span>Comisión Synera:</span>
+          <span>Comisión Syneria:</span>
           <span id="feeAmount">$0.00 (0.5%)</span>
         </div>
-        <div class="conversion-display__savings">Synera cobra 0.5% vs 6-8% de Western Union</div>
+        <div class="conversion-display__savings">Syneria cobra 0.5% vs 6-8% de Western Union</div>
         <div class="conversion-display__result" id="recipientGets">El destinatario recibe: --</div>
       </div>
       <div class="form-group">
@@ -993,7 +993,7 @@ img{display:block;max-width:100%}
 'use strict';
 
 // ═══ INIT FLOATING NAV ═══
-SyneraNav.init({
+SyneriaNav.init({
   mode: 'app',
   active: 'Wallet',
   items: [
@@ -1022,7 +1022,7 @@ if(typeof window.showToast !== 'function'){
   window.showToast=function(msg,type){
     const colors={success:'#2E7D52',error:'#ef4444',warning:'#f59e0b',info:'#4A8C6A'};
     const t=document.createElement('div');
-    t.className='synera-toast';
+    t.className='syneria-toast';
     t.textContent=msg;
     t.style.background=colors[type]||colors.info;
     document.body.appendChild(t);
@@ -1063,7 +1063,7 @@ if(menuToggle) menuToggle.addEventListener('click',()=>sidebar.classList.toggle(
 /* ═══ LOGOUT ═══ */
 window.handleLogout=async function(){
   try{
-    await SyneraAuth.signOut();
+    await SyneriaAuth.signOut();
     window.location.href='login.html';
   }catch(err){
     showToast('Error al cerrar sesion','error');
@@ -1393,8 +1393,8 @@ window.sendRemesa=async function(){
 
   try{
     // Create transaction in Supabase
-    if(typeof SyneraTransactions !== 'undefined' && SyneraTransactions.create){
-      await SyneraTransactions.create({
+    if(typeof SyneriaTransactions !== 'undefined' && SyneriaTransactions.create){
+      await SyneriaTransactions.create({
         user_id: currentUser.id,
         type: 'out',
         description: `Remesa a ${name} (${country})`,
@@ -1405,8 +1405,8 @@ window.sendRemesa=async function(){
 
     // Update wallet balance
     const newBalance = walletBalance - amount;
-    if(typeof SyneraTransactions !== 'undefined' && SyneraTransactions.updateBalance){
-      await SyneraTransactions.updateBalance(currentUser.id, newBalance);
+    if(typeof SyneriaTransactions !== 'undefined' && SyneriaTransactions.updateBalance){
+      await SyneriaTransactions.updateBalance(currentUser.id, newBalance);
     }
     walletBalance = newBalance;
 
@@ -1534,8 +1534,8 @@ window.submitSignature=async function(){
 
   try{
     // Call Supabase to sign the contract
-    if(typeof SyneraContracts !== 'undefined' && SyneraContracts.sign){
-      await SyneraContracts.sign(contractId);
+    if(typeof SyneriaContracts !== 'undefined' && SyneriaContracts.sign){
+      await SyneriaContracts.sign(contractId);
     }
 
     // Update UI
@@ -1653,15 +1653,15 @@ document.addEventListener('keydown',e=>{
    ═══════════════════════════════════════════ */
 async function initPage(){
   // Guard: check Supabase modules are loaded
-  if(typeof SyneraAuth === 'undefined' || typeof SyneraProfiles === 'undefined' ||
-     typeof SyneraTransactions === 'undefined' || typeof SyneraContracts === 'undefined'){
+  if(typeof SyneriaAuth === 'undefined' || typeof SyneriaProfiles === 'undefined' ||
+     typeof SyneriaTransactions === 'undefined' || typeof SyneriaContracts === 'undefined'){
     console.warn('Supabase modules not loaded. Showing static data.');
     setTimeout(()=>animateBalance(4850),300);
     return;
   }
   try{
     // 1. Check auth
-    const session = await SyneraAuth.requireAuth();
+    const session = await SyneriaAuth.requireAuth();
     if(!session) return; // redirected to login
 
     currentUser = session.user;
@@ -1674,7 +1674,7 @@ async function initPage(){
 
     // 2. Load profile
     try{
-      currentProfile = await SyneraProfiles.get(userId);
+      currentProfile = await SyneriaProfiles.get(userId);
     }catch(e){ console.warn('Profile not found, using auth metadata'); }
 
     // Determine display name
@@ -1691,11 +1691,11 @@ async function initPage(){
     const cardHolderName=document.getElementById('cardHolderName');
     if(cardHolderName) cardHolderName.textContent=fullName;
     // Update floating nav with user data
-    SyneraNav.setUser(fullName, initials, 0);
+    SyneriaNav.setUser(fullName, initials, 0);
 
     // 3. Load wallet balance
     try{
-      const wallet = await SyneraTransactions.getBalance(userId);
+      const wallet = await SyneriaTransactions.getBalance(userId);
       if(wallet && wallet.balance != null){
         walletBalance = parseFloat(wallet.balance);
       }
@@ -1716,7 +1716,7 @@ async function initPage(){
 
     // 4. Load transactions
     try{
-      allTransactions = await SyneraTransactions.list(userId);
+      allTransactions = await SyneriaTransactions.list(userId);
       if(allTransactions && allTransactions.length > 0){
         renderTransactions(allTransactions);
       }
@@ -1727,7 +1727,7 @@ async function initPage(){
 
     // 5. Load contracts
     try{
-      allContracts = await SyneraContracts.list(userId);
+      allContracts = await SyneriaContracts.list(userId);
       if(allContracts && allContracts.length > 0){
         renderContracts(allContracts);
       }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Mi Perfil</title>
+<title>Syneria — Mi Perfil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -39,23 +39,63 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
 /* ═══ NAV (replaced by nav-shared.css) ═══ */
 
 /* ═══ APP LAYOUT ═══ */
-.app{display:flex;margin-top:0;padding-top:72px;min-height:100vh}
+.app{display:flex;margin-top:0;padding-top:0;min-height:100vh}
 
-/* ═══ SIDEBAR NAV — GLASS EFFECT ═══ */
-.side{width:260px;background:rgba(255,255,255,0.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid rgba(212,221,216,0.6);padding:24px 0;flex-shrink:0;position:sticky;top:73px;height:calc(100vh - 73px);overflow-y:auto;transition:background 0.3s}
-.side__section{padding:0 16px;margin-bottom:24px}
-.side__label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 12px;margin-bottom:8px}
-.side__link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-size:14px;font-weight:500;color:var(--muted);transition:all 0.3s var(--ease-out);cursor:pointer;margin-bottom:2px;position:relative;overflow:hidden}
-.side__link::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(58,125,92,0.06),rgba(74,140,106,0.04));opacity:0;transition:opacity 0.3s;border-radius:inherit}
-.side__link:hover{color:var(--text)}
-.side__link:hover::before{opacity:1}
-.side__link.active{color:var(--accent);font-weight:600;background:rgba(58,125,92,0.08);box-shadow:inset 3px 0 0 var(--accent)}
-.side__link.active::before{opacity:1}
-.side__link svg{width:20px;height:20px;flex-shrink:0;position:relative;z-index:1}
-.side__link span,.side__link{position:relative;z-index:1}
+/* ═══ SIDEBAR (matches dashboard.html) ═══ */
+.sidebar{
+position:fixed;top:0;left:0;bottom:0;
+width:var(--sidebar-w,260px);
+background:linear-gradient(180deg,rgba(255,255,255,0.85) 0%,rgba(250,251,252,0.75) 100%);
+backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
+border-right:1px solid rgba(212,221,216,0.4);
+padding:24px 14px;display:flex;flex-direction:column;
+z-index:90;transition:transform 0.4s var(--ease-out);
+overflow-y:auto;
+scrollbar-width:thin;scrollbar-color:rgba(58,125,92,0.2) transparent;
+}
+.sidebar::before{
+content:'';position:absolute;left:0;top:24px;bottom:24px;width:3px;
+background:linear-gradient(180deg,var(--accent),var(--accent2,#6ec6a5),rgba(27,59,47,0.3));
+border-radius:0 3px 3px 0;opacity:0.7;
+}
+.sidebar::after{
+content:'';position:absolute;inset:0;pointer-events:none;
+background:radial-gradient(ellipse at 10% 90%,rgba(58,125,92,0.04) 0%,transparent 60%);
+}
+.sidebar__nav{display:flex;flex-direction:column;gap:3px;flex:1;position:relative;z-index:1}
+.sidebar__item{
+display:flex;align-items:center;gap:12px;
+padding:11px 16px;border-radius:12px;font-size:14px;
+font-weight:500;color:var(--muted);position:relative;
+cursor:pointer;text-decoration:none;
+transition:all 0.3s var(--ease-out);
+}
+.sidebar__item:hover{background:rgba(58,125,92,0.05);color:var(--text,var(--primary,#1b3b2f))}
+.sidebar__item:hover svg{transform:scale(1.1) translateX(1px);transition:transform 0.5s var(--ease-out)}
+.sidebar__item.active{
+background:rgba(58,125,92,0.1);color:var(--accent);font-weight:600;
+box-shadow:0 2px 12px rgba(58,125,92,0.08);
+}
+.sidebar__item.active::before{
+content:'';position:absolute;left:-6px;top:50%;
+width:4px;height:0;border-radius:4px;
+background:linear-gradient(180deg,var(--accent),var(--accent2,#6ec6a5));
+box-shadow:0 0 8px rgba(58,125,92,0.4);
+animation:sidebarIndicator 0.5s var(--ease-out) forwards;
+}
+@keyframes sidebarIndicator{
+from{height:0;transform:translateY(-50%)}
+to{height:26px;transform:translateY(-50%)}
+}
+.sidebar__item svg{width:20px;height:20px;flex-shrink:0;transition:transform 0.3s var(--ease-out)}
+.sidebar__bottom{border-top:1px solid rgba(212,221,216,0.5);padding-top:12px;margin-top:auto;position:relative;z-index:1}
+.sidebar__item.logout{color:var(--danger,#ef4444);cursor:pointer}
+.sidebar__item.logout:hover{background:rgba(239,68,68,0.06)}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:89;opacity:0;pointer-events:none;transition:opacity 0.3s;display:none}
+.sidebar-overlay.show{opacity:1;pointer-events:auto}
 
 /* ═══ MAIN CONTENT ═══ */
-.main{flex:1;padding:32px 40px;max-width:960px}
+.main{margin-left:var(--sidebar-w,260px);flex:1;padding:32px 40px;max-width:960px;padding-top:72px}
 
 /* ═══ PROFILE HEADER — ELEVATED ═══ */
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
@@ -265,19 +305,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:1024px){
-  .side{width:220px}
-  .main{padding:24px 28px}
+  .sidebar{width:220px}
+  .main{margin-left:220px;padding:24px 28px}
   .checkbox-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
   .nav__search{display:none}
   .app{flex-direction:column}
-  .side{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:12px 0;overflow-x:auto;backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--card)}
-  .side__section{display:flex;gap:4px;padding:0 16px;margin-bottom:0}
-  .side__label{display:none}
-  .side__link{white-space:nowrap;padding:8px 14px;font-size:13px;margin-bottom:0}
-  .side__link.active{box-shadow:none;border-bottom:2px solid var(--accent);border-radius:8px 8px 0 0}
-  .main{padding:20px 5vw}
+  .sidebar{transform:translateX(-100%);position:fixed;width:260px}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:block}
+  .main{margin-left:0;padding:20px 5vw;padding-top:72px}
   .profile-header{flex-direction:column;align-items:flex-start;padding:24px 20px}
   .profile-actions{align-items:flex-start}
   .progress-wrap{width:100%}
@@ -313,39 +351,46 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
 
 <!-- APP LAYOUT -->
 <div class="app">
-  <!-- SIDEBAR -->
-  <aside class="side">
-    <div class="side__section">
-      <div class="side__label">Principal</div>
-      <a href="dashboard.html" class="side__link" data-h>
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-        Dashboard
+  <!-- SIDEBAR (matches dashboard.html) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar__nav">
+      <a href="dashboard.html" class="sidebar__item" data-h>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Panel
       </a>
-      <a href="dashboard.html" class="side__link" data-h>
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/></svg>
-        Empleos
+      <a href="dashboard.html" class="sidebar__item" data-h>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Buscar Empleos
       </a>
-      <a href="dashboard.html" class="side__link" data-h>
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        Aplicaciones
+      <a href="dashboard.html" class="sidebar__item" data-h>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Mis Aplicaciones
       </a>
-      <a href="#" class="side__link" data-h onclick="event.preventDefault();showToast('Mensajes proximamente','warning')">
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Mensajes
+      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Red profesional proximamente','warning')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Red
       </a>
-    </div>
-    <div class="side__section">
-      <div class="side__label">Cuenta</div>
-      <a href="wallet.html" class="side__link" data-h>
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/><circle cx="18" cy="14" r="1"/></svg>
+      <a href="wallet.html" class="sidebar__item" data-h>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="14" r="1.5"/></svg>
         Wallet
       </a>
-      <a href="profile.html" class="side__link active" data-h>
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Mi Perfil
+      <a href="profile.html" class="sidebar__item active" data-h>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Documentos
       </a>
-      <a href="#" class="side__link" id="logoutLink" data-h>
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Mensajes proximamente','warning')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Mensajes
+      </a>
+    </nav>
+    <div class="sidebar__bottom">
+      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Configuracion proximamente','warning')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configuracion
+      </a>
+      <a href="#" class="sidebar__item logout" id="logoutLink" data-h>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Cerrar Sesion
       </a>
     </div>
@@ -646,7 +691,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
   'use strict';
 
   // ═══ INIT FLOATING NAV ═══
-  SyneraNav.init({
+  SyneriaNav.init({
     mode: 'app',
     active: 'Perfil',
     items: [
@@ -667,12 +712,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
   /* ── Initialize: check auth then load profile ── */
   async function init(){
     try {
-      const session = await SyneraAuth.requireAuth();
+      const session = await SyneriaAuth.requireAuth();
       if (!session) return; // redirected to login
       currentUserId = session.user.id;
 
       // Load profile from Supabase
-      const dbProfile = await SyneraProfiles.get(currentUserId);
+      const dbProfile = await SyneriaProfiles.get(currentUserId);
       if (dbProfile) {
         profile = dbProfile;
       } else {
@@ -811,7 +856,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
     var avatarEl = document.getElementById('profileAvatar');
     if (avatarEl) avatarEl.childNodes[0].textContent = upper;
     // Update floating nav with user data
-    SyneraNav.setUser(name, upper, 0);
+    SyneriaNav.setUser(name, upper, 0);
   }
 
   /* ── Update stats counters ── */
@@ -957,7 +1002,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
         role: profile.role || 'worker',
         updated_at: new Date().toISOString()
       };
-      var result = await SyneraProfiles.upsert(payload);
+      var result = await SyneriaProfiles.upsert(payload);
       if (result) profile = result;
       return true;
     } catch (err) {
@@ -1365,7 +1410,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
     logoutLink.addEventListener('click', async function(e){
       e.preventDefault();
       try {
-        await SyneraAuth.signOut();
+        await SyneriaAuth.signOut();
         showToast('Sesion cerrada');
         setTimeout(function(){ window.location.href = 'login.html'; }, 500);
       } catch (err) {
@@ -1373,6 +1418,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;ba
       }
     });
   }
+
+  /* ── Sidebar mobile toggle ── */
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebarOverlay');
+  function toggleProfileSidebar(){
+    if(sidebar) sidebar.classList.toggle('open');
+    if(sidebarOverlay) sidebarOverlay.classList.toggle('show');
+  }
+  if(sidebarOverlay) sidebarOverlay.addEventListener('click', toggleProfileSidebar);
 
   /* ── Cancel buttons: reload from Supabase ── */
   document.querySelectorAll('.save-bar .btn--outline').forEach(function(btn){

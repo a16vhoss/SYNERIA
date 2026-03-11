@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Iniciar Sesión</title>
+<title>Syneria — Iniciar Sesión</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=General+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -424,7 +424,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
     <div class="panel-content">
       <p class="panel-eyebrow">Plataforma Global de Talento</p>
       <h1 class="panel-headline">Conecta con <em>Oportunidades Globales</em></h1>
-      <p class="panel-sub">Miles de trabajadores y empleadores ya confian en Synera para construir el futuro del trabajo sin fronteras.</p>
+      <p class="panel-sub">Miles de trabajadores y empleadores ya confian en Syneria para construir el futuro del trabajo sin fronteras.</p>
 
       <div class="stats-carousel" id="statsCarousel">
         <div class="stat-item active">
@@ -447,7 +447,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
 
       <div class="testimonials" id="testimonials">
         <div class="testimonial active">
-          <q>Synera me ayudo a encontrar trabajo remoto desde Colombia en solo 2 semanas.</q>
+          <q>Syneria me ayudo a encontrar trabajo remoto desde Colombia en solo 2 semanas.</q>
           <cite>— Maria G., Desarrolladora</cite>
         </div>
         <div class="testimonial">
@@ -554,7 +554,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
       <!-- ===== REGISTER FORM ===== -->
       <div class="form-panel" id="panel-register">
         <h2 class="form-title">Crea tu cuenta</h2>
-        <p class="form-subtitle">Unete a miles de profesionales y empresas en Synera.</p>
+        <p class="form-subtitle">Unete a miles de profesionales y empresas en Syneria.</p>
 
         <form id="registerForm" novalidate autocomplete="on">
           <!-- Role selector -->
@@ -713,13 +713,13 @@ body.custom-cursor-active [role="button"]{cursor:none}
   'use strict';
 
   // ========== INIT FLOATING NAV ==========
-  SyneraNav.init({ mode: 'public', active: '', ctaText: 'Registrarse', ctaHref: '#', items: [{ label: 'Inicio', href: 'synera.html' }, { label: 'Empleos', href: 'dashboard.html' }] });
+  SyneriaNav.init({ mode: 'public', active: '', ctaText: 'Registrarse', ctaHref: '#', items: [{ label: 'Inicio', href: 'syneria.html' }, { label: 'Empleos', href: 'dashboard.html' }] });
 
   // ========== CHECK IF ALREADY LOGGED IN ==========
   (async function checkExistingSession() {
     try {
-      if (typeof SyneraAuth === 'undefined') return;
-      const session = await SyneraAuth.getSession();
+      if (typeof SyneriaAuth === 'undefined') return;
+      const session = await SyneriaAuth.getSession();
       if (session && session.user) {
         const role = session.user.user_metadata?.role || 'worker';
         const redirect = role === 'employer' ? 'employer.html' : 'dashboard.html';
@@ -1123,7 +1123,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
       btn.disabled = true;
 
       try {
-        var data = await SyneraAuth.signIn(email, password);
+        var data = await SyneriaAuth.signIn(email, password);
         var user = data.user;
         var role = user.user_metadata?.role || 'worker';
         var fullName = user.user_metadata?.full_name || email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
@@ -1136,8 +1136,8 @@ body.custom-cursor-active [role="button"]{cursor:none}
           country: user.user_metadata?.country || '',
           loggedIn: true
         };
-        localStorage.setItem('synera_user', JSON.stringify(userData));
-        sessionStorage.setItem('synera_user', JSON.stringify(userData));
+        localStorage.setItem('syneria_user', JSON.stringify(userData));
+        sessionStorage.setItem('syneria_user', JSON.stringify(userData));
 
         if (role === 'employer') {
           window.location.href = 'employer.html';
@@ -1213,7 +1213,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
       btn.disabled = true;
 
       try {
-        var data = await SyneraAuth.signUp(email, password, {
+        var data = await SyneriaAuth.signUp(email, password, {
           full_name: name,
           role: selectedRole,
           country: country
@@ -1230,8 +1230,8 @@ body.custom-cursor-active [role="button"]{cursor:none}
             country: country,
             loggedIn: true
           };
-          localStorage.setItem('synera_user', JSON.stringify(userData));
-          sessionStorage.setItem('synera_user', JSON.stringify(userData));
+          localStorage.setItem('syneria_user', JSON.stringify(userData));
+          sessionStorage.setItem('syneria_user', JSON.stringify(userData));
 
           if (selectedRole === 'worker') {
             window.location.href = 'dashboard.html';

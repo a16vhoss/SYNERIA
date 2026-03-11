@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════
-   SYNERA — FLOATING CONSTELLATION NAV
+   SYNERIA — FLOATING CONSTELLATION NAV
    Shared navigation controller for all pages.
 
    Usage: Include nav-shared.css + nav-shared.js in every page,
-   then call SyneraNav.init({ mode, active, items }) after DOM ready.
+   then call SyneriaNav.init({ mode, active, items }) after DOM ready.
    ═══════════════════════════════════════════════════════════════ */
 
-const SyneraNav = {
+const SyneriaNav = {
   // Current configuration
   config: null,
   navEl: null,
@@ -72,63 +72,63 @@ const SyneraNav = {
     this.updateBlob();
 
     // Check session for public pages
-    if (this.config.mode === 'public' && typeof SyneraAuth !== 'undefined') {
+    if (this.config.mode === 'public' && typeof SyneriaAuth !== 'undefined') {
       this.checkSession();
     }
   },
 
   render() {
     // Remove existing nav if re-rendering
-    const existing = document.querySelector('.synera-nav');
+    const existing = document.querySelector('.syneria-nav');
     if (existing) existing.remove();
-    const existingMobile = document.querySelector('.synera-nav__mobile');
+    const existingMobile = document.querySelector('.syneria-nav__mobile');
     if (existingMobile) existingMobile.remove();
 
     const nav = document.createElement('nav');
-    nav.className = `synera-nav ${this.config.mode === 'app' || this.config.mode === 'employer' ? 'app-mode' : ''}`;
+    nav.className = `syneria-nav ${this.config.mode === 'app' || this.config.mode === 'employer' ? 'app-mode' : ''}`;
     nav.setAttribute('role', 'navigation');
     nav.setAttribute('aria-label', 'Navegacion principal');
 
     let html = '';
 
     // Logo
-    const logoHref = this.config.mode === 'public' ? 'synera.html' : 'dashboard.html';
-    html += `<a href="${logoHref}" class="synera-nav__logo" data-magnetic>Synera<span>.</span></a>`;
-    html += `<div class="synera-nav__divider"></div>`;
+    const logoHref = this.config.mode === 'public' ? 'syneria.html' : 'dashboard.html';
+    html += `<a href="${logoHref}" class="syneria-nav__logo" data-magnetic>Syneria<span>.</span></a>`;
+    html += `<div class="syneria-nav__divider"></div>`;
 
     // Items container with blob
-    html += `<div class="synera-nav__items">`;
-    html += `<div class="synera-nav__blob"></div>`;
+    html += `<div class="syneria-nav__items">`;
+    html += `<div class="syneria-nav__blob"></div>`;
 
     this.config.items.forEach((item, i) => {
       const isActive = this.isActive(item);
       const iconHtml = item.icon ? this.icons[item.icon] || '' : '';
       const scrollAttr = item.scroll ? `data-scroll="${item.href}"` : '';
-      html += `<a href="${item.href}" class="synera-nav__item${isActive ? ' active' : ''}" data-nav-index="${i}" ${scrollAttr}>${iconHtml}${item.label}</a>`;
+      html += `<a href="${item.href}" class="syneria-nav__item${isActive ? ' active' : ''}" data-nav-index="${i}" ${scrollAttr}>${iconHtml}${item.label}</a>`;
     });
 
     html += `</div>`; // close items
 
     // Right section
-    html += `<div class="synera-nav__right">`;
+    html += `<div class="syneria-nav__right">`;
 
     if (this.config.showNotif) {
-      html += `<button class="synera-nav__notif" aria-label="Notificaciones">`;
+      html += `<button class="syneria-nav__notif" aria-label="Notificaciones">`;
       html += this.icons.bell;
       if (this.config.unreadCount > 0) html += `<div class="dot"></div>`;
       html += `</button>`;
     }
 
     if (this.config.showAvatar && this.config.userInitials) {
-      html += `<a href="profile.html" class="synera-nav__avatar" title="${this.config.userName}">${this.config.userInitials}</a>`;
+      html += `<a href="profile.html" class="syneria-nav__avatar" title="${this.config.userName}">${this.config.userInitials}</a>`;
     }
 
     if (this.config.ctaText) {
-      html += `<a href="${this.config.ctaHref}" class="synera-nav__cta" data-magnetic><span>${this.config.ctaText}</span></a>`;
+      html += `<a href="${this.config.ctaHref}" class="syneria-nav__cta" data-magnetic><span>${this.config.ctaText}</span></a>`;
     }
 
     // Burger for mobile
-    html += `<button class="synera-nav__burger" aria-label="Menu" aria-expanded="false">`;
+    html += `<button class="syneria-nav__burger" aria-label="Menu" aria-expanded="false">`;
     html += `<span></span><span></span><span></span>`;
     html += `</button>`;
 
@@ -137,21 +137,21 @@ const SyneraNav = {
     nav.innerHTML = html;
     document.body.prepend(nav);
     this.navEl = nav;
-    this.blobEl = nav.querySelector('.synera-nav__blob');
-    this.burgerEl = nav.querySelector('.synera-nav__burger');
+    this.blobEl = nav.querySelector('.syneria-nav__blob');
+    this.burgerEl = nav.querySelector('.syneria-nav__burger');
 
     // Mobile dropdown
     const mobile = document.createElement('div');
-    mobile.className = 'synera-nav__mobile';
+    mobile.className = 'syneria-nav__mobile';
     let mobileHtml = '';
     this.config.items.forEach(item => {
       const isActive = this.isActive(item);
       const iconHtml = item.icon ? this.icons[item.icon] || '' : '';
       const scrollAttr = item.scroll ? `data-scroll="${item.href}"` : '';
-      mobileHtml += `<a href="${item.href}" class="synera-nav__item${isActive ? ' active' : ''}" ${scrollAttr}>${iconHtml}${item.label}</a>`;
+      mobileHtml += `<a href="${item.href}" class="syneria-nav__item${isActive ? ' active' : ''}" ${scrollAttr}>${iconHtml}${item.label}</a>`;
     });
     if (this.config.ctaText) {
-      mobileHtml += `<a href="${this.config.ctaHref}" class="synera-nav__cta">${this.config.ctaText}</a>`;
+      mobileHtml += `<a href="${this.config.ctaHref}" class="syneria-nav__cta">${this.config.ctaText}</a>`;
     }
     mobile.innerHTML = mobileHtml;
     document.body.prepend(mobile);
@@ -168,8 +168,8 @@ const SyneraNav = {
 
   bindEvents() {
     // Dock magnification
-    const items = this.navEl.querySelectorAll('.synera-nav__item');
-    const itemsContainer = this.navEl.querySelector('.synera-nav__items');
+    const items = this.navEl.querySelectorAll('.syneria-nav__item');
+    const itemsContainer = this.navEl.querySelector('.syneria-nav__items');
 
     itemsContainer.addEventListener('mousemove', (e) => {
       items.forEach(item => {
@@ -310,12 +310,12 @@ const SyneraNav = {
 
   updateBlob() {
     if (!this.blobEl) return;
-    const activeItem = this.navEl.querySelector('.synera-nav__item.active');
+    const activeItem = this.navEl.querySelector('.syneria-nav__item.active');
     if (!activeItem) {
       this.blobEl.style.opacity = '0';
       return;
     }
-    const containerRect = this.navEl.querySelector('.synera-nav__items').getBoundingClientRect();
+    const containerRect = this.navEl.querySelector('.syneria-nav__items').getBoundingClientRect();
     const itemRect = activeItem.getBoundingClientRect();
     this.blobEl.style.opacity = '1';
     this.blobEl.style.left = (itemRect.left - containerRect.left) + 'px';
@@ -324,7 +324,7 @@ const SyneraNav = {
 
   async checkSession() {
     try {
-      const session = await SyneraAuth.getSession();
+      const session = await SyneriaAuth.getSession();
       if (session) {
         const user = session.user;
         const name = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
@@ -333,7 +333,7 @@ const SyneraNav = {
         const panelHref = role === 'employer' ? 'employer.html' : 'dashboard.html';
 
         // Update CTA to "Mi Panel"
-        const cta = this.navEl.querySelector('.synera-nav__cta');
+        const cta = this.navEl.querySelector('.syneria-nav__cta');
         if (cta) {
           cta.href = panelHref;
           const ctaSpan = cta.querySelector('span');
@@ -342,19 +342,19 @@ const SyneraNav = {
         }
 
         // Add avatar if not already present
-        if (!this.navEl.querySelector('.synera-nav__avatar')) {
-          const rightSection = this.navEl.querySelector('.synera-nav__right');
+        if (!this.navEl.querySelector('.syneria-nav__avatar')) {
+          const rightSection = this.navEl.querySelector('.syneria-nav__right');
           const avatar = document.createElement('a');
           avatar.href = 'profile.html';
-          avatar.className = 'synera-nav__avatar';
+          avatar.className = 'syneria-nav__avatar';
           avatar.title = name;
           avatar.textContent = initials;
-          rightSection.insertBefore(avatar, rightSection.querySelector('.synera-nav__burger'));
+          rightSection.insertBefore(avatar, rightSection.querySelector('.syneria-nav__burger'));
         }
 
         // Update mobile CTA too
         if (this.mobileEl) {
-          const mobileCta = this.mobileEl.querySelector('.synera-nav__cta');
+          const mobileCta = this.mobileEl.querySelector('.syneria-nav__cta');
           if (mobileCta) {
             mobileCta.href = panelHref;
             mobileCta.textContent = 'Mi Panel';
@@ -368,12 +368,12 @@ const SyneraNav = {
 
   /* ── Update user info (call from app pages after auth) ── */
   setUser(name, initials, unreadCount) {
-    const avatar = this.navEl?.querySelector('.synera-nav__avatar');
+    const avatar = this.navEl?.querySelector('.syneria-nav__avatar');
     if (avatar) {
       avatar.textContent = initials || '';
       avatar.title = name || '';
     }
-    const notifDot = this.navEl?.querySelector('.synera-nav__notif .dot');
+    const notifDot = this.navEl?.querySelector('.syneria-nav__notif .dot');
     if (notifDot) {
       notifDot.style.display = unreadCount > 0 ? '' : 'none';
     }

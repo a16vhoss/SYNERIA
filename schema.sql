@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════
--- SYNERA — Database Schema for Supabase
+-- SYNERIA — Database Schema for Supabase
 -- Run this in the Supabase SQL Editor
 -- ═══════════════════════════════════════════
 
@@ -270,7 +270,7 @@ BEGIN
   VALUES (NEW.id, 50.00);
 
   INSERT INTO public.notifications (user_id, title, message, type)
-  VALUES (NEW.id, 'Bienvenido a Synera', 'Tu cuenta ha sido creada exitosamente. Completa tu perfil para empezar.', 'success');
+  VALUES (NEW.id, 'Bienvenido a Syneria', 'Tu cuenta ha sido creada exitosamente. Completa tu perfil para empezar.', 'success');
 
   RETURN NEW;
 END;

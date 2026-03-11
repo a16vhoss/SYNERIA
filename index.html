@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synera — Tu talento, tu mundo, tu economía</title>
-<meta name="description" content="Synera conecta trabajadores con empleadores globales. Perfiles verificados, contratos digitales, wallet integrada.">
+<title>Syneria — Tu talento, tu mundo, tu economía</title>
+<meta name="description" content="Syneria conecta trabajadores con empleadores globales. Perfiles verificados, contratos digitales, wallet integrada.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="nav-shared.css">
 <style>
 /* ═══════════════════════════════════════════
-   SYNERA — WHITE LUXURY DESIGN SYSTEM v2
+   SYNERIA — WHITE LUXURY DESIGN SYSTEM v2
    ═══════════════════════════════════════════ */
 @property --aurora-a{syntax:'<angle>';initial-value:0deg;inherits:false}
 @property --glow-x{syntax:'<percentage>';initial-value:50%;inherits:false}
@@ -324,7 +324,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 <!-- Preloader -->
 <div class="pre" id="preloader" aria-live="polite">
-  <div class="pre__logo">Synera<span>.</span></div>
+  <div class="pre__logo">Syneria<span>.</span></div>
   <div class="pre__count" id="preCount">0</div>
   <div class="pre__bar"><div class="pre__fill" id="preFill"></div></div>
   <div class="pre__text">Cargando experiencia</div>
@@ -464,7 +464,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 <section class="section-pad sectors" id="sectores">
   <div class="section-label reveal">Sectores</div>
   <h2 class="section-title reveal">Donde el Talento se Encuentra con la Demanda</h2>
-  <p class="section-sub reveal">Cinco industrias con escasez crítica de mano de obra. Synera conecta el talento exacto con la necesidad correcta.</p>
+  <p class="section-sub reveal">Cinco industrias con escasez crítica de mano de obra. Syneria conecta el talento exacto con la necesidad correcta.</p>
   <div class="sectors__track" id="sectorsTrack">
     <div class="sector-card">
       <span class="sector-card__emoji">&#127959;&#65039;</span>
@@ -579,11 +579,11 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 <section class="spotlight" id="spotlight">
   <div class="spotlight__base">
     <h2>Un Mercado de $480 Mil Millones.<br>Sin una Solución Real.</h2>
-    <p>Mueve tu cursor para revelar la oportunidad que Synera está capturando.</p>
+    <p>Mueve tu cursor para revelar la oportunidad que Syneria está capturando.</p>
   </div>
   <div class="spotlight__reveal" id="spotlightReveal" aria-hidden="true">
     <div>
-      <h2>Synera es <span>la Solución.</span><br>$47M ARR Proyectado Año 3.</h2>
+      <h2>Syneria es <span>la Solución.</span><br>$47M ARR Proyectado Año 3.</h2>
       <p>12,000 perfiles verificados. 340 empresas conectadas. 47 contratos firmados. La tracción es real.</p>
     </div>
   </div>
@@ -628,7 +628,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <div class="footer__logo">Synera<span>.</span></div>
+      <div class="footer__logo">Syneria<span>.</span></div>
       <p class="footer__tagline">Tu talento, tu mundo, tu economía. Conectamos el futuro del trabajo global con tecnología, confianza y propósito.</p>
       <div class="footer__socials">
         <a href="#" class="footer__social" aria-label="LinkedIn">
@@ -667,7 +667,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
   </div>
   <div class="footer__divider"></div>
   <div class="footer__bottom">
-    <span>&copy; 2026 Synera. Todos los derechos reservados.</span>
+    <span>&copy; 2026 Syneria. Todos los derechos reservados.</span>
     <span>Hecho con propósito desde LATAM para el mundo.</span>
   </div>
 </footer>
@@ -677,7 +677,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 <script>
 /* ═══════════════════════════════════════════
-   SYNERA — INTERACTIVE ENGINE v2
+   SYNERIA — INTERACTIVE ENGINE v2
    ═══════════════════════════════════════════ */
 (function(){
 'use strict';
@@ -801,7 +801,7 @@ document.querySelectorAll('[data-magnetic]').forEach(el=>{
 });
 
 // ─── Floating Constellation Nav ───
-SyneraNav.init({
+SyneriaNav.init({
   mode: 'public',
   items: [
     { label: 'Plataforma', href: '#plataforma', scroll: true },
@@ -935,8 +935,8 @@ function showToast(msg,type){
 // ─── Supabase Auth Awareness (nav-shared handles CTA update via checkSession) ───
 async function initAuthState(){
   try{
-    if(typeof SyneraAuth==='undefined')return;
-    const session=await SyneraAuth.getSession();
+    if(typeof SyneriaAuth==='undefined')return;
+    const session=await SyneriaAuth.getSession();
     if(session&&session.user){
       const empBtn=document.getElementById('heroEmployerBtn');
       if(empBtn){
