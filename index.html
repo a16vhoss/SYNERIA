@@ -110,7 +110,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 .hero__aurora{position:absolute;inset:0;z-index:0;overflow:hidden}
 .hero__aurora::before,.hero__aurora::after{content:'';position:absolute;width:700px;height:700px;border-radius:50%;filter:blur(140px);opacity:0.12;will-change:transform}
 .hero__aurora::before{background:linear-gradient(135deg,var(--accent),rgba(58,125,92,0.3));top:-250px;right:-150px;animation:auroraFloat 18s ease-in-out infinite alternate}
-.hero__aurora::after{background:linear-gradient(135deg,var(--accent2),rgba(59,158,206,0.3));bottom:-250px;left:-150px;animation:auroraFloat 18s ease-in-out infinite alternate-reverse}
+.hero__aurora::after{background:linear-gradient(135deg,var(--accent2),rgba(74,140,106,0.3));bottom:-250px;left:-150px;animation:auroraFloat 18s ease-in-out infinite alternate-reverse}
 /* Third aurora orb */
 .hero__aurora-extra{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(160px);opacity:0.08;background:linear-gradient(135deg,#7c3aed,var(--accent));top:50%;left:50%;transform:translate(-50%,-50%);animation:auroraFloat 22s ease-in-out infinite alternate;pointer-events:none;z-index:0}
 @keyframes auroraFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-40px) scale(1.2)}66%{transform:translate(-30px,30px) scale(0.9)}100%{transform:translate(20px,-20px) scale(1.1)}}
@@ -183,12 +183,12 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform 0.5s var(--ease-out)}
 .feature-card:hover{box-shadow:var(--shadow-lg);border-color:rgba(58,125,92,0.2)}
 .feature-card:hover::before{transform:scaleX(1)}
-.feature-card__icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(58,125,92,0.1),rgba(59,158,206,0.1));display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.5rem;transition:transform 0.4s var(--spring),box-shadow 0.3s}
+.feature-card__icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(58,125,92,0.1),rgba(74,140,106,0.1));display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.5rem;transition:transform 0.4s var(--spring),box-shadow 0.3s}
 .feature-card:hover .feature-card__icon{transform:scale(1.1);box-shadow:0 4px 16px rgba(58,125,92,0.15)}
 .feature-card h3{font-family:var(--font-d);font-size:1.2rem;font-weight:700;margin-bottom:10px;color:var(--text);letter-spacing:-0.01em}
 .feature-card p{font-size:0.9rem;color:var(--muted);line-height:1.65}
 /* Glassmorphism hover overlay */
-.feature-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(58,125,92,0.02),rgba(59,158,206,0.02));opacity:0;transition:opacity 0.3s}
+.feature-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(58,125,92,0.02),rgba(74,140,106,0.02));opacity:0;transition:opacity 0.3s}
 .feature-card:hover::after{opacity:1}
 @media(max-width:900px){.features__grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.features__grid{grid-template-columns:1fr}}
