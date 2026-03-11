@@ -1240,9 +1240,20 @@ body.custom-cursor-active [role="button"]{cursor:none}
             window.location.href = 'employer.html';
           }
         } else {
-          resetBtn(btn);
-          hideFormError(this);
-          showFormSuccess(this, 'Cuenta creada. Revisa tu correo electronico para confirmar tu cuenta antes de iniciar sesion.');
+          // Auto-confirm enabled — sign in immediately after signup
+          var signInData = await SyneriaAuth.signIn(email, password);
+          var signedUser = signInData.user;
+          var userData = {
+            id: signedUser.id,
+            name: name,
+            email: signedUser.email,
+            role: selectedRole,
+            country: country,
+            loggedIn: true
+          };
+          localStorage.setItem('syneria_user', JSON.stringify(userData));
+          sessionStorage.setItem('syneria_user', JSON.stringify(userData));
+          window.location.href = selectedRole === 'employer' ? 'employer.html' : 'dashboard.html';
         }
       } catch (err) {
         resetBtn(btn);
