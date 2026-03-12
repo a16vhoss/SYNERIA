@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syneria — Detalle de Empleo</title>
+<title data-i18n="job_page_title">Syneria — Detalle de Empleo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -265,6 +265,7 @@ img{display:block;max-width:100%}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 </head>
 <body>
@@ -285,7 +286,7 @@ img{display:block;max-width:100%}
 <div class="back-bar">
   <a href="dashboard.html" class="back-link" data-h>
     <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-    Volver a empleos
+    <span data-i18n="job_back_to_jobs">Volver a empleos</span>
   </a>
 </div>
 
@@ -295,39 +296,39 @@ img{display:block;max-width:100%}
   <div class="job-header__info">
     <div class="job-header__company">
       Constructora Alpine S.A.
-      <span class="job-header__company-badge">&#10003; Verificada</span>
+      <span class="job-header__company-badge" data-i18n="job_verified">&#10003; Verificada</span>
     </div>
-    <h1 class="job-header__title">Ayudante de Construcción Senior</h1>
+    <h1 class="job-header__title" data-i18n="job_default_title">Ayudante de Construcción Senior</h1>
     <div class="job-header__meta">
       <span class="job-header__meta-item">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Zurich, Suiza &#127464;&#127469;
+        <span data-i18n="job_location">Zurich, Suiza &#127464;&#127469;</span>
       </span>
       <span class="job-header__meta-item">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        Hace 3 días
+        <span data-i18n="job_posted_ago">Hace 3 días</span>
       </span>
     </div>
     <div class="job-header__tags">
-      <span class="tag tag--green">Jornada Completa</span>
-      <span class="tag tag--red">Urgente</span>
-      <span class="tag tag--blue">Visa Sponsorship</span>
-      <span class="tag tag--purple">Alojamiento Incluido</span>
+      <span class="tag tag--green" data-i18n="job_tag_full_time">Jornada Completa</span>
+      <span class="tag tag--red" data-i18n="job_tag_urgent">Urgente</span>
+      <span class="tag tag--blue" data-i18n="job_tag_visa">Visa Sponsorship</span>
+      <span class="tag tag--purple" data-i18n="job_tag_housing">Alojamiento Incluido</span>
     </div>
-    <div class="job-header__salary">$3,200/mes + beneficios</div>
+    <div class="job-header__salary" data-i18n="job_salary">$3,200/mes + beneficios</div>
     <div class="job-header__actions">
       <button class="btn btn--primary" id="applyBtn" data-h>
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        Aplicar Ahora
+        <span data-i18n="job_apply_now">Aplicar Ahora</span>
       </button>
       <button class="btn btn--outline" id="bookmarkBtn" data-h>
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        Guardar
+        <span data-i18n="job_save">Guardar</span>
       </button>
       <button class="btn btn--outline" id="shareBtn" data-h style="position:relative">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-        Compartir
-        <span class="share-tooltip" id="shareTooltip">Enlace copiado</span>
+        <span data-i18n="job_share">Compartir</span>
+        <span class="share-tooltip" id="shareTooltip" data-i18n="job_link_copied">Enlace copiado</span>
       </button>
     </div>
   </div>
@@ -336,11 +337,11 @@ img{display:block;max-width:100%}
 <!-- SECTION NAV (scroll spy) -->
 <div style="padding:0 5vw">
   <div class="section-nav" id="sectionNav">
-    <a href="#sec-desc" class="section-nav__link active" data-h data-spy="sec-desc">Descripción</a>
-    <a href="#sec-resp" class="section-nav__link" data-h data-spy="sec-resp">Responsabilidades</a>
-    <a href="#sec-req" class="section-nav__link" data-h data-spy="sec-req">Requisitos</a>
-    <a href="#sec-ben" class="section-nav__link" data-h data-spy="sec-ben">Beneficios</a>
-    <a href="#sec-proc" class="section-nav__link" data-h data-spy="sec-proc">Proceso</a>
+    <a href="#sec-desc" class="section-nav__link active" data-h data-spy="sec-desc" data-i18n="job_tab_description">Descripción</a>
+    <a href="#sec-resp" class="section-nav__link" data-h data-spy="sec-resp" data-i18n="job_tab_responsibilities">Responsabilidades</a>
+    <a href="#sec-req" class="section-nav__link" data-h data-spy="sec-req" data-i18n="job_tab_requirements">Requisitos</a>
+    <a href="#sec-ben" class="section-nav__link" data-h data-spy="sec-ben" data-i18n="job_tab_benefits">Beneficios</a>
+    <a href="#sec-proc" class="section-nav__link" data-h data-spy="sec-proc" data-i18n="job_tab_process">Proceso</a>
   </div>
 </div>
 
@@ -351,77 +352,77 @@ img{display:block;max-width:100%}
     <div class="job-section section-reveal" id="sec-desc" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-        Descripción del Puesto
+        <span data-i18n="job_description_title">Descripción del Puesto</span>
       </h2>
-      <p>Estamos buscando un Ayudante de Construcción Senior experimentado para unirse a nuestro equipo en Zurich, Suiza. Constructora Alpine S.A. es una empresa líder en el sector de la construcción, especializada en proyectos residenciales y comerciales de alta calidad en toda la región de habla alemana.</p>
-      <p>El candidato ideal tendrá experiencia sólida en obras de construcción, capacidad para trabajar en equipo multicultural y disposición para aprender nuevas técnicas de construcción europeas. Ofrecemos un entorno de trabajo seguro, equipamiento moderno y un paquete completo de beneficios que incluye alojamiento y patrocinio de visa.</p>
+      <p data-i18n="job_description_p1">Estamos buscando un Ayudante de Construcción Senior experimentado para unirse a nuestro equipo en Zurich, Suiza. Constructora Alpine S.A. es una empresa líder en el sector de la construcción, especializada en proyectos residenciales y comerciales de alta calidad en toda la región de habla alemana.</p>
+      <p data-i18n="job_description_p2">El candidato ideal tendrá experiencia sólida en obras de construcción, capacidad para trabajar en equipo multicultural y disposición para aprender nuevas técnicas de construcción europeas. Ofrecemos un entorno de trabajo seguro, equipamiento moderno y un paquete completo de beneficios que incluye alojamiento y patrocinio de visa.</p>
     </div>
 
     <div class="job-section section-reveal" id="sec-resp" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Responsabilidades
+        <span data-i18n="job_responsibilities_title">Responsabilidades</span>
       </h2>
       <ul>
-        <li>Asistir en la ejecución de obras de construcción residencial y comercial siguiendo planos y especificaciones técnicas</li>
-        <li>Preparar y mantener el área de trabajo, incluyendo montaje y desmontaje de andamios y estructuras temporales</li>
-        <li>Operar herramientas manuales y eléctricas de construcción de manera segura y eficiente</li>
-        <li>Colaborar con el equipo de supervisión para garantizar el cumplimiento de plazos y estándares de calidad</li>
-        <li>Cumplir con todas las normativas de seguridad laboral suizas y protocolos de la empresa</li>
-        <li>Participar en capacitaciones continuas sobre nuevas técnicas constructivas y normativas locales</li>
+        <li data-i18n="job_resp_1">Asistir en la ejecución de obras de construcción residencial y comercial siguiendo planos y especificaciones técnicas</li>
+        <li data-i18n="job_resp_2">Preparar y mantener el área de trabajo, incluyendo montaje y desmontaje de andamios y estructuras temporales</li>
+        <li data-i18n="job_resp_3">Operar herramientas manuales y eléctricas de construcción de manera segura y eficiente</li>
+        <li data-i18n="job_resp_4">Colaborar con el equipo de supervisión para garantizar el cumplimiento de plazos y estándares de calidad</li>
+        <li data-i18n="job_resp_5">Cumplir con todas las normativas de seguridad laboral suizas y protocolos de la empresa</li>
+        <li data-i18n="job_resp_6">Participar en capacitaciones continuas sobre nuevas técnicas constructivas y normativas locales</li>
       </ul>
     </div>
 
     <div class="job-section section-reveal" id="sec-req" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
-        Requisitos
+        <span data-i18n="job_requirements_title">Requisitos</span>
       </h2>
       <ul>
-        <li>Mínimo 3 años de experiencia comprobable en construcción civil o similar</li>
-        <li>Certificaciones vigentes en seguridad laboral y manejo de maquinaria pesada</li>
-        <li>Capacidad física para realizar trabajos de alta demanda en condiciones variadas</li>
-        <li>Nivel básico de alemán o inglés (se ofrece curso de idioma incluido)</li>
-        <li>Pasaporte vigente y disponibilidad para reubicación inmediata</li>
-        <li>Disposición para trabajar en equipo multicultural y adaptarse a nuevos entornos</li>
+        <li data-i18n="job_req_1">Mínimo 3 años de experiencia comprobable en construcción civil o similar</li>
+        <li data-i18n="job_req_2">Certificaciones vigentes en seguridad laboral y manejo de maquinaria pesada</li>
+        <li data-i18n="job_req_3">Capacidad física para realizar trabajos de alta demanda en condiciones variadas</li>
+        <li data-i18n="job_req_4">Nivel básico de alemán o inglés (se ofrece curso de idioma incluido)</li>
+        <li data-i18n="job_req_5">Pasaporte vigente y disponibilidad para reubicación inmediata</li>
+        <li data-i18n="job_req_6">Disposición para trabajar en equipo multicultural y adaptarse a nuevos entornos</li>
       </ul>
     </div>
 
     <div class="job-section section-reveal" id="sec-ben" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        Beneficios
+        <span data-i18n="job_benefits_title">Beneficios</span>
       </h2>
       <div class="benefits-grid">
         <div class="benefit-card" data-h>
           <div class="benefit-card__icon">&#127758;</div>
-          <div class="benefit-card__label">Visa Sponsorship</div>
-          <div class="benefit-card__desc">Patrocinio completo de visa de trabajo</div>
+          <div class="benefit-card__label" data-i18n="job_benefit_visa_label">Visa Sponsorship</div>
+          <div class="benefit-card__desc" data-i18n="job_benefit_visa_desc">Patrocinio completo de visa de trabajo</div>
         </div>
         <div class="benefit-card" data-h>
           <div class="benefit-card__icon">&#127968;</div>
-          <div class="benefit-card__label">Alojamiento</div>
-          <div class="benefit-card__desc">Vivienda amueblada incluida</div>
+          <div class="benefit-card__label" data-i18n="job_benefit_housing_label">Alojamiento</div>
+          <div class="benefit-card__desc" data-i18n="job_benefit_housing_desc">Vivienda amueblada incluida</div>
         </div>
         <div class="benefit-card" data-h>
           <div class="benefit-card__icon">&#128153;</div>
-          <div class="benefit-card__label">Seguro Médico</div>
-          <div class="benefit-card__desc">Cobertura médica completa suiza</div>
+          <div class="benefit-card__label" data-i18n="job_benefit_insurance_label">Seguro Médico</div>
+          <div class="benefit-card__desc" data-i18n="job_benefit_insurance_desc">Cobertura médica completa suiza</div>
         </div>
         <div class="benefit-card" data-h>
           <div class="benefit-card__icon">&#9992;&#65039;</div>
-          <div class="benefit-card__label">Vuelo de Ida</div>
-          <div class="benefit-card__desc">Boleto aéreo al destino cubierto</div>
+          <div class="benefit-card__label" data-i18n="job_benefit_flight_label">Vuelo de Ida</div>
+          <div class="benefit-card__desc" data-i18n="job_benefit_flight_desc">Boleto aéreo al destino cubierto</div>
         </div>
         <div class="benefit-card" data-h>
           <div class="benefit-card__icon">&#127891;</div>
-          <div class="benefit-card__label">Capacitación</div>
-          <div class="benefit-card__desc">Formación continua y certificaciones</div>
+          <div class="benefit-card__label" data-i18n="job_benefit_training_label">Capacitación</div>
+          <div class="benefit-card__desc" data-i18n="job_benefit_training_desc">Formación continua y certificaciones</div>
         </div>
         <div class="benefit-card" data-h>
           <div class="benefit-card__icon">&#128176;</div>
-          <div class="benefit-card__label">Salario Competitivo</div>
-          <div class="benefit-card__desc">$3,200/mes + bonificaciones</div>
+          <div class="benefit-card__label" data-i18n="job_benefit_salary_label">Salario Competitivo</div>
+          <div class="benefit-card__desc" data-i18n="job_benefit_salary_desc">$3,200/mes + bonificaciones</div>
         </div>
       </div>
     </div>
@@ -429,29 +430,29 @@ img{display:block;max-width:100%}
     <div class="job-section section-reveal" id="sec-proc" data-section>
       <h2 class="job-section__title">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
-        Proceso de Aplicación
+        <span data-i18n="job_process_title">Proceso de Aplicación</span>
       </h2>
       <div class="timeline" id="timeline">
         <div class="timeline__line-fill" id="timelineFill"></div>
         <div class="timeline__step">
           <div class="timeline__dot"><span></span></div>
-          <div class="timeline__step-title">1. Enviar CV</div>
-          <div class="timeline__step-desc">Sube tu currículum actualizado y carta de motivación a través de nuestra plataforma.</div>
+          <div class="timeline__step-title" data-i18n="job_step1_title">1. Enviar CV</div>
+          <div class="timeline__step-desc" data-i18n="job_step1_desc">Sube tu currículum actualizado y carta de motivación a través de nuestra plataforma.</div>
         </div>
         <div class="timeline__step">
           <div class="timeline__dot"><span></span></div>
-          <div class="timeline__step-title">2. Entrevista Virtual</div>
-          <div class="timeline__step-desc">Participa en una videollamada con el equipo de recursos humanos y supervisores de obra.</div>
+          <div class="timeline__step-title" data-i18n="job_step2_title">2. Entrevista Virtual</div>
+          <div class="timeline__step-desc" data-i18n="job_step2_desc">Participa en una videollamada con el equipo de recursos humanos y supervisores de obra.</div>
         </div>
         <div class="timeline__step">
           <div class="timeline__dot"><span></span></div>
-          <div class="timeline__step-title">3. Verificación</div>
-          <div class="timeline__step-desc">Validamos tus documentos, certificaciones y experiencia laboral mediante blockchain.</div>
+          <div class="timeline__step-title" data-i18n="job_step3_title">3. Verificación</div>
+          <div class="timeline__step-desc" data-i18n="job_step3_desc">Validamos tus documentos, certificaciones y experiencia laboral mediante blockchain.</div>
         </div>
         <div class="timeline__step">
           <div class="timeline__dot"><span></span></div>
-          <div class="timeline__step-title">4. Contrato Digital</div>
-          <div class="timeline__step-desc">Firma tu contrato digitalmente y comienza el proceso de visa y reubicación.</div>
+          <div class="timeline__step-title" data-i18n="job_step4_title">4. Contrato Digital</div>
+          <div class="timeline__step-desc" data-i18n="job_step4_desc">Firma tu contrato digitalmente y comienza el proceso de visa y reubicación.</div>
         </div>
       </div>
     </div>
@@ -460,73 +461,73 @@ img{display:block;max-width:100%}
   <!-- RIGHT SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-card">
-      <div class="sidebar-card__title">Resumen del Empleo</div>
+      <div class="sidebar-card__title" data-i18n="job_summary_title">Resumen del Empleo</div>
       <div class="sidebar-card__row">
-        <span class="sidebar-card__label">Sector</span>
-        <span class="sidebar-card__value">Construcción</span>
+        <span class="sidebar-card__label" data-i18n="job_summary_sector">Sector</span>
+        <span class="sidebar-card__value" data-i18n="job_summary_sector_value">Construcción</span>
       </div>
       <div class="sidebar-card__row">
-        <span class="sidebar-card__label">Tipo</span>
-        <span class="sidebar-card__value">Jornada Completa</span>
+        <span class="sidebar-card__label" data-i18n="job_summary_type">Tipo</span>
+        <span class="sidebar-card__value" data-i18n="job_summary_type_value">Jornada Completa</span>
       </div>
       <div class="sidebar-card__row">
-        <span class="sidebar-card__label">Experiencia</span>
-        <span class="sidebar-card__value">3+ años</span>
+        <span class="sidebar-card__label" data-i18n="job_summary_experience">Experiencia</span>
+        <span class="sidebar-card__value" data-i18n="job_summary_experience_value">3+ años</span>
       </div>
       <div class="sidebar-card__row">
-        <span class="sidebar-card__label">Idiomas</span>
-        <span class="sidebar-card__value">Alemán / Inglés básico</span>
+        <span class="sidebar-card__label" data-i18n="job_summary_languages">Idiomas</span>
+        <span class="sidebar-card__value" data-i18n="job_summary_languages_value">Alemán / Inglés básico</span>
       </div>
       <div class="sidebar-card__row">
-        <span class="sidebar-card__label">Fecha de inicio</span>
-        <span class="sidebar-card__value">Abril 2026</span>
+        <span class="sidebar-card__label" data-i18n="job_summary_start_date">Fecha de inicio</span>
+        <span class="sidebar-card__value" data-i18n="job_summary_start_date_value">Abril 2026</span>
       </div>
       <div class="sidebar-card__row">
-        <span class="sidebar-card__label">Duración</span>
-        <span class="sidebar-card__value">12 meses (renovable)</span>
+        <span class="sidebar-card__label" data-i18n="job_summary_duration">Duración</span>
+        <span class="sidebar-card__value" data-i18n="job_summary_duration_value">12 meses (renovable)</span>
       </div>
     </div>
 
     <div class="sidebar-card">
-      <div class="sidebar-card__title">Sobre la Empresa</div>
+      <div class="sidebar-card__title" data-i18n="job_about_company_title">Sobre la Empresa</div>
       <div class="company-brief">
         <div class="company-brief__logo">C</div>
         <div class="company-brief__name">Constructora Alpine S.A.</div>
-        <div class="company-brief__desc">Empresa líder en construcción residencial y comercial en Suiza, con más de 25 años de experiencia en proyectos de alta calidad.</div>
+        <div class="company-brief__desc" data-i18n="job_company_desc">Empresa líder en construcción residencial y comercial en Suiza, con más de 25 años de experiencia en proyectos de alta calidad.</div>
         <div class="company-brief__stats">
           <div class="company-brief__stat">
             <strong>340+</strong>
-            <span>Empleados</span>
+            <span data-i18n="job_company_employees">Empleados</span>
           </div>
           <div class="company-brief__stat">
             <strong>4.7/5</strong>
             <span>Rating</span>
           </div>
         </div>
-        <a href="#" class="btn btn--outline btn--small" data-h style="width:100%;justify-content:center">Ver perfil de empresa</a>
+        <a href="#" class="btn btn--outline btn--small" data-h style="width:100%;justify-content:center" data-i18n="job_view_company_profile">Ver perfil de empresa</a>
       </div>
     </div>
 
     <div class="sidebar-card">
-      <div class="sidebar-card__title">Empleos Similares</div>
+      <div class="sidebar-card__title" data-i18n="job_similar_jobs_title">Empleos Similares</div>
       <a href="job-detail.html" class="similar-job" data-h>
         <div class="similar-job__logo" style="background:linear-gradient(135deg,#3A7D5C,#4A8C6A)">H</div>
         <div class="similar-job__info">
-          <div class="similar-job__title">Operador de Maquinaria</div>
+          <div class="similar-job__title" data-i18n="job_similar_1_title">Operador de Maquinaria</div>
           <div class="similar-job__meta">Hochtief AG &middot; Munich, Alemania</div>
         </div>
       </a>
       <a href="job-detail.html" class="similar-job" data-h>
         <div class="similar-job__logo" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">V</div>
         <div class="similar-job__info">
-          <div class="similar-job__title">Electricista Industrial</div>
+          <div class="similar-job__title" data-i18n="job_similar_2_title">Electricista Industrial</div>
           <div class="similar-job__meta">Vinci SA &middot; Lyon, Francia</div>
         </div>
       </a>
       <a href="job-detail.html" class="similar-job" data-h>
         <div class="similar-job__logo" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">S</div>
         <div class="similar-job__info">
-          <div class="similar-job__title">Soldador Certificado</div>
+          <div class="similar-job__title" data-i18n="job_similar_3_title">Soldador Certificado</div>
           <div class="similar-job__meta">Skanska AB &middot; Estocolmo, Suecia</div>
         </div>
       </a>
@@ -538,48 +539,48 @@ img{display:block;max-width:100%}
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" role="dialog" aria-labelledby="modalTitle">
     <div class="modal__header">
-      <h2 class="modal__title" id="modalTitle">Aplicar al puesto</h2>
-      <button class="modal__close" id="modalClose" data-h aria-label="Cerrar">
+      <h2 class="modal__title" id="modalTitle" data-i18n="job_modal_title">Aplicar al puesto</h2>
+      <button class="modal__close" id="modalClose" data-h aria-label="Cerrar" data-i18n-aria-label="job_close">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
 
     <div class="modal__form" id="modalForm">
       <div class="modal__field">
-        <label class="modal__label">Currículum (CV)</label>
+        <label class="modal__label" data-i18n="job_modal_cv_label">Currículum (CV)</label>
         <div class="upload-area" id="uploadArea">
           <div class="upload-area__icon">&#128196;</div>
-          <div class="upload-area__text">Arrastra tu archivo aquí o <strong>selecciona</strong></div>
+          <div class="upload-area__text" data-i18n="job_modal_upload_text">Arrastra tu archivo aquí o <strong>selecciona</strong></div>
           <div class="upload-area__file" id="uploadFileName"></div>
           <input type="file" id="fileInput" accept=".pdf,.doc,.docx" style="display:none">
         </div>
       </div>
 
       <div class="modal__field">
-        <label class="modal__label" for="coverLetter">Carta de presentación</label>
-        <textarea class="modal__textarea" id="coverLetter" placeholder="Escribe una breve carta de presentación..."></textarea>
+        <label class="modal__label" for="coverLetter" data-i18n="job_modal_cover_letter_label">Carta de presentación</label>
+        <textarea class="modal__textarea" id="coverLetter" placeholder="Escribe una breve carta de presentación..." data-i18n-placeholder="job_modal_cover_letter_placeholder"></textarea>
       </div>
 
       <div class="modal__field">
-        <label class="modal__label" for="motivation">¿Por qué quieres este empleo?</label>
-        <textarea class="modal__textarea" id="motivation" placeholder="Cuéntanos tu motivación para este puesto..." style="min-height:80px"></textarea>
+        <label class="modal__label" for="motivation" data-i18n="job_modal_motivation_label">¿Por qué quieres este empleo?</label>
+        <textarea class="modal__textarea" id="motivation" placeholder="Cuéntanos tu motivación para este puesto..." style="min-height:80px" data-i18n-placeholder="job_modal_motivation_placeholder"></textarea>
       </div>
 
       <div class="modal__field">
-        <label class="modal__label" for="availability">Disponibilidad</label>
+        <label class="modal__label" for="availability" data-i18n="job_modal_availability_label">Disponibilidad</label>
         <input class="modal__input" type="date" id="availability">
       </div>
 
       <button class="btn btn--primary" id="submitApp" data-h style="width:100%;justify-content:center;margin-top:8px">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        Enviar Aplicación
+        <span data-i18n="job_modal_submit">Enviar Aplicación</span>
       </button>
     </div>
 
     <div class="modal__success" id="modalSuccess">
       <div class="modal__success__icon">&#10003;</div>
-      <div class="modal__success__title">¡Aplicación enviada!</div>
-      <div class="modal__success__text">Tu aplicación ha sido recibida. Te contactaremos pronto con los próximos pasos.</div>
+      <div class="modal__success__title" data-i18n="job_modal_success_title">¡Aplicación enviada!</div>
+      <div class="modal__success__text" data-i18n="job_modal_success_text">Tu aplicación ha sido recibida. Te contactaremos pronto con los próximos pasos.</div>
     </div>
   </div>
 </div>
@@ -591,12 +592,12 @@ img{display:block;max-width:100%}
   /* ═══ INIT FLOATING NAV ═══ */
   SyneriaNav.init({
     mode: 'app',
-    active: 'Empleos',
+    active: SyneriaI18n.t('job_nav_jobs', 'Empleos'),
     items: [
       { label: 'Dashboard', href: 'dashboard.html', icon: 'home' },
-      { label: 'Empleos', href: 'dashboard.html', icon: 'briefcase' },
+      { label: SyneriaI18n.t('job_nav_jobs', 'Empleos'), href: 'dashboard.html', icon: 'briefcase' },
       { label: 'Wallet', href: 'wallet.html', icon: 'wallet' },
-      { label: 'Perfil', href: 'profile.html', icon: 'user' },
+      { label: SyneriaI18n.t('job_nav_profile', 'Perfil'), href: 'profile.html', icon: 'user' },
     ],
     showNotif: true,
     showAvatar: true
@@ -638,7 +639,7 @@ img{display:block;max-width:100%}
         currentJob = await SyneriaJobs.get(jobId);
         if (currentJob) {
           populateJobData(currentJob);
-          document.title = `Syneria — ${currentJob.title || 'Detalle de Empleo'}`;
+          document.title = `Syneria — ${currentJob.title || SyneriaI18n.t('job_page_title_suffix', 'Detalle de Empleo')}`;
           loadSimilarJobs(currentJob);
         }
       } catch(e) {
@@ -671,7 +672,7 @@ img{display:block;max-width:100%}
     if (logoEl && company.name) logoEl.textContent = company.name.charAt(0).toUpperCase();
     const companyEl = document.querySelector('.job-header__company');
     if (companyEl && company.name) {
-      companyEl.innerHTML = company.name + ' <span class="job-header__company-badge">&#10003; Verificada</span>';
+      companyEl.innerHTML = company.name + ' <span class="job-header__company-badge" data-i18n="job_verified">&#10003; ' + SyneriaI18n.t('job_verified', 'Verificada') + '</span>';
     }
     const titleEl = document.querySelector('.job-header__title');
     if (titleEl) titleEl.textContent = job.title || '';
@@ -685,7 +686,7 @@ img{display:block;max-width:100%}
     if (metaItems[1] && job.created_at) {
       const svg = metaItems[1].querySelector('svg');
       const days = Math.floor((Date.now() - new Date(job.created_at).getTime()) / 86400000);
-      const timeText = days === 0 ? 'Hoy' : days === 1 ? 'Hace 1 dia' : `Hace ${days} dias`;
+      const timeText = days === 0 ? SyneriaI18n.t('job_today', 'Hoy') : days === 1 ? SyneriaI18n.t('job_one_day_ago', 'Hace 1 dia') : SyneriaI18n.t('job_days_ago', `Hace ${days} dias`).replace('{days}', days);
       metaItems[1].innerHTML = (svg ? svg.outerHTML : '') + ' ' + timeText;
     }
 
@@ -700,9 +701,9 @@ img{display:block;max-width:100%}
     if (tagsContainer && (job.type || job.tags)) {
       tagsContainer.innerHTML = '';
       if (job.type) tagsContainer.innerHTML += `<span class="tag tag--green">${job.type}</span>`;
-      if (job.urgent) tagsContainer.innerHTML += '<span class="tag tag--red">Urgente</span>';
-      if (job.visa_sponsorship) tagsContainer.innerHTML += '<span class="tag tag--blue">Visa Sponsorship</span>';
-      if (job.housing_included) tagsContainer.innerHTML += '<span class="tag tag--purple">Alojamiento Incluido</span>';
+      if (job.urgent) tagsContainer.innerHTML += '<span class="tag tag--red" data-i18n="job_tag_urgent">' + SyneriaI18n.t('job_tag_urgent', 'Urgente') + '</span>';
+      if (job.visa_sponsorship) tagsContainer.innerHTML += '<span class="tag tag--blue" data-i18n="job_tag_visa">' + SyneriaI18n.t('job_tag_visa', 'Visa Sponsorship') + '</span>';
+      if (job.housing_included) tagsContainer.innerHTML += '<span class="tag tag--purple" data-i18n="job_tag_housing">' + SyneriaI18n.t('job_tag_housing', 'Alojamiento Incluido') + '</span>';
       if (job.tags && Array.isArray(job.tags)) {
         job.tags.forEach(t => { tagsContainer.innerHTML += `<span class="tag tag--blue">${t}</span>`; });
       }
@@ -871,7 +872,7 @@ img{display:block;max-width:100%}
     const svg = bookmarkBtn.querySelector('svg');
     if (svg) svg.setAttribute('fill', state ? 'currentColor' : 'none');
     const textNode = bookmarkBtn.childNodes[bookmarkBtn.childNodes.length - 1];
-    if (textNode) textNode.textContent = state ? ' Guardado' : ' Guardar';
+    if (textNode) textNode.textContent = state ? ' ' + SyneriaI18n.t('job_saved', 'Guardado') : ' ' + SyneriaI18n.t('job_save', 'Guardar');
   }
 
   /* ═══ CURSOR ═══ */
@@ -991,15 +992,15 @@ img{display:block;max-width:100%}
         if (typeof supabase === 'undefined') return;
         if (bookmarked) {
           await supabase.from('saved_jobs').insert({ user_id: currentUser.id, job_id: targetJobId });
-          showToast('Empleo guardado');
+          showToast(SyneriaI18n.t('job_toast_saved', 'Empleo guardado'));
         } else {
           await supabase.from('saved_jobs').delete().eq('user_id', currentUser.id).eq('job_id', targetJobId);
-          showToast('Empleo removido de guardados');
+          showToast(SyneriaI18n.t('job_toast_removed', 'Empleo removido de guardados'));
         }
       } catch(e) {
         bookmarked = !bookmarked;
         updateBookmarkUI(bookmarked);
-        showToast('Error al guardar', 'error');
+        showToast(SyneriaI18n.t('job_toast_save_error', 'Error al guardar'), 'error');
       }
     });
   }
@@ -1086,12 +1087,12 @@ img{display:block;max-width:100%}
       }
       const targetJobId = jobId || null;
       if (!targetJobId) {
-        showToast('No se pudo identificar el empleo', 'error');
+        showToast(SyneriaI18n.t('job_toast_no_job', 'No se pudo identificar el empleo'), 'error');
         return;
       }
 
       submitApp.disabled = true;
-      submitApp.innerHTML = '<svg width="18" height="18" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Enviando...';
+      submitApp.innerHTML = '<svg width="18" height="18" style="animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> ' + SyneriaI18n.t('job_sending', 'Enviando...');
 
       try {
         if (typeof SyneriaApplications === 'undefined') throw new Error('SyneriaApplications not available');
@@ -1108,21 +1109,21 @@ img{display:block;max-width:100%}
         if (modalSuccess) modalSuccess.classList.add('active');
 
         if (applyBtn) {
-          applyBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> Aplicacion Enviada';
+          applyBtn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> ' + SyneriaI18n.t('job_application_sent', 'Aplicacion Enviada');
           applyBtn.disabled = true;
           applyBtn.style.opacity = '0.7';
         }
 
-        showToast('Aplicacion enviada exitosamente');
+        showToast(SyneriaI18n.t('job_toast_application_success', 'Aplicacion enviada exitosamente'));
       } catch(e) {
         submitApp.disabled = false;
-        submitApp.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Enviar Aplicacion';
+        submitApp.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ' + SyneriaI18n.t('job_modal_submit', 'Enviar Aplicación');
         if (e.message && e.message.includes('duplicate')) {
-          showToast('Ya has aplicado a este empleo', 'warning');
+          showToast(SyneriaI18n.t('job_toast_already_applied', 'Ya has aplicado a este empleo'), 'warning');
           if (modalForm) modalForm.classList.add('hidden');
           if (modalSuccess) modalSuccess.classList.add('active');
         } else {
-          showToast('Error al enviar aplicacion: ' + (e.message || ''), 'error');
+          showToast(SyneriaI18n.t('job_toast_submit_error', 'Error al enviar aplicacion') + ': ' + (e.message || ''), 'error');
         }
       }
     });

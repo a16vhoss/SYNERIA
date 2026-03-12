@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syneria — Iniciar Sesión</title>
+<title data-i18n="login_page_title">Syneria — Iniciar Sesión</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=General+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -422,41 +422,41 @@ body.custom-cursor-active [role="button"]{cursor:none}
     <div class="panel-grid"></div>
 
     <div class="panel-content">
-      <p class="panel-eyebrow">Plataforma Global de Talento</p>
-      <h1 class="panel-headline">Conecta con <em>Oportunidades Globales</em></h1>
-      <p class="panel-sub">Miles de trabajadores y empleadores ya confian en Syneria para construir el futuro del trabajo sin fronteras.</p>
+      <p class="panel-eyebrow" data-i18n="login_eyebrow">Plataforma Global de Talento</p>
+      <h1 class="panel-headline" data-i18n="login_headline">Conecta con <em>Oportunidades Globales</em></h1>
+      <p class="panel-sub" data-i18n="login_panel_sub">Miles de trabajadores y empleadores ya confian en Syneria para construir el futuro del trabajo sin fronteras.</p>
 
       <div class="stats-carousel" id="statsCarousel">
         <div class="stat-item active">
           <span class="stat-number">12,500+</span>
-          <span class="stat-label">Trabajadores conectados</span>
+          <span class="stat-label" data-i18n="login_stat_workers">Trabajadores conectados</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">3,200+</span>
-          <span class="stat-label">Empresas registradas</span>
+          <span class="stat-label" data-i18n="login_stat_companies">Empresas registradas</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">28</span>
-          <span class="stat-label">Paises activos</span>
+          <span class="stat-label" data-i18n="login_stat_countries">Paises activos</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">96%</span>
-          <span class="stat-label">Tasa de satisfaccion</span>
+          <span class="stat-label" data-i18n="login_stat_satisfaction">Tasa de satisfaccion</span>
         </div>
       </div>
 
       <div class="testimonials" id="testimonials">
         <div class="testimonial active">
-          <q>Syneria me ayudo a encontrar trabajo remoto desde Colombia en solo 2 semanas.</q>
-          <cite>— Maria G., Desarrolladora</cite>
+          <q data-i18n="login_testimonial_1">Syneria me ayudo a encontrar trabajo remoto desde Colombia en solo 2 semanas.</q>
+          <cite data-i18n="login_testimonial_1_cite">— Maria G., Desarrolladora</cite>
         </div>
         <div class="testimonial">
-          <q>Contratamos talento increible en Latinoamerica gracias a esta plataforma.</q>
-          <cite>— James R., CTO en TechCorp</cite>
+          <q data-i18n="login_testimonial_2">Contratamos talento increible en Latinoamerica gracias a esta plataforma.</q>
+          <cite data-i18n="login_testimonial_2_cite">— James R., CTO en TechCorp</cite>
         </div>
         <div class="testimonial">
-          <q>El proceso fue rapido, transparente y completamente profesional.</q>
-          <cite>— Carlos M., Disenador UX</cite>
+          <q data-i18n="login_testimonial_3">El proceso fue rapido, transparente y completamente profesional.</q>
+          <cite data-i18n="login_testimonial_3_cite">— Carlos M., Disenador UX</cite>
         </div>
       </div>
 
@@ -475,20 +475,20 @@ body.custom-cursor-active [role="button"]{cursor:none}
       <!-- Tab Toggle with sliding indicator -->
       <div class="tab-toggle" data-active="login">
         <div class="tab-indicator"></div>
-        <button class="tab-btn active" data-tab="login" data-hover>Iniciar Sesion</button>
-        <button class="tab-btn" data-tab="register" data-hover>Registrarse</button>
+        <button class="tab-btn active" data-tab="login" data-hover data-i18n="login_tab_login">Iniciar Sesion</button>
+        <button class="tab-btn" data-tab="register" data-hover data-i18n="login_tab_register">Registrarse</button>
       </div>
 
       <!-- ===== LOGIN FORM ===== -->
       <div class="form-panel active" id="panel-login">
-        <h2 class="form-title">Bienvenido de vuelta</h2>
-        <p class="form-subtitle">Ingresa tus credenciales para acceder a tu cuenta.</p>
+        <h2 class="form-title" data-i18n="login_welcome">Bienvenido de vuelta</h2>
+        <p class="form-subtitle" data-i18n="login_subtitle">Ingresa tus credenciales para acceder a tu cuenta.</p>
 
         <form id="loginForm" novalidate autocomplete="on">
           <!-- Email -->
           <div class="input-group">
             <input type="email" id="loginEmail" placeholder=" " autocomplete="email" required>
-            <label for="loginEmail">Correo electronico</label>
+            <label for="loginEmail" data-i18n="login_email_label">Correo electronico</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/>
             </svg>
@@ -498,7 +498,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
           <!-- Password -->
           <div class="input-group">
             <input type="password" id="loginPassword" placeholder=" " autocomplete="current-password" required>
-            <label for="loginPassword">Contrasena</label>
+            <label for="loginPassword" data-i18n="login_password_label">Contrasena</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
@@ -519,22 +519,22 @@ body.custom-cursor-active [role="button"]{cursor:none}
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
             <div class="checkbox-row" style="margin-bottom:0">
               <input type="checkbox" id="rememberMe">
-              <label for="rememberMe">Recordarme</label>
+              <label for="rememberMe" data-i18n="login_remember_me">Recordarme</label>
             </div>
             <div class="forgot-link" style="margin-bottom:0">
-              <a href="#" data-hover>Olvidaste tu contrasena?</a>
+              <a href="#" data-hover data-i18n="login_forgot_password">Olvidaste tu contrasena?</a>
             </div>
           </div>
 
           <!-- Submit -->
           <button type="submit" class="btn-primary" data-hover>
-            <span class="btn-text">Iniciar Sesion</span>
+            <span class="btn-text" data-i18n="login_submit_login">Iniciar Sesion</span>
             <div class="btn-spinner"></div>
           </button>
         </form>
 
         <!-- Divider -->
-        <div class="divider"><span>O continua con</span></div>
+        <div class="divider"><span data-i18n="login_divider_continue">O continua con</span></div>
 
         <!-- Social -->
         <div class="social-btns">
@@ -548,13 +548,13 @@ body.custom-cursor-active [role="button"]{cursor:none}
           </button>
         </div>
 
-        <p class="form-link">No tienes cuenta? <a href="#" data-hover data-switch="register">Registrate</a></p>
+        <p class="form-link" data-i18n="login_no_account">No tienes cuenta? <a href="#" data-hover data-switch="register" data-i18n="login_register_link">Registrate</a></p>
       </div>
 
       <!-- ===== REGISTER FORM ===== -->
       <div class="form-panel" id="panel-register">
-        <h2 class="form-title">Crea tu cuenta</h2>
-        <p class="form-subtitle">Unete a miles de profesionales y empresas en Syneria.</p>
+        <h2 class="form-title" data-i18n="login_register_title">Crea tu cuenta</h2>
+        <p class="form-subtitle" data-i18n="login_register_subtitle">Unete a miles de profesionales y empresas en Syneria.</p>
 
         <form id="registerForm" novalidate autocomplete="on">
           <!-- Role selector -->
@@ -563,7 +563,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
               </svg>
-              Soy Trabajador
+              <span data-i18n="login_role_worker">Soy Trabajador</span>
             </button>
             <button type="button" class="role-btn" data-role="employer" data-hover>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -571,14 +571,14 @@ body.custom-cursor-active [role="button"]{cursor:none}
                 <path d="M14 8h1"/><path d="M14 12h1"/><path d="M14 16h1"/>
                 <rect x="5" y="3" width="14" height="18" rx="1"/>
               </svg>
-              Soy Empleador
+              <span data-i18n="login_role_employer">Soy Empleador</span>
             </button>
           </div>
 
           <!-- Name -->
           <div class="input-group">
             <input type="text" id="regName" placeholder=" " autocomplete="name" required>
-            <label for="regName">Nombre completo</label>
+            <label for="regName" data-i18n="login_fullname_label">Nombre completo</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
             </svg>
@@ -588,7 +588,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
           <!-- Email -->
           <div class="input-group">
             <input type="email" id="regEmail" placeholder=" " autocomplete="email" required>
-            <label for="regEmail">Correo electronico</label>
+            <label for="regEmail" data-i18n="login_email_label">Correo electronico</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/>
             </svg>
@@ -598,7 +598,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
           <!-- Password -->
           <div class="input-group">
             <input type="password" id="regPassword" placeholder=" " autocomplete="new-password" required>
-            <label for="regPassword">Contrasena</label>
+            <label for="regPassword" data-i18n="login_password_label">Contrasena</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
@@ -622,7 +622,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
           <!-- Confirm Password -->
           <div class="input-group">
             <input type="password" id="regConfirmPassword" placeholder=" " autocomplete="new-password" required>
-            <label for="regConfirmPassword">Confirmar contrasena</label>
+            <label for="regConfirmPassword" data-i18n="login_confirm_password_label">Confirmar contrasena</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
@@ -697,7 +697,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
               </optgroup>
               <option value="OTHER">Otro</option>
             </select>
-            <label for="regCountry">Pais</label>
+            <label for="regCountry" data-i18n="login_country_label">Pais</label>
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
             </svg>
@@ -706,18 +706,18 @@ body.custom-cursor-active [role="button"]{cursor:none}
           <!-- Terms -->
           <div class="checkbox-row">
             <input type="checkbox" id="regTerms" required>
-            <label for="regTerms">Acepto los <a href="#" data-hover>Terminos y Condiciones</a> y la <a href="#" data-hover>Politica de Privacidad</a></label>
+            <label for="regTerms" data-i18n="login_terms_label">Acepto los <a href="#" data-hover data-i18n="login_terms_link">Terminos y Condiciones</a> y la <a href="#" data-hover data-i18n="login_privacy_link">Politica de Privacidad</a></label>
           </div>
 
           <!-- Submit -->
           <button type="submit" class="btn-primary" data-hover>
-            <span class="btn-text">Crear Cuenta</span>
+            <span class="btn-text" data-i18n="login_submit_register">Crear Cuenta</span>
             <div class="btn-spinner"></div>
           </button>
         </form>
 
         <!-- Divider -->
-        <div class="divider"><span>O registrate con</span></div>
+        <div class="divider"><span data-i18n="login_divider_register">O registrate con</span></div>
 
         <!-- Social -->
         <div class="social-btns">
@@ -731,7 +731,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
           </button>
         </div>
 
-        <p class="form-link">Ya tienes cuenta? <a href="#" data-hover data-switch="login">Inicia sesion</a></p>
+        <p class="form-link" data-i18n="login_has_account">Ya tienes cuenta? <a href="#" data-hover data-switch="login" data-i18n="login_login_link">Inicia sesion</a></p>
       </div>
 
     </div>
@@ -740,13 +740,14 @@ body.custom-cursor-active [role="button"]{cursor:none}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 <script>
 (function(){
   'use strict';
 
   // ========== INIT FLOATING NAV ==========
-  SyneriaNav.init({ mode: 'public', active: '', ctaText: 'Registrarse', ctaHref: '#', items: [{ label: 'Inicio', href: 'syneria.html' }, { label: 'Empleos', href: 'dashboard.html' }] });
+  SyneriaNav.init({ mode: 'public', active: '', ctaText: (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_nav_cta') : 'Registrarse'), ctaHref: '#', items: [{ label: (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_nav_home') : 'Inicio'), href: 'syneria.html' }, { label: (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_nav_jobs') : 'Empleos'), href: 'dashboard.html' }] });
 
   // ========== CHECK IF ALREADY LOGGED IN ==========
   (async function checkExistingSession() {
@@ -960,7 +961,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
       var eyeClosed = toggle.querySelector('.eye-closed');
       if (eyeOpen) eyeOpen.style.display = isPassword ? 'none' : 'block';
       if (eyeClosed) eyeClosed.style.display = isPassword ? 'block' : 'none';
-      toggle.setAttribute('aria-label', isPassword ? 'Ocultar contrasena' : 'Mostrar contrasena');
+      toggle.setAttribute('aria-label', isPassword ? (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_hide_password') : 'Ocultar contrasena') : (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_show_password') : 'Mostrar contrasena'));
     });
   });
 
@@ -1016,7 +1017,8 @@ body.custom-cursor-active [role="button"]{cursor:none}
       var pw = regPassword.value;
       var score = pw.length === 0 ? 0 : checkStrength(pw);
       var segments = strengthBar.querySelectorAll('.strength-segment');
-      var labels = ['', 'Debil', 'Regular', 'Buena', 'Fuerte'];
+      var _t = typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t.bind(SyneriaI18n) : function(k, fb) { return fb || k; };
+      var labels = ['', _t('login_strength_weak', 'Debil'), _t('login_strength_fair', 'Regular'), _t('login_strength_good', 'Buena'), _t('login_strength_strong', 'Fuerte')];
       var classes = ['', 'weak', 'weak', 'medium', 'strong'];
       var textClasses = ['', 'weak-text', 'weak-text', 'medium-text', 'strong-text'];
 
@@ -1035,7 +1037,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
   if (loginEmail && loginEmailMsg) {
     loginEmail.addEventListener('blur', function() {
       if (loginEmail.value && !isValidEmail(loginEmail.value)) {
-        showMsg(loginEmailMsg, 'Correo electronico invalido', 'error');
+        showMsg(loginEmailMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_invalid_email') : 'Correo electronico invalido'), 'error');
         setInputState(loginEmail, 'error');
       } else if (loginEmail.value) {
         hideMsg(loginEmailMsg);
@@ -1050,7 +1052,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
   if (regEmail && regEmailMsg) {
     regEmail.addEventListener('blur', function() {
       if (regEmail.value && !isValidEmail(regEmail.value)) {
-        showMsg(regEmailMsg, 'Correo electronico invalido', 'error');
+        showMsg(regEmailMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_invalid_email') : 'Correo electronico invalido'), 'error');
         setInputState(regEmail, 'error');
       } else if (regEmail.value) {
         hideMsg(regEmailMsg);
@@ -1065,7 +1067,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
   if (regName && regNameMsg) {
     regName.addEventListener('blur', function() {
       if (regName.value && regName.value.trim().length < 2) {
-        showMsg(regNameMsg, 'El nombre debe tener al menos 2 caracteres', 'error');
+        showMsg(regNameMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_name_min_length') : 'El nombre debe tener al menos 2 caracteres'), 'error');
         setInputState(regName, 'error');
       } else if (regName.value) {
         hideMsg(regNameMsg);
@@ -1079,10 +1081,10 @@ body.custom-cursor-active [role="button"]{cursor:none}
   if (regConfirmPassword && regConfirmMsg && regPassword) {
     regConfirmPassword.addEventListener('input', function() {
       if (regConfirmPassword.value && regConfirmPassword.value !== regPassword.value) {
-        showMsg(regConfirmMsg, 'Las contrasenas no coinciden', 'error');
+        showMsg(regConfirmMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_passwords_no_match') : 'Las contrasenas no coinciden'), 'error');
         setInputState(regConfirmPassword, 'error');
       } else if (regConfirmPassword.value) {
-        showMsg(regConfirmMsg, 'Las contrasenas coinciden', 'success');
+        showMsg(regConfirmMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_passwords_match') : 'Las contrasenas coinciden'), 'success');
         setInputState(regConfirmPassword, 'success');
       } else {
         hideMsg(regConfirmMsg);
@@ -1100,27 +1102,27 @@ body.custom-cursor-active [role="button"]{cursor:none}
       var loginForm = document.getElementById('loginForm');
 
       if (!email || !isValidEmail(email)) {
-        showFormError(loginForm, 'Ingresa tu correo electronico arriba para recuperar tu contrasena.');
+        showFormError(loginForm, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_enter_email_recover') : 'Ingresa tu correo electronico arriba para recuperar tu contrasena.'));
         setInputState(loginEmail, 'error');
         loginEmail.focus();
         return;
       }
 
-      forgotLink.textContent = 'Enviando...';
+      forgotLink.textContent = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_sending') : 'Enviando...');
       forgotLink.style.pointerEvents = 'none';
 
       try {
-        if (!SUPABASE_READY || !_syneriaSupabase) throw new Error('Supabase no disponible. Intenta de nuevo mas tarde.');
+        if (!SUPABASE_READY || !_syneriaSupabase) throw new Error((typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_supabase_unavailable') : 'Supabase no disponible. Intenta de nuevo mas tarde.'));
         var result = await _syneriaSupabase.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin + '/reset-password.html'
         });
         if (result.error) throw result.error;
         hideFormError(loginForm);
-        showFormSuccess(loginForm, 'Te enviamos un enlace de recuperacion a ' + email + '. Revisa tu bandeja de entrada.');
+        showFormSuccess(loginForm, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_recovery_sent') : 'Te enviamos un enlace de recuperacion a ') + email + (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_check_inbox') : '. Revisa tu bandeja de entrada.'));
       } catch (err) {
-        showFormError(loginForm, err.message || 'Error al enviar el correo de recuperacion. Intenta de nuevo.');
+        showFormError(loginForm, err.message || (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_recovery_error') : 'Error al enviar el correo de recuperacion. Intenta de nuevo.'));
       } finally {
-        forgotLink.textContent = 'Olvidaste tu contrasena?';
+        forgotLink.textContent = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_forgot_password') : 'Olvidaste tu contrasena?');
         forgotLink.style.pointerEvents = '';
       }
     });
@@ -1139,12 +1141,12 @@ body.custom-cursor-active [role="button"]{cursor:none}
       hideFormError(this);
 
       if (!email || !isValidEmail(email)) {
-        showMsg(loginEmailMsg, 'Ingresa un correo electronico valido', 'error');
+        showMsg(loginEmailMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_enter_valid_email') : 'Ingresa un correo electronico valido'), 'error');
         setInputState(loginEmail, 'error');
         valid = false;
       }
       if (!password) {
-        showMsg(document.getElementById('loginPasswordMsg'), 'Ingresa tu contrasena', 'error');
+        showMsg(document.getElementById('loginPasswordMsg'), (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_enter_password') : 'Ingresa tu contrasena'), 'error');
         setInputState(loginPasswordEl, 'error');
         valid = false;
       }
@@ -1179,12 +1181,12 @@ body.custom-cursor-active [role="button"]{cursor:none}
         }
       } catch (err) {
         resetBtn(btn);
-        var message = 'Error al iniciar sesion. Intenta de nuevo.';
+        var message = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_error_generic') : 'Error al iniciar sesion. Intenta de nuevo.');
         if (err.message) {
           if (err.message.includes('Invalid login credentials')) {
-            message = 'Correo o contrasena incorrectos. Verifica tus datos.';
+            message = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_error_invalid_credentials') : 'Correo o contrasena incorrectos. Verifica tus datos.');
           } else if (err.message.includes('Email not confirmed')) {
-            message = 'Tu correo aun no ha sido confirmado. Revisa tu bandeja de entrada.';
+            message = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_error_email_not_confirmed') : 'Tu correo aun no ha sido confirmado. Revisa tu bandeja de entrada.');
           } else {
             message = err.message;
           }
@@ -1211,23 +1213,23 @@ body.custom-cursor-active [role="button"]{cursor:none}
       hideFormError(this);
 
       if (!name || name.length < 2) {
-        showMsg(regNameMsg, 'Ingresa tu nombre completo', 'error');
+        showMsg(regNameMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_enter_fullname') : 'Ingresa tu nombre completo'), 'error');
         setInputState(regName, 'error');
         valid = false;
       }
       if (!email || !isValidEmail(email)) {
-        showMsg(regEmailMsg, 'Ingresa un correo electronico valido', 'error');
+        showMsg(regEmailMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_enter_valid_email') : 'Ingresa un correo electronico valido'), 'error');
         setInputState(regEmail, 'error');
         valid = false;
       }
       if (!password || password.length < 6) {
         if (strengthText) {
-          showMsg(strengthText, 'La contrasena debe tener al menos 6 caracteres', 'error');
+          showMsg(strengthText, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_password_min_length') : 'La contrasena debe tener al menos 6 caracteres'), 'error');
         }
         valid = false;
       }
       if (password !== confirmPassword) {
-        showMsg(regConfirmMsg, 'Las contrasenas no coinciden', 'error');
+        showMsg(regConfirmMsg, (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_passwords_no_match') : 'Las contrasenas no coinciden'), 'error');
         setInputState(regConfirmPassword, 'error');
         valid = false;
       }
@@ -1289,12 +1291,12 @@ body.custom-cursor-active [role="button"]{cursor:none}
         }
       } catch (err) {
         resetBtn(btn);
-        var message = 'Error al crear la cuenta. Intenta de nuevo.';
+        var message = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_register_error_generic') : 'Error al crear la cuenta. Intenta de nuevo.');
         if (err.message) {
           if (err.message.includes('already registered') || err.message.includes('already been registered')) {
-            message = 'Este correo ya esta registrado. Intenta iniciar sesion.';
+            message = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_error_already_registered') : 'Este correo ya esta registrado. Intenta iniciar sesion.');
           } else if (err.message.includes('Password should be')) {
-            message = 'La contrasena debe tener al menos 6 caracteres.';
+            message = (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_password_min_length') : 'La contrasena debe tener al menos 6 caracteres.');
           } else {
             message = err.message;
           }
@@ -1314,7 +1316,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
 
       if (provider) {
         try {
-          if (!SUPABASE_READY || !_syneriaSupabase) throw new Error('Supabase no disponible. Intenta de nuevo mas tarde.');
+          if (!SUPABASE_READY || !_syneriaSupabase) throw new Error((typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_supabase_unavailable') : 'Supabase no disponible. Intenta de nuevo mas tarde.'));
           var result = await _syneriaSupabase.auth.signInWithOAuth({
             provider: provider,
             options: { redirectTo: window.location.origin + '/dashboard.html' }
@@ -1322,7 +1324,7 @@ body.custom-cursor-active [role="button"]{cursor:none}
           if (result.error) throw result.error;
         } catch (err) {
           var form = document.querySelector('.form-panel.active form') || document.getElementById('loginForm');
-          showFormError(form, err.message || 'Error con el inicio de sesion social.');
+          showFormError(form, err.message || (typeof SyneriaI18n !== 'undefined' ? SyneriaI18n.t('login_social_error') : 'Error con el inicio de sesion social.'));
         }
       }
     });

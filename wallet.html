@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syneria — Wallet & Contratos</title>
+<title data-i18n="wallet_page_title">Syneria — Wallet & Contratos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -408,40 +408,40 @@ img{display:block;max-width:100%}
 <aside class="sidebar" id="sidebar">
   <a href="syneria.html" class="sidebar__logo" data-h>Syneria<span>.</span></a>
   <nav class="sidebar__nav">
-    <div class="sidebar__section">Principal</div>
+    <div class="sidebar__section" data-i18n="wallet_sidebar_principal">Principal</div>
     <a href="dashboard.html" class="sidebar__link" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Dashboard
+      <span data-i18n="wallet_sidebar_dashboard">Dashboard</span>
     </a>
     <a href="dashboard.html" class="sidebar__link" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-      Empleos
+      <span data-i18n="wallet_sidebar_empleos">Empleos</span>
       <span class="count">12</span>
     </a>
     <a href="dashboard.html" class="sidebar__link" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      Red
+      <span data-i18n="wallet_sidebar_red">Red</span>
     </a>
     <a href="wallet.html" class="sidebar__link active" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      Wallet
+      <span data-i18n="wallet_sidebar_wallet">Wallet</span>
     </a>
     <a href="profile.html" class="sidebar__link" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Documentos
+      <span data-i18n="wallet_sidebar_documentos">Documentos</span>
     </a>
-    <div class="sidebar__section">Soporte</div>
+    <div class="sidebar__section" data-i18n="wallet_sidebar_soporte">Soporte</div>
     <a href="#" class="sidebar__link" data-h onclick="event.preventDefault();showToast('Proximamente','warning')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Ayuda
+      <span data-i18n="wallet_sidebar_ayuda">Ayuda</span>
     </a>
     <a href="#" class="sidebar__link" data-h onclick="event.preventDefault();showToast('Proximamente','warning')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.32 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      Configuracion
+      <span data-i18n="wallet_sidebar_configuracion">Configuracion</span>
     </a>
     <a href="#" class="sidebar__link" data-h id="btnCerrarSesion" onclick="event.preventDefault();handleLogout()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Cerrar Sesion
+      <span data-i18n="wallet_sidebar_cerrar_sesion">Cerrar Sesion</span>
     </a>
   </nav>
   <div class="sidebar__bottom">
@@ -458,15 +458,15 @@ img{display:block;max-width:100%}
 <main class="main">
   <div class="page">
     <div class="page__header">
-      <h1 class="page__title">Wallet & Contratos</h1>
-      <p class="page__sub">Gestiona tus finanzas, envía remesas y firma contratos digitalmente.</p>
+      <h1 class="page__title" data-i18n="wallet_page_heading">Wallet & Contratos</h1>
+      <p class="page__sub" data-i18n="wallet_page_sub">Gestiona tus finanzas, envía remesas y firma contratos digitalmente.</p>
     </div>
 
     <!-- TABS -->
     <div class="tabs" id="tabsContainer">
       <div class="tabs__indicator" id="tabIndicator"></div>
-      <button class="tab active" data-tab="wallet" data-h>Wallet</button>
-      <button class="tab" data-tab="contratos" data-h>Contratos</button>
+      <button class="tab active" data-tab="wallet" data-h data-i18n="wallet_tab_wallet">Wallet</button>
+      <button class="tab" data-tab="contratos" data-h data-i18n="wallet_tab_contratos">Contratos</button>
     </div>
 
     <!-- ═══════════════════════════════ WALLET TAB ═══════════════════════════════ -->
@@ -478,17 +478,17 @@ img{display:block;max-width:100%}
         <div class="balance-card__sparkle" style="top:60%;right:35%;animation-delay:0.7s;width:3px;height:3px"></div>
         <div class="balance-card__sparkle" style="top:30%;right:15%;animation-delay:1.4s;width:5px;height:5px"></div>
         <div class="balance-card__info">
-          <div class="balance-card__label">Balance Total</div>
+          <div class="balance-card__label" data-i18n="wallet_total_balance">Balance Total</div>
           <div class="balance-card__amount" id="balanceAmount">$0.00 <span style="font-size:0.5em;font-weight:600;color:var(--muted)">USD</span></div>
           <div class="balance-card__equiv">&asymp; &euro;4,520.00 EUR</div>
           <div class="balance-card__actions">
             <button class="btn btn--primary" data-h id="btnEnviar">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-              Enviar Dinero
+              <span data-i18n="wallet_send_money">Enviar Dinero</span>
             </button>
             <button class="btn btn--outline" data-h>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-              Recibir
+              <span data-i18n="wallet_receive">Recibir</span>
             </button>
           </div>
         </div>
@@ -512,96 +512,96 @@ img{display:block;max-width:100%}
           <div class="qaction__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
           </div>
-          <div class="qaction__label">Enviar Remesa</div>
+          <div class="qaction__label" data-i18n="wallet_send_remittance">Enviar Remesa</div>
         </div>
         <div class="qaction" data-h>
           <div class="qaction__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           </div>
-          <div class="qaction__label">Cambio de Divisa</div>
+          <div class="qaction__label" data-i18n="wallet_currency_exchange">Cambio de Divisa</div>
         </div>
         <div class="qaction" data-h>
           <div class="qaction__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <div class="qaction__label">Microseguros</div>
+          <div class="qaction__label" data-i18n="wallet_microinsurance">Microseguros</div>
         </div>
         <div class="qaction" data-h>
           <div class="qaction__icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           </div>
-          <div class="qaction__label">Recargar</div>
+          <div class="qaction__label" data-i18n="wallet_recharge">Recargar</div>
         </div>
       </div>
 
       <!-- TRANSACCIONES RECIENTES -->
       <div class="section-title">
-        Transacciones Recientes
+        <span data-i18n="wallet_recent_transactions">Transacciones Recientes</span>
         <div class="filter-btns">
-          <button class="filter-btn active" data-filter="all" data-h>Todas</button>
-          <button class="filter-btn" data-filter="in" data-h>Ingresos</button>
-          <button class="filter-btn" data-filter="out" data-h>Enviadas</button>
+          <button class="filter-btn active" data-filter="all" data-h data-i18n="wallet_filter_all">Todas</button>
+          <button class="filter-btn" data-filter="in" data-h data-i18n="wallet_filter_income">Ingresos</button>
+          <button class="filter-btn" data-filter="out" data-h data-i18n="wallet_filter_sent">Enviadas</button>
         </div>
       </div>
       <div class="tx-list" id="txList">
         <div class="tx" data-type="in">
           <div class="tx__icon tx__icon--in">&darr;</div>
           <div class="tx__info">
-            <div class="tx__desc">Pago - Constructora Alpine S.A.</div>
+            <div class="tx__desc" data-i18n="wallet_tx_pago_alpine">Pago - Constructora Alpine S.A.</div>
             <div class="tx__date">1 Mar 2026</div>
           </div>
           <div class="tx__amount tx__amount--pos">+$3,200.00</div>
-          <div class="tx__status tx__status--done">Completado</div>
+          <div class="tx__status tx__status--done" data-i18n="wallet_status_completed">Completado</div>
         </div>
         <div class="tx" data-type="out">
           <div class="tx__icon tx__icon--out">&uarr;</div>
           <div class="tx__info">
-            <div class="tx__desc">Remesa a María Ramírez (México)</div>
+            <div class="tx__desc" data-i18n="wallet_tx_remesa_maria">Remesa a María Ramírez (México)</div>
             <div class="tx__date">28 Feb 2026</div>
           </div>
           <div class="tx__amount tx__amount--neg">-$500.00</div>
-          <div class="tx__status tx__status--done">Completado</div>
+          <div class="tx__status tx__status--done" data-i18n="wallet_status_completed">Completado</div>
         </div>
         <div class="tx" data-type="out">
           <div class="tx__icon tx__icon--out">&uarr;</div>
           <div class="tx__info">
-            <div class="tx__desc">Remesa a familia (Colombia)</div>
+            <div class="tx__desc" data-i18n="wallet_tx_remesa_familia">Remesa a familia (Colombia)</div>
             <div class="tx__date">25 Feb 2026</div>
           </div>
           <div class="tx__amount tx__amount--neg">-$300.00</div>
-          <div class="tx__status tx__status--done">Completado</div>
+          <div class="tx__status tx__status--done" data-i18n="wallet_status_completed">Completado</div>
         </div>
         <div class="tx" data-type="in">
           <div class="tx__icon tx__icon--in">&darr;</div>
           <div class="tx__info">
-            <div class="tx__desc">Pago - Constructora Alpine S.A.</div>
+            <div class="tx__desc" data-i18n="wallet_tx_pago_alpine">Pago - Constructora Alpine S.A.</div>
             <div class="tx__date">1 Feb 2026</div>
           </div>
           <div class="tx__amount tx__amount--pos">+$3,200.00</div>
-          <div class="tx__status tx__status--done">Completado</div>
+          <div class="tx__status tx__status--done" data-i18n="wallet_status_completed">Completado</div>
         </div>
         <div class="tx" data-type="out">
           <div class="tx__icon tx__icon--swap">&rarr;</div>
           <div class="tx__info">
-            <div class="tx__desc">Cambio USD &rarr; EUR</div>
+            <div class="tx__desc" data-i18n="wallet_tx_cambio_usd_eur">Cambio USD &rarr; EUR</div>
             <div class="tx__date">28 Ene 2026</div>
           </div>
           <div class="tx__amount tx__amount--swap">-$1,000.00 &rarr; &euro;935.00</div>
-          <div class="tx__status tx__status--done">Completado</div>
+          <div class="tx__status tx__status--done" data-i18n="wallet_status_completed">Completado</div>
         </div>
         <div class="tx" data-type="in">
           <div class="tx__icon tx__icon--bonus">&star;</div>
           <div class="tx__info">
-            <div class="tx__desc">Bono de bienvenida</div>
+            <div class="tx__desc" data-i18n="wallet_tx_bono_bienvenida">Bono de bienvenida</div>
             <div class="tx__date">15 Ene 2026</div>
           </div>
           <div class="tx__amount tx__amount--pos">+$50.00</div>
-          <div class="tx__status tx__status--done">Completado</div>
+          <div class="tx__status tx__status--done" data-i18n="wallet_status_completed">Completado</div>
         </div>
       </div>
 
       <!-- TARJETAS / CUENTAS -->
-      <div class="section-title">Tarjetas & Cuentas</div>
+      <div class="section-title" data-i18n="wallet_cards_accounts">Tarjetas & Cuentas</div>
       <div class="cards-section">
         <div>
           <div class="virtual-card">
@@ -612,63 +612,63 @@ img{display:block;max-width:100%}
             <div class="virtual-card__number">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4829</div>
             <div class="virtual-card__bottom">
               <div>
-                <div class="virtual-card__holder">Titular</div>
+                <div class="virtual-card__holder" data-i18n="wallet_card_holder">Titular</div>
                 <div class="virtual-card__name" id="cardHolderName">Carlos Ramirez</div>
               </div>
               <div class="virtual-card__expiry">
-                <div class="virtual-card__expiry-label">Válida hasta</div>
+                <div class="virtual-card__expiry-label" data-i18n="wallet_card_valid_until">Válida hasta</div>
                 <div class="virtual-card__expiry-val">12/28</div>
               </div>
             </div>
           </div>
           <div style="margin-top:12px;text-align:center">
-            <button class="btn btn--outline btn--sm" data-h>Solicitar Tarjeta Física</button>
+            <button class="btn btn--outline btn--sm" data-h data-i18n="wallet_request_physical_card">Solicitar Tarjeta Física</button>
           </div>
         </div>
         <div class="accounts-panel">
-          <div class="section-title" style="margin-bottom:12px;font-size:0.95rem">Cuentas Conectadas</div>
+          <div class="section-title" style="margin-bottom:12px;font-size:0.95rem" data-i18n="wallet_connected_accounts">Cuentas Conectadas</div>
           <div class="account-item">
             <div class="account-item__icon">&#x1F3E6;</div>
             <div class="account-item__info">
               <div class="account-item__name">Banco Santander</div>
-              <div class="account-item__detail">****7823 - Cuenta corriente</div>
+              <div class="account-item__detail" data-i18n="wallet_account_santander_detail">****7823 - Cuenta corriente</div>
             </div>
-            <div class="account-item__status">Conectada</div>
+            <div class="account-item__status" data-i18n="wallet_account_status_connected">Conectada</div>
           </div>
           <div class="account-item">
             <div class="account-item__icon">&#x1F3E6;</div>
             <div class="account-item__info">
               <div class="account-item__name">UBS Switzerland</div>
-              <div class="account-item__detail">****4501 - Cuenta de ahorro</div>
+              <div class="account-item__detail" data-i18n="wallet_account_ubs_detail">****4501 - Cuenta de ahorro</div>
             </div>
-            <div class="account-item__status">Conectada</div>
+            <div class="account-item__status" data-i18n="wallet_account_status_connected">Conectada</div>
           </div>
           <div style="margin-top:12px">
-            <button class="btn btn--outline btn--sm btn--block" data-h>+ Agregar cuenta bancaria</button>
+            <button class="btn btn--outline btn--sm btn--block" data-h data-i18n="wallet_add_bank_account">+ Agregar cuenta bancaria</button>
           </div>
         </div>
       </div>
 
       <!-- ESTADISTICAS FINANCIERAS -->
-      <div class="section-title">Estadísticas Financieras</div>
+      <div class="section-title" data-i18n="wallet_financial_stats">Estadísticas Financieras</div>
       <div class="fin-stats">
         <div class="fin-stat">
-          <div class="fin-stat__label">Ganado este mes</div>
+          <div class="fin-stat__label" data-i18n="wallet_earned_this_month">Ganado este mes</div>
           <div class="fin-stat__value">$3,200</div>
-          <div class="fin-stat__sub">+0% vs mes anterior</div>
+          <div class="fin-stat__sub" data-i18n="wallet_vs_previous_month">+0% vs mes anterior</div>
         </div>
         <div class="fin-stat">
-          <div class="fin-stat__label">Remesas enviadas</div>
+          <div class="fin-stat__label" data-i18n="wallet_remittances_sent">Remesas enviadas</div>
           <div class="fin-stat__value">$800</div>
-          <div class="fin-stat__sub" style="color:var(--muted)">2 transferencias</div>
+          <div class="fin-stat__sub" style="color:var(--muted)" data-i18n="wallet_transfers_count">2 transferencias</div>
         </div>
         <div class="fin-stat">
-          <div class="fin-stat__label">Ahorrado en comisiones</div>
+          <div class="fin-stat__label" data-i18n="wallet_saved_in_fees">Ahorrado en comisiones</div>
           <div class="fin-stat__value" style="color:var(--success)">$120</div>
-          <div class="fin-stat__sub">vs servicios tradicionales</div>
+          <div class="fin-stat__sub" data-i18n="wallet_vs_traditional">vs servicios tradicionales</div>
         </div>
         <div class="mini-chart">
-          <div class="mini-chart__title">Ingresos mensuales</div>
+          <div class="mini-chart__title" data-i18n="wallet_monthly_income">Ingresos mensuales</div>
           <div class="bar-chart" id="barChart">
             <div class="bar" style="height:40%"><span class="bar__label">Oct</span></div>
             <div class="bar" style="height:55%"><span class="bar__label">Nov</span></div>
@@ -689,28 +689,28 @@ img{display:block;max-width:100%}
       <div class="contract-stats">
         <div class="cstat cstat--active">
           <div class="cstat__num">1</div>
-          <div class="cstat__label">Contratos Activos</div>
+          <div class="cstat__label" data-i18n="wallet_active_contracts">Contratos Activos</div>
         </div>
         <div class="cstat">
           <div class="cstat__num">2</div>
-          <div class="cstat__label">Contratos Completados</div>
+          <div class="cstat__label" data-i18n="wallet_completed_contracts">Contratos Completados</div>
         </div>
         <div class="cstat cstat--pending">
           <div class="cstat__num">1</div>
-          <div class="cstat__label">Pendientes de Firma</div>
+          <div class="cstat__label" data-i18n="wallet_pending_signature">Pendientes de Firma</div>
         </div>
       </div>
 
       <!-- CONTRACT LIST -->
-      <div class="section-title">Mis Contratos</div>
+      <div class="section-title" data-i18n="wallet_my_contracts">Mis Contratos</div>
 
       <!-- Activo -->
       <div class="contract-card" id="contract-1">
         <div class="contract-card__header" onclick="toggleContract('contract-1')">
           <div class="contract-card__left">
-            <span class="contract-card__badge badge--activo">Activo</span>
+            <span class="contract-card__badge badge--activo" data-i18n="wallet_badge_active">Activo</span>
             <div class="contract-card__employer">Constructora Alpine S.A.</div>
-            <div class="contract-card__position">Ayudante de Construcción</div>
+            <div class="contract-card__position" data-i18n="wallet_position_construction_helper">Ayudante de Construcción</div>
             <div class="contract-card__meta">
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Zurich, Suiza</span>
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 01 Ene 2026 — 31 Dic 2026</span>
@@ -718,33 +718,33 @@ img{display:block;max-width:100%}
             </div>
           </div>
           <div class="contract-card__actions">
-            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-1')">Ver Contrato</button>
+            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-1')" data-i18n="wallet_view_contract">Ver Contrato</button>
           </div>
         </div>
         <div class="contract-card__detail">
           <div class="contract-card__detail-inner">
             <div class="detail-section">
-              <div class="detail-section__title">Términos del Contrato</div>
-              <div class="detail-section__text">
+              <div class="detail-section__title" data-i18n="wallet_contract_terms">Términos del Contrato</div>
+              <div class="detail-section__text" data-i18n="wallet_contract1_terms_text">
                 El presente contrato establece las condiciones laborales entre Constructora Alpine S.A. (empleador) y Carlos Ramírez (trabajador) para desempeñar funciones como Ayudante de Construcción en las instalaciones ubicadas en Zurich, Suiza. El contrato tiene vigencia desde el 1 de enero de 2026 hasta el 31 de diciembre de 2026, con posibilidad de renovación. El salario mensual bruto acordado es de $3,200 USD, pagadero los primeros cinco días de cada mes.
               </div>
             </div>
             <div class="detail-section">
-              <div class="detail-section__title">Beneficios</div>
+              <div class="detail-section__title" data-i18n="wallet_benefits">Beneficios</div>
               <ul class="benefits-list">
-                <li>Seguro de salud completo</li>
-                <li>Alojamiento proporcionado</li>
-                <li>Transporte al lugar de trabajo</li>
-                <li>2 vuelos anuales al país de origen</li>
-                <li>Formación profesional continua</li>
-                <li>Bono de rendimiento trimestral</li>
+                <li data-i18n="wallet_benefit_health_insurance_full">Seguro de salud completo</li>
+                <li data-i18n="wallet_benefit_housing">Alojamiento proporcionado</li>
+                <li data-i18n="wallet_benefit_transport_work">Transporte al lugar de trabajo</li>
+                <li data-i18n="wallet_benefit_annual_flights">2 vuelos anuales al país de origen</li>
+                <li data-i18n="wallet_benefit_training">Formación profesional continua</li>
+                <li data-i18n="wallet_benefit_performance_bonus">Bono de rendimiento trimestral</li>
               </ul>
             </div>
             <div class="detail-section">
-              <div class="detail-section__title">Verificación Blockchain</div>
+              <div class="detail-section__title" data-i18n="wallet_blockchain_verification">Verificación Blockchain</div>
               <div class="blockchain-badge">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Verificado en Blockchain
+                <span data-i18n="wallet_verified_blockchain">Verificado en Blockchain</span>
               </div>
               <div style="font-family:monospace;font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all">
                 0x7a3b...f29d4e8c1a6b...83ef
@@ -752,7 +752,7 @@ img{display:block;max-width:100%}
             </div>
             <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Descargar PDF
+              <span data-i18n="wallet_download_pdf">Descargar PDF</span>
             </button>
           </div>
         </div>
@@ -762,9 +762,9 @@ img{display:block;max-width:100%}
       <div class="contract-card" id="contract-2">
         <div class="contract-card__header" onclick="toggleContract('contract-2')">
           <div class="contract-card__left">
-            <span class="contract-card__badge badge--completado">Completado</span>
+            <span class="contract-card__badge badge--completado" data-i18n="wallet_badge_completed">Completado</span>
             <div class="contract-card__employer">Hotel Mediterráneo</div>
-            <div class="contract-card__position">Recepcionista</div>
+            <div class="contract-card__position" data-i18n="wallet_position_receptionist">Recepcionista</div>
             <div class="contract-card__meta">
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Barcelona, España</span>
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 01 Jun 2025 — 31 Dic 2025</span>
@@ -772,31 +772,31 @@ img{display:block;max-width:100%}
             </div>
           </div>
           <div class="contract-card__actions">
-            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-2')">Ver Contrato</button>
+            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-2')" data-i18n="wallet_view_contract">Ver Contrato</button>
           </div>
         </div>
         <div class="contract-card__detail">
           <div class="contract-card__detail-inner">
             <div class="detail-section">
-              <div class="detail-section__title">Términos del Contrato</div>
-              <div class="detail-section__text">
+              <div class="detail-section__title" data-i18n="wallet_contract_terms">Términos del Contrato</div>
+              <div class="detail-section__text" data-i18n="wallet_contract2_terms_text">
                 Contrato temporal para el puesto de Recepcionista en Hotel Mediterráneo, Barcelona. Periodo: junio a diciembre de 2025. Salario mensual de $2,200 USD. Contrato completado satisfactoriamente con evaluación positiva del empleador.
               </div>
             </div>
             <div class="detail-section">
-              <div class="detail-section__title">Beneficios</div>
+              <div class="detail-section__title" data-i18n="wallet_benefits">Beneficios</div>
               <ul class="benefits-list">
-                <li>Seguro de salud básico</li>
-                <li>Comidas durante turno</li>
-                <li>Descuento en alojamiento</li>
-                <li>Curso de idiomas incluido</li>
+                <li data-i18n="wallet_benefit_health_insurance_basic">Seguro de salud básico</li>
+                <li data-i18n="wallet_benefit_meals_shift">Comidas durante turno</li>
+                <li data-i18n="wallet_benefit_housing_discount">Descuento en alojamiento</li>
+                <li data-i18n="wallet_benefit_language_course">Curso de idiomas incluido</li>
               </ul>
             </div>
             <div class="detail-section">
-              <div class="detail-section__title">Verificación Blockchain</div>
+              <div class="detail-section__title" data-i18n="wallet_blockchain_verification">Verificación Blockchain</div>
               <div class="blockchain-badge">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Verificado en Blockchain
+                <span data-i18n="wallet_verified_blockchain">Verificado en Blockchain</span>
               </div>
               <div style="font-family:monospace;font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all">
                 0x4c8e...a72b1d9f3e5c...91ab
@@ -804,7 +804,7 @@ img{display:block;max-width:100%}
             </div>
             <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Descargar PDF
+              <span data-i18n="wallet_download_pdf">Descargar PDF</span>
             </button>
           </div>
         </div>
@@ -814,9 +814,9 @@ img{display:block;max-width:100%}
       <div class="contract-card" id="contract-3">
         <div class="contract-card__header" onclick="toggleContract('contract-3')">
           <div class="contract-card__left">
-            <span class="contract-card__badge badge--pendiente">Pendiente Firma</span>
+            <span class="contract-card__badge badge--pendiente" data-i18n="wallet_badge_pending_signature">Pendiente Firma</span>
             <div class="contract-card__employer">Finca Stuttgart</div>
-            <div class="contract-card__position">Recolector</div>
+            <div class="contract-card__position" data-i18n="wallet_position_harvester">Recolector</div>
             <div class="contract-card__meta">
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Stuttgart, Alemania</span>
               <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 01 Abr 2026 — 31 Oct 2026</span>
@@ -824,39 +824,39 @@ img{display:block;max-width:100%}
             </div>
           </div>
           <div class="contract-card__actions">
-            <button class="btn btn--primary btn--sm" data-h id="btnFirmar" onclick="event.stopPropagation();openSignatureModal('contract-3')">Firmar Digitalmente</button>
-            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-3')">Ver Contrato</button>
+            <button class="btn btn--primary btn--sm" data-h id="btnFirmar" onclick="event.stopPropagation();openSignatureModal('contract-3')" data-i18n="wallet_sign_digitally">Firmar Digitalmente</button>
+            <button class="btn btn--outline btn--sm" data-h onclick="event.stopPropagation();toggleContract('contract-3')" data-i18n="wallet_view_contract">Ver Contrato</button>
           </div>
         </div>
         <div class="contract-card__detail">
           <div class="contract-card__detail-inner">
             <div class="detail-section">
-              <div class="detail-section__title">Términos del Contrato</div>
-              <div class="detail-section__text">
+              <div class="detail-section__title" data-i18n="wallet_contract_terms">Términos del Contrato</div>
+              <div class="detail-section__text" data-i18n="wallet_contract3_terms_text">
                 Contrato de temporada para labores de recolección agrícola en Finca Stuttgart, Alemania. Periodo: abril a octubre de 2026. Salario mensual de $2,800 USD. Incluye alojamiento en las instalaciones de la finca y transporte desde el aeropuerto. Se requiere disponibilidad para trabajo de lunes a sábado con horario variable según temporada de cosecha.
               </div>
             </div>
             <div class="detail-section">
-              <div class="detail-section__title">Beneficios</div>
+              <div class="detail-section__title" data-i18n="wallet_benefits">Beneficios</div>
               <ul class="benefits-list">
-                <li>Alojamiento incluido</li>
-                <li>3 comidas diarias</li>
-                <li>Seguro de salud completo</li>
-                <li>Transporte aeropuerto</li>
-                <li>Bono de productividad</li>
-                <li>Certificado de experiencia</li>
+                <li data-i18n="wallet_benefit_housing_included">Alojamiento incluido</li>
+                <li data-i18n="wallet_benefit_daily_meals">3 comidas diarias</li>
+                <li data-i18n="wallet_benefit_health_insurance_full">Seguro de salud completo</li>
+                <li data-i18n="wallet_benefit_airport_transport">Transporte aeropuerto</li>
+                <li data-i18n="wallet_benefit_productivity_bonus">Bono de productividad</li>
+                <li data-i18n="wallet_benefit_experience_certificate">Certificado de experiencia</li>
               </ul>
             </div>
             <div class="detail-section">
-              <div class="detail-section__title">Firma Digital</div>
+              <div class="detail-section__title" data-i18n="wallet_digital_signature">Firma Digital</div>
               <div style="padding:20px;border:2px dashed var(--border);border-radius:12px;text-align:center;color:var(--muted);font-size:14px">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto 8px;display:block;color:var(--warning)"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
-                Pendiente de firma digital
+                <span data-i18n="wallet_pending_digital_signature">Pendiente de firma digital</span>
               </div>
             </div>
             <button class="btn btn--outline btn--sm" data-h style="margin-top:8px">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Descargar PDF
+              <span data-i18n="wallet_download_pdf">Descargar PDF</span>
             </button>
           </div>
         </div>
@@ -872,23 +872,23 @@ img{display:block;max-width:100%}
   <div class="mobile-tabs__inner">
     <a href="dashboard.html" class="mobile-tab" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Inicio
+      <span data-i18n="wallet_mobile_home">Inicio</span>
     </a>
     <a href="dashboard.html" class="mobile-tab" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-      Empleos
+      <span data-i18n="wallet_mobile_jobs">Empleos</span>
     </a>
     <a href="wallet.html" class="mobile-tab active" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      Wallet
+      <span data-i18n="wallet_mobile_wallet">Wallet</span>
     </a>
     <a href="profile.html" class="mobile-tab" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Perfil
+      <span data-i18n="wallet_mobile_profile">Perfil</span>
     </a>
     <a href="employer.html" class="mobile-tab" data-h>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      Más
+      <span data-i18n="wallet_mobile_more">Más</span>
     </a>
   </div>
 </div>
@@ -903,17 +903,17 @@ img{display:block;max-width:100%}
   <div class="modal">
     <div id="remesaForm">
       <div class="modal__header">
-        <div class="modal__title">Enviar Remesa</div>
+        <div class="modal__title" data-i18n="wallet_send_remittance_title">Enviar Remesa</div>
         <button class="modal__close" data-h onclick="closeModal('remesaModal')">&times;</button>
       </div>
       <div class="form-group">
-        <label for="recipientName">Nombre del destinatario</label>
-        <input type="text" id="recipientName" placeholder="Ej: María Ramírez" data-h>
+        <label for="recipientName" data-i18n="wallet_recipient_name">Nombre del destinatario</label>
+        <input type="text" id="recipientName" placeholder="Ej: María Ramírez" data-i18n-placeholder="wallet_recipient_name_placeholder" data-h>
       </div>
       <div class="form-group">
-        <label for="recipientCountry">País del destinatario</label>
+        <label for="recipientCountry" data-i18n="wallet_recipient_country">País del destinatario</label>
         <select id="recipientCountry" data-h>
-          <option value="">Seleccionar país...</option>
+          <option value="" data-i18n="wallet_select_country">Seleccionar país...</option>
           <option value="MXN" data-rate="17.2">México</option>
           <option value="COP" data-rate="4150">Colombia</option>
           <option value="PEN" data-rate="3.72">Perú</option>
@@ -923,34 +923,34 @@ img{display:block;max-width:100%}
         </select>
       </div>
       <div class="form-group">
-        <label for="sendAmount">Monto en USD</label>
+        <label for="sendAmount" data-i18n="wallet_amount_usd">Monto en USD</label>
         <input type="number" id="sendAmount" placeholder="500.00" min="1" data-h>
       </div>
       <div class="conversion-display" id="conversionDisplay" style="display:none">
-        <div class="conversion-display__rate" id="convRate">Tasa de cambio: --</div>
+        <div class="conversion-display__rate" id="convRate" data-i18n="wallet_exchange_rate">Tasa de cambio: --</div>
         <div class="conversion-display__fee">
-          <span>Comisión Syneria:</span>
+          <span data-i18n="wallet_syneria_fee">Comisión Syneria:</span>
           <span id="feeAmount">$0.00 (0.5%)</span>
         </div>
-        <div class="conversion-display__savings">Syneria cobra 0.5% vs 6-8% de Western Union</div>
-        <div class="conversion-display__result" id="recipientGets">El destinatario recibe: --</div>
+        <div class="conversion-display__savings" data-i18n="wallet_savings_comparison">Syneria cobra 0.5% vs 6-8% de Western Union</div>
+        <div class="conversion-display__result" id="recipientGets" data-i18n="wallet_recipient_receives">El destinatario recibe: --</div>
       </div>
       <div class="form-group">
-        <label>Método de pago</label>
+        <label data-i18n="wallet_payment_method">Método de pago</label>
         <div class="payment-methods">
-          <div class="payment-method selected" data-h onclick="selectPayment(this)">Balance Wallet</div>
-          <div class="payment-method" data-h onclick="selectPayment(this)">Transferencia Bancaria</div>
+          <div class="payment-method selected" data-h onclick="selectPayment(this)" data-i18n="wallet_balance_wallet">Balance Wallet</div>
+          <div class="payment-method" data-h onclick="selectPayment(this)" data-i18n="wallet_bank_transfer">Transferencia Bancaria</div>
         </div>
       </div>
-      <button class="btn btn--primary btn--block" data-h id="btnEnviarRemesa" onclick="sendRemesa()">Enviar Ahora</button>
+      <button class="btn btn--primary btn--block" data-h id="btnEnviarRemesa" onclick="sendRemesa()" data-i18n="wallet_send_now">Enviar Ahora</button>
     </div>
     <div class="success-anim" id="remesaSuccess">
       <div class="success-check">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <div class="success-anim__title">Remesa Enviada</div>
-      <div class="success-anim__sub" id="successDetail">Tu dinero está en camino.</div>
-      <button class="btn btn--outline" style="margin-top:20px" data-h onclick="closeModal('remesaModal')">Cerrar</button>
+      <div class="success-anim__title" data-i18n="wallet_remittance_sent">Remesa Enviada</div>
+      <div class="success-anim__sub" id="successDetail" data-i18n="wallet_money_on_way">Tu dinero está en camino.</div>
+      <button class="btn btn--outline" style="margin-top:20px" data-h onclick="closeModal('remesaModal')" data-i18n="wallet_close">Cerrar</button>
     </div>
   </div>
 </div>
@@ -960,13 +960,13 @@ img{display:block;max-width:100%}
   <div class="modal">
     <div id="signForm">
       <div class="modal__header">
-        <div class="modal__title">Firma Digital</div>
+        <div class="modal__title" data-i18n="wallet_digital_signature_title">Firma Digital</div>
         <button class="modal__close" data-h onclick="closeModal('signatureModal')">&times;</button>
       </div>
-      <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Dibuja tu firma en el área de abajo para firmar el contrato con Finca Stuttgart.</p>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px" data-i18n="wallet_signature_instructions">Dibuja tu firma en el área de abajo para firmar el contrato con Finca Stuttgart.</p>
       <div style="position:relative">
         <canvas class="signature-canvas" id="signatureCanvas" width="436" height="200"></canvas>
-        <div class="signature-guide" id="signatureGuide">Dibuja tu firma aqui</div>
+        <div class="signature-guide" id="signatureGuide" data-i18n="wallet_draw_signature_here">Dibuja tu firma aqui</div>
       </div>
       <div class="signature-actions">
         <button class="btn btn--outline" data-h onclick="clearSignature()">Limpiar</button>
@@ -987,6 +987,7 @@ img{display:block;max-width:100%}
 <!-- Supabase CDN + shared config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 
 <script>
