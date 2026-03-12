@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syneria — Panel del Trabajador</title>
+<title data-i18n="dash_page_title">Syneria — Panel del Trabajador</title>
 <link rel="stylesheet" href="nav-shared.css">
 <style>
 @import url('https://fonts.cdnfonts.com/css/general-sans');
@@ -851,41 +851,41 @@ grid-template-columns:1.5fr 1fr;
 <nav class="sidebar__nav">
 <a href="dashboard.html" class="sidebar__item active" data-tab="dashboard">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-Panel
+<span data-i18n="dash_sidebar_panel">Panel</span>
 </a>
 <a href="#" class="sidebar__item" data-tab="empleos">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-Buscar Empleos
+<span data-i18n="dash_sidebar_search_jobs">Buscar Empleos</span>
 </a>
 <a href="#" class="sidebar__item" data-tab="aplicaciones">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-Mis Aplicaciones
+<span data-i18n="dash_sidebar_my_apps">Mis Aplicaciones</span>
 </a>
-<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Red profesional proximamente','warning')">
+<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast(SyneriaI18n.t('dash_toast_network_soon'),'warning')">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-Red
+<span data-i18n="dash_sidebar_network">Red</span>
 </a>
 <a href="wallet.html" class="sidebar__item">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="14" r="1.5"/></svg>
-Wallet
+<span data-i18n="dash_sidebar_wallet">Wallet</span>
 </a>
 <a href="profile.html" class="sidebar__item">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-Documentos
+<span data-i18n="dash_sidebar_documents">Documentos</span>
 </a>
-<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Mensajes proximamente','warning')">
+<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast(SyneriaI18n.t('dash_toast_messages_soon'),'warning')">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-Mensajes
+<span data-i18n="dash_sidebar_messages">Mensajes</span>
 </a>
 </nav>
 <div class="sidebar__bottom">
-<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Configuracion proximamente','warning')">
+<a href="#" class="sidebar__item" onclick="event.preventDefault();showToast(SyneriaI18n.t('dash_toast_settings_soon'),'warning')">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-Configuracion
+<span data-i18n="dash_sidebar_settings">Configuracion</span>
 </a>
 <a href="#" class="sidebar__item logout" id="sidebarLogout">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-Cerrar Sesion
+<span data-i18n="dash_sidebar_logout">Cerrar Sesion</span>
 </a>
 </div>
 </aside>
@@ -894,9 +894,9 @@ Cerrar Sesion
 <main class="main" id="mainContent">
 <!-- TABS -->
 <div class="tabs">
-<button class="tab-btn active" data-tab="dashboard">Panel</button>
-<button class="tab-btn" data-tab="empleos">Buscar Empleos</button>
-<button class="tab-btn" data-tab="aplicaciones">Mis Aplicaciones</button>
+<button class="tab-btn active" data-tab="dashboard" data-i18n="dash_tab_panel">Panel</button>
+<button class="tab-btn" data-tab="empleos" data-i18n="dash_tab_search_jobs">Buscar Empleos</button>
+<button class="tab-btn" data-tab="aplicaciones" data-i18n="dash_tab_my_apps">Mis Aplicaciones</button>
 </div>
 
 <!-- TAB: DASHBOARD -->
@@ -905,8 +905,8 @@ Cerrar Sesion
 <!-- Welcome -->
 <div class="welcome reveal">
 <div class="welcome__noise"></div>
-<h1 class="welcome__title">Hola, <span id="welcomeName">Trabajador</span>!</h1>
-<p class="welcome__sub">Tu próxima oportunidad te espera. Explora empleos que se ajustan a tu perfil.</p>
+<h1 class="welcome__title"><span data-i18n="dash_hello">Hola, </span><span id="welcomeName">Trabajador</span>!</h1>
+<p class="welcome__sub" data-i18n="dash_welcome_sub">Tu próxima oportunidad te espera. Explora empleos que se ajustan a tu perfil.</p>
 </div>
 
 <!-- Stats -->
@@ -915,25 +915,25 @@ Cerrar Sesion
 <div class="stat-card__icon teal">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
 </div>
-<div class="stat-card__label">Empleos disponibles</div>
+<div class="stat-card__label" data-i18n="dash_jobs_available">Empleos disponibles</div>
 <div class="stat-card__value" id="statJobs" data-count="0">0</div>
 </div>
 <div class="stat-card">
 <div class="stat-card__icon blue">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
 </div>
-<div class="stat-card__label">Mis Aplicaciones</div>
+<div class="stat-card__label" data-i18n="dash_my_apps_label">Mis Aplicaciones</div>
 <div class="stat-card__value" id="statApps" data-count="0">0</div>
 </div>
 <div class="stat-card">
 <div class="stat-card__icon warn">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
 </div>
-<div class="stat-card__label">Notificaciones</div>
+<div class="stat-card__label" data-i18n="dash_notifications">Notificaciones</div>
 <div class="stat-card__value" id="statNotifs" data-count="0">0</div>
 </div>
 <div class="stat-card stat-card--progress">
-<div class="stat-card__label">Perfil completado</div>
+<div class="stat-card__label" data-i18n="dash_profile_completed">Perfil completado</div>
 <div class="progress-ring">
 <svg width="64" height="64" viewBox="0 0 64 64">
 <defs><linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--secondary)"/></linearGradient></defs>
@@ -949,8 +949,8 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 <!-- Recommended Jobs -->
 <div class="section reveal">
 <div class="section__header">
-<h2 class="section__title">Empleos Recomendados</h2>
-<a href="#" class="section__link" data-tab-link="empleos">Ver todos <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+<h2 class="section__title" data-i18n="dash_recommended_jobs">Empleos Recomendados</h2>
+<a href="#" class="section__link" data-tab-link="empleos" data-i18n="dash_view_all">Ver todos <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
 </div>
 <div class="jobs-scroll" id="recommendedJobs"></div>
 </div>
@@ -958,28 +958,28 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 <!-- Activity -->
 <div class="section reveal">
 <div class="section__header">
-<h2 class="section__title">Actividad Reciente</h2>
+<h2 class="section__title" data-i18n="dash_recent_activity">Actividad Reciente</h2>
 </div>
 <div class="timeline">
 <div class="timeline__item">
 <div class="timeline__dot"></div>
 <div>
-<div class="timeline__text">Tu perfil fue visto por <strong>Hotel Paraíso</strong></div>
-<div class="timeline__time">Hace 2 horas</div>
+<div class="timeline__text" data-i18n="dash_activity_profile_viewed">Tu perfil fue visto por <strong>Hotel Paraíso</strong></div>
+<div class="timeline__time" data-i18n="dash_activity_time_2h">Hace 2 horas</div>
 </div>
 </div>
 <div class="timeline__item">
 <div class="timeline__dot"></div>
 <div>
-<div class="timeline__text">Nueva oferta en <strong>Construcción - Zurich</strong></div>
-<div class="timeline__time">Hace 5 horas</div>
+<div class="timeline__text" data-i18n="dash_activity_new_offer">Nueva oferta en <strong>Construcción - Zurich</strong></div>
+<div class="timeline__time" data-i18n="dash_activity_time_5h">Hace 5 horas</div>
 </div>
 </div>
 <div class="timeline__item">
 <div class="timeline__dot"></div>
 <div>
-<div class="timeline__text">Entrevista confirmada con <strong>Constructora S.A.</strong></div>
-<div class="timeline__time">Hace 1 día</div>
+<div class="timeline__text" data-i18n="dash_activity_interview_confirmed">Entrevista confirmada con <strong>Constructora S.A.</strong></div>
+<div class="timeline__time" data-i18n="dash_activity_time_1d">Hace 1 día</div>
 </div>
 </div>
 </div>
@@ -989,41 +989,41 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 <!-- TAB: SEARCH JOBS -->
 <div class="tab-content" id="tab-empleos">
 <div class="section" style="margin-top:0">
-<h2 class="section__title" style="margin-bottom:20px">Búsqueda de Empleos</h2>
+<h2 class="section__title" style="margin-bottom:20px" data-i18n="dash_job_search_title">Búsqueda de Empleos</h2>
 <div class="search-bar">
 <div class="search-bar__top">
-<input type="text" class="search-bar__input" placeholder="Buscar por título, empresa o ubicación..." id="jobSearchInput" aria-label="Buscar empleo">
-<button class="search-bar__btn" id="jobSearchBtn">Buscar</button>
+<input type="text" class="search-bar__input" placeholder="Buscar por título, empresa o ubicación..." id="jobSearchInput" aria-label="Buscar empleo" data-i18n-placeholder="dash_search_placeholder">
+<button class="search-bar__btn" id="jobSearchBtn" data-i18n="dash_search_btn">Buscar</button>
 </div>
 <div class="filters">
 <select class="filter-select" id="filterSector" aria-label="Sector">
-<option value="">Todos los sectores</option>
-<option value="construccion">Construcción</option>
-<option value="hoteleria">Hotelería</option>
-<option value="agricultura">Agricultura</option>
-<option value="salud">Salud</option>
-<option value="comercio">Comercio</option>
+<option value="" data-i18n="dash_filter_all_sectors">Todos los sectores</option>
+<option value="construccion" data-i18n="dash_filter_construction">Construcción</option>
+<option value="hoteleria" data-i18n="dash_filter_hospitality">Hotelería</option>
+<option value="agricultura" data-i18n="dash_filter_agriculture">Agricultura</option>
+<option value="salud" data-i18n="dash_filter_health">Salud</option>
+<option value="comercio" data-i18n="dash_filter_commerce">Comercio</option>
 </select>
 <select class="filter-select" id="filterPais" aria-label="País">
-<option value="">Todos los países</option>
-<option value="alemania">Alemania</option>
-<option value="suiza">Suiza</option>
-<option value="austria">Austria</option>
-<option value="españa">España</option>
-<option value="canada">Canadá</option>
-<option value="australia">Australia</option>
-<option value="eeuu">EE.UU.</option>
-<option value="emiratos">Emiratos Árabes</option>
+<option value="" data-i18n="dash_filter_all_countries">Todos los países</option>
+<option value="alemania" data-i18n="dash_filter_germany">Alemania</option>
+<option value="suiza" data-i18n="dash_filter_switzerland">Suiza</option>
+<option value="austria" data-i18n="dash_filter_austria">Austria</option>
+<option value="españa" data-i18n="dash_filter_spain">España</option>
+<option value="canada" data-i18n="dash_filter_canada">Canadá</option>
+<option value="australia" data-i18n="dash_filter_australia">Australia</option>
+<option value="eeuu" data-i18n="dash_filter_usa">EE.UU.</option>
+<option value="emiratos" data-i18n="dash_filter_uae">Emiratos Árabes</option>
 </select>
 <select class="filter-select" id="filterTipo" aria-label="Tipo de jornada">
-<option value="">Todo tipo</option>
-<option value="completa">Jornada Completa</option>
-<option value="media">Media Jornada</option>
-<option value="temporal">Temporal</option>
-<option value="proyecto">Por Proyecto</option>
+<option value="" data-i18n="dash_filter_all_types">Todo tipo</option>
+<option value="completa" data-i18n="dash_filter_full_time">Jornada Completa</option>
+<option value="media" data-i18n="dash_filter_part_time">Media Jornada</option>
+<option value="temporal" data-i18n="dash_filter_temporary">Temporal</option>
+<option value="proyecto" data-i18n="dash_filter_project">Por Proyecto</option>
 </select>
 <div class="salary-filter">
-<label for="salarySlider">Salario mín:</label>
+<label for="salarySlider" data-i18n="dash_salary_min">Salario mín:</label>
 <input type="range" id="salarySlider" min="0" max="5000" step="100" value="0">
 <span class="salary-filter__val" id="salaryVal">$0</span>
 </div>
@@ -1031,17 +1031,17 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 </div>
 
 <div class="sort-bar">
-<div class="sort-bar__count"><strong id="resultCount">0</strong> empleos encontrados</div>
+<div class="sort-bar__count" data-i18n="dash_jobs_found"><strong id="resultCount">0</strong> empleos encontrados</div>
 <div class="sort-bar__actions">
-<button class="sort-btn active" data-sort="recent">Más reciente</button>
-<button class="sort-btn" data-sort="salary">Mayor salario</button>
-<button class="sort-btn" data-sort="relevance">Relevancia</button>
+<button class="sort-btn active" data-sort="recent" data-i18n="dash_sort_recent">Más reciente</button>
+<button class="sort-btn" data-sort="salary" data-i18n="dash_sort_salary">Mayor salario</button>
+<button class="sort-btn" data-sort="relevance" data-i18n="dash_sort_relevance">Relevancia</button>
 </div>
 </div>
 
 <div class="results-grid" id="resultsGrid"></div>
 <div class="load-more" id="loadMore" style="display:none">
-<button id="loadMoreBtn">Cargar más</button>
+<button id="loadMoreBtn" data-i18n="dash_load_more">Cargar más</button>
 </div>
 </div>
 </div>
@@ -1049,17 +1049,17 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 <!-- TAB: APPLICATIONS -->
 <div class="tab-content" id="tab-aplicaciones">
 <div class="section" style="margin-top:0">
-<h2 class="section__title" style="margin-bottom:20px">Mis Aplicaciones</h2>
+<h2 class="section__title" style="margin-bottom:20px" data-i18n="dash_my_apps_title">Mis Aplicaciones</h2>
 <div class="apps-table" id="appsTable">
 <div class="apps-table__header">
-<div>Puesto</div>
-<div>Empresa</div>
-<div>Fecha</div>
-<div>Estado</div>
+<div data-i18n="dash_table_position">Puesto</div>
+<div data-i18n="dash_table_company">Empresa</div>
+<div data-i18n="dash_table_date">Fecha</div>
+<div data-i18n="dash_table_status">Estado</div>
 </div>
 <div id="appsTableBody">
 <div class="apps-table__row">
-<div class="apps-table__job" style="color:var(--muted)">Cargando aplicaciones...</div>
+<div class="apps-table__job" style="color:var(--muted)" data-i18n="dash_loading_apps">Cargando aplicaciones...</div>
 <div></div><div></div><div></div>
 </div>
 </div>
@@ -1073,29 +1073,30 @@ stroke-dasharray="175.93" stroke-dashoffset="175.93" id="progressCircle"/>
 <div class="bottom-bar__nav">
 <a href="#" class="bottom-bar__item active" data-tab="dashboard">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-Panel
+<span data-i18n="dash_bottom_panel">Panel</span>
 </a>
 <a href="#" class="bottom-bar__item" data-tab="empleos">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-Empleos
+<span data-i18n="dash_bottom_jobs">Empleos</span>
 </a>
 <a href="#" class="bottom-bar__item" data-tab="aplicaciones">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-Aplicaciones
+<span data-i18n="dash_bottom_apps">Aplicaciones</span>
 </a>
 <a href="wallet.html" class="bottom-bar__item">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
-Wallet
+<span data-i18n="dash_bottom_wallet">Wallet</span>
 </a>
 <a href="profile.html" class="bottom-bar__item">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-Perfil
+<span data-i18n="dash_bottom_profile">Perfil</span>
 </a>
 </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 <script>
 (function(){
@@ -1140,21 +1141,21 @@ return COLORS[Math.abs(h)%COLORS.length];
 
 // ======== NORMALIZE JOB FROM SUPABASE ========
 function normalizeJob(j){
-const company = j.companies ? j.companies.name : (j.company_name || 'Empresa');
+const company = j.companies ? j.companies.name : (j.company_name || SyneriaI18n.t('dash_company_default'));
 const color = colorForName(company);
 const salary = j.salary_max || j.salary_min || j.salary || 0;
 const tags = [];
-if(j.job_type==='full_time'||j.tipo==='completa') tags.push('Jornada Completa');
-else if(j.job_type==='part_time'||j.tipo==='media') tags.push('Media Jornada');
-else if(j.job_type==='temporary'||j.tipo==='temporal') tags.push('Temporal');
-else if(j.job_type==='project'||j.tipo==='proyecto') tags.push('Por Proyecto');
-if(j.visa_sponsorship) tags.push('Visa Incluida');
-if(j.housing_included) tags.push('Alojamiento');
-if(j.urgent) tags.push('Urgente');
+if(j.job_type==='full_time'||j.tipo==='completa') tags.push(SyneriaI18n.t('dash_tag_full_time'));
+else if(j.job_type==='part_time'||j.tipo==='media') tags.push(SyneriaI18n.t('dash_tag_part_time'));
+else if(j.job_type==='temporary'||j.tipo==='temporal') tags.push(SyneriaI18n.t('dash_tag_temporary'));
+else if(j.job_type==='project'||j.tipo==='proyecto') tags.push(SyneriaI18n.t('dash_tag_project'));
+if(j.visa_sponsorship) tags.push(SyneriaI18n.t('dash_tag_visa'));
+if(j.housing_included) tags.push(SyneriaI18n.t('dash_tag_housing'));
+if(j.urgent) tags.push(SyneriaI18n.t('dash_tag_urgent'));
 return {
   id: j.id,
   company,
-  title: j.title || 'Sin titulo',
+  title: j.title || SyneriaI18n.t('dash_no_title'),
   location: j.location || (j.city ? j.city+', '+j.country : j.country || ''),
   country: j.country || '',
   salary,
@@ -1185,7 +1186,7 @@ function createJobCard(job,isResult){
 const isSaved = savedJobs.includes(job.id);
 const tagClass = t => t==='Urgente'?'urgent':t.includes('Visa')?'visa':t.includes('Alojamiento')?'housing':'';
 const tagsHTML = job.tags.map(t=>`<span class="job-tag ${tagClass(t)}">${t}</span>`).join('');
-const salaryStr = job.salary ? '$'+job.salary.toLocaleString()+'/mes' : 'A convenir';
+const salaryStr = job.salary ? '$'+job.salary.toLocaleString()+SyneriaI18n.t('dash_salary_per_month') : SyneriaI18n.t('dash_salary_negotiable');
 
 if(isResult){
 return `
@@ -1203,7 +1204,7 @@ return `
 <div class="result-card__salary">${salaryStr}</div>
 <div class="result-card__tags">${tagsHTML}</div>
 <div class="result-card__footer">
-<button class="btn-apply" onclick="event.stopPropagation();location.href='job-detail.html?id=${job.id}'">Aplicar</button>
+<button class="btn-apply" onclick="event.stopPropagation();location.href='job-detail.html?id=${job.id}'">${SyneriaI18n.t('dash_apply_btn')}</button>
 <button class="btn-bookmark ${isSaved?'saved':''}" data-job="${job.id}" onclick="event.stopPropagation();this.classList.toggle('saved');window._toggleSave('${job.id}')">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
 </button>
@@ -1224,7 +1225,7 @@ return `
 <div class="job-card__salary">${salaryStr}</div>
 <div class="job-card__tags">${tagsHTML}</div>
 <div class="job-card__actions">
-<button class="btn-apply" onclick="event.stopPropagation();location.href='job-detail.html?id=${job.id}'">Aplicar</button>
+<button class="btn-apply" onclick="event.stopPropagation();location.href='job-detail.html?id=${job.id}'">${SyneriaI18n.t('dash_apply_btn')}</button>
 <button class="btn-bookmark ${isSaved?'saved':''}" data-job="${job.id}" onclick="event.stopPropagation();this.classList.toggle('saved');window._toggleSave('${job.id}')">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
 </button>
@@ -1260,7 +1261,7 @@ document.getElementById('resultCount').textContent = filtered.length;
 const toShow = filtered.slice(0,visibleCount);
 document.getElementById('resultsGrid').innerHTML = toShow.length
   ? toShow.map(j=>createJobCard(j,true)).join('')
-  : '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6"/></svg></div><div class="empty-state__title">Sin resultados</div><div class="empty-state__text">No se encontraron empleos con esos filtros. Intenta ajustar tu busqueda.</div></div>';
+  : '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6"/></svg></div><div class="empty-state__title">'+SyneriaI18n.t('dash_no_results_title')+'</div><div class="empty-state__text">'+SyneriaI18n.t('dash_no_results_text')+'</div></div>';
 document.getElementById('loadMore').style.display = filtered.length>visibleCount?'flex':'none';
 }
 
@@ -1268,7 +1269,7 @@ document.getElementById('loadMore').style.display = filtered.length>visibleCount
 function renderApplications(apps){
 const body = document.getElementById('appsTableBody');
 if(!apps || apps.length===0){
-  body.innerHTML = `<div class="empty-state" style="padding:48px 24px"><div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="empty-state__title">Sin aplicaciones</div><div class="empty-state__text">Aun no has aplicado a ningun empleo. Explora las ofertas disponibles y da el primer paso.</div></div>`;
+  body.innerHTML = `<div class="empty-state" style="padding:48px 24px"><div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="empty-state__title">${SyneriaI18n.t('dash_no_apps_title')}</div><div class="empty-state__text">${SyneriaI18n.t('dash_no_apps_text')}</div></div>`;
   return;
 }
 const statusMap = {
@@ -1278,7 +1279,7 @@ const statusMap = {
   'rejected':'rejected', 'rechazado':'rejected'
 };
 const statusLabel = {
-  'review':'En Revision', 'interview':'Entrevista', 'accepted':'Aceptado', 'rejected':'Rechazado'
+  'review':SyneriaI18n.t('dash_status_review'), 'interview':SyneriaI18n.t('dash_status_interview'), 'accepted':SyneriaI18n.t('dash_status_accepted'), 'rejected':SyneriaI18n.t('dash_status_rejected')
 };
 body.innerHTML = apps.map(a=>{
   const job = a.jobs || {};
@@ -1288,7 +1289,7 @@ body.innerHTML = apps.map(a=>{
   const d = new Date(a.created_at);
   const dateStr = d.toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
   return `<div class="apps-table__row">
-    <div class="apps-table__job">${job.title||'Empleo'}</div>
+    <div class="apps-table__job">${job.title||SyneriaI18n.t('dash_job_default')}</div>
     <div class="apps-table__company">${company}</div>
     <div class="apps-table__date">${dateStr}</div>
     <div><span class="status-badge ${cls}">${label}</span></div>
@@ -1595,7 +1596,7 @@ try {
   if(allJobs.length > 0){
     recEl.innerHTML = allJobs.slice(0,6).map(j=>createJobCard(j,false)).join('');
   } else {
-    recEl.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="empty-state__title">Sin empleos aun</div><div class="empty-state__text">Estamos buscando las mejores oportunidades para tu perfil. Vuelve pronto.</div></div>';
+    recEl.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="empty-state__title">'+SyneriaI18n.t('dash_no_jobs_title')+'</div><div class="empty-state__text">'+SyneriaI18n.t('dash_no_jobs_text')+'</div></div>';
   }
 
   // 4. Load applications
@@ -1639,7 +1640,7 @@ try {
   initReveal();
 
   // Fallback: show what we can
-  document.getElementById('welcomeName').textContent = 'Trabajador';
+  document.getElementById('welcomeName').textContent = SyneriaI18n.t('dash_worker_default');
   renderResults();
   animateCounters();
   animateProgress(0);

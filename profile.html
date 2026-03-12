@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syneria — Mi Perfil</title>
+<title data-i18n="profile_page_title">Syneria — Mi Perfil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -357,41 +357,41 @@ to{height:26px;transform:translateY(-50%)}
     <nav class="sidebar__nav">
       <a href="dashboard.html" class="sidebar__item" data-h>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Panel
+        <span data-i18n="profile_sidebar_panel">Panel</span>
       </a>
       <a href="dashboard.html" class="sidebar__item" data-h>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        Buscar Empleos
+        <span data-i18n="profile_sidebar_search_jobs">Buscar Empleos</span>
       </a>
       <a href="dashboard.html" class="sidebar__item" data-h>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-        Mis Aplicaciones
+        <span data-i18n="profile_sidebar_my_applications">Mis Aplicaciones</span>
       </a>
-      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Red profesional proximamente','warning')">
+      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast(SyneriaI18n.t('profile_network_coming_soon'),'warning')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Red
+        <span data-i18n="profile_sidebar_network">Red</span>
       </a>
       <a href="wallet.html" class="sidebar__item" data-h>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="14" r="1.5"/></svg>
-        Wallet
+        <span data-i18n="profile_sidebar_wallet">Wallet</span>
       </a>
       <a href="profile.html" class="sidebar__item active" data-h>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Documentos
+        <span data-i18n="profile_sidebar_documents">Documentos</span>
       </a>
-      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Mensajes proximamente','warning')">
+      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast(SyneriaI18n.t('profile_messages_coming_soon'),'warning')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Mensajes
+        <span data-i18n="profile_sidebar_messages">Mensajes</span>
       </a>
     </nav>
     <div class="sidebar__bottom">
-      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast('Configuracion proximamente','warning')">
+      <a href="#" class="sidebar__item" onclick="event.preventDefault();showToast(SyneriaI18n.t('profile_settings_coming_soon'),'warning')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Configuracion
+        <span data-i18n="profile_sidebar_settings">Configuracion</span>
       </a>
       <a href="#" class="sidebar__item logout" id="logoutLink" data-h>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Cerrar Sesion
+        <span data-i18n="profile_sidebar_logout">Cerrar Sesion</span>
       </a>
     </div>
   </aside>
@@ -408,38 +408,38 @@ to{height:26px;transform:translateY(-50%)}
         <div class="profile-avatar__badge pending" id="verificationIcon">&#9888;&#65039;</div>
       </div>
       <div class="profile-info">
-        <h1 class="profile-name" id="profileName">Cargando...</h1>
-        <div class="profile-role" id="profileRole">Trabajadora</div>
+        <h1 class="profile-name" id="profileName" data-i18n="profile_loading">Cargando...</h1>
+        <div class="profile-role" id="profileRole" data-i18n="profile_role_worker">Trabajadora</div>
         <div class="profile-location">
           <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span id="profileLocation">Cargando...</span>
+          <span id="profileLocation" data-i18n="profile_loading">Cargando...</span>
         </div>
         <div class="verification verification--pending" id="verificationBadge">
-          &#9888;&#65039; Verificacion Pendiente
+          &#9888;&#65039; <span data-i18n="profile_verification_pending">Verificacion Pendiente</span>
         </div>
         <div class="profile-stats">
           <div class="profile-stat">
             <div class="profile-stat__value" data-counter="0" id="statSkills">0</div>
-            <div class="profile-stat__label">Habilidades</div>
+            <div class="profile-stat__label" data-i18n="profile_stat_skills">Habilidades</div>
           </div>
           <div class="profile-stat">
             <div class="profile-stat__value" data-counter="0" id="statExp">0</div>
-            <div class="profile-stat__label">Experiencias</div>
+            <div class="profile-stat__label" data-i18n="profile_stat_experiences">Experiencias</div>
           </div>
           <div class="profile-stat">
             <div class="profile-stat__value" data-counter="0" id="statDocs">4</div>
-            <div class="profile-stat__label">Documentos</div>
+            <div class="profile-stat__label" data-i18n="profile_stat_documents">Documentos</div>
           </div>
         </div>
       </div>
       <div class="profile-actions">
         <button class="btn btn--primary btn--small" data-h>
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
-          Actualizar Curriculum
+          <span data-i18n="profile_update_cv">Actualizar Curriculum</span>
         </button>
         <div class="progress-wrap">
           <div class="progress-label">
-            <span>Perfil completo</span>
+            <span data-i18n="profile_complete">Perfil completo</span>
             <span id="progressPct">78%</span>
           </div>
           <div class="progress-bar">
@@ -451,11 +451,11 @@ to{height:26px;transform:translateY(-50%)}
 
     <!-- TABS -->
     <div class="tabs" role="tablist" id="tabBar">
-      <button class="tab active" role="tab" aria-selected="true" data-tab="personal" data-h>Informacion Personal</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="experience" data-h>Experiencia</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="education" data-h>Educacion</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="documents" data-h>Documentos</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="settings" data-h>Configuracion</button>
+      <button class="tab active" role="tab" aria-selected="true" data-tab="personal" data-h data-i18n="profile_tab_personal">Informacion Personal</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="experience" data-h data-i18n="profile_tab_experience">Experiencia</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="education" data-h data-i18n="profile_tab_education">Educacion</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="documents" data-h data-i18n="profile_tab_documents">Documentos</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="settings" data-h data-i18n="profile_tab_settings">Configuracion</button>
       <div class="tabs__indicator" id="tabIndicator"></div>
     </div>
 
@@ -463,87 +463,87 @@ to{height:26px;transform:translateY(-50%)}
     <div class="tab-panel active" id="panel-personal">
       <div class="form-grid">
         <div class="form-group reveal">
-          <label class="form-label" for="fname">Nombre completo</label>
+          <label class="form-label" for="fname" data-i18n="profile_full_name">Nombre completo</label>
           <input class="form-input" type="text" id="fname" value="" required minlength="2" placeholder=" ">
-          <div class="form-error" id="fname-error">El nombre es obligatorio</div>
+          <div class="form-error" id="fname-error" data-i18n="profile_error_name_required">El nombre es obligatorio</div>
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="femail">Email</label>
+          <label class="form-label" for="femail" data-i18n="profile_email">Email</label>
           <input class="form-input" type="email" id="femail" value="" required placeholder=" ">
-          <div class="form-error" id="femail-error">Ingresa un email valido</div>
+          <div class="form-error" id="femail-error" data-i18n="profile_error_email_invalid">Ingresa un email valido</div>
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="fphone">Telefono</label>
+          <label class="form-label" for="fphone" data-i18n="profile_phone">Telefono</label>
           <input class="form-input" type="tel" id="fphone" value="" placeholder=" ">
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="fcountry">Pais</label>
+          <label class="form-label" for="fcountry" data-i18n="profile_country">Pais</label>
           <select class="form-select" id="fcountry">
             <option>Colombia</option><option>Mexico</option><option>Argentina</option><option>Peru</option><option>Chile</option><option>Ecuador</option><option>Venezuela</option><option>Guatemala</option><option>Honduras</option><option>El Salvador</option>
           </select>
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="fcity">Ciudad</label>
+          <label class="form-label" for="fcity" data-i18n="profile_city">Ciudad</label>
           <input class="form-input" type="text" id="fcity" value="" placeholder=" ">
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="fdob">Fecha de nacimiento</label>
+          <label class="form-label" for="fdob" data-i18n="profile_date_of_birth">Fecha de nacimiento</label>
           <input class="form-input" type="date" id="fdob" value="">
         </div>
         <div class="form-group form-group--full reveal">
-          <label class="form-label" for="fbio">Bio / Descripcion</label>
+          <label class="form-label" for="fbio" data-i18n="profile_bio">Bio / Descripcion</label>
           <textarea class="form-textarea" id="fbio" placeholder=" " maxlength="500"></textarea>
           <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:4px"><span id="bioCharCount">0</span>/500</div>
         </div>
 
         <!-- IDIOMAS -->
         <div class="form-group form-group--full reveal">
-          <label class="form-label">Idiomas</label>
+          <label class="form-label" data-i18n="profile_languages">Idiomas</label>
           <div class="tags-container" id="langTags"></div>
-          <button class="tag-add" id="addLangBtn" type="button" data-h>+ Agregar idioma</button>
+          <button class="tag-add" id="addLangBtn" type="button" data-h data-i18n="profile_add_language">+ Agregar idioma</button>
         </div>
 
         <!-- HABILIDADES -->
         <div class="form-group form-group--full reveal">
-          <label class="form-label">Habilidades</label>
+          <label class="form-label" data-i18n="profile_skills">Habilidades</label>
           <div class="tags-container" id="skillTags"></div>
-          <button class="tag-add" id="addSkillBtn" type="button" data-h>+ Agregar habilidad</button>
+          <button class="tag-add" id="addSkillBtn" type="button" data-h data-i18n="profile_add_skill">+ Agregar habilidad</button>
         </div>
 
         <!-- SECTORES -->
         <div class="form-group form-group--full reveal">
-          <label class="form-label">Sectores de interes</label>
+          <label class="form-label" data-i18n="profile_sectors">Sectores de interes</label>
           <div class="checkbox-grid" id="sectorCheckboxes">
             <div class="checkbox-item checked" data-sector="Construccion" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Construccion
+              <span data-i18n="profile_sector_construction">Construccion</span>
             </div>
             <div class="checkbox-item" data-sector="Hoteleria" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Hoteleria
+              <span data-i18n="profile_sector_hospitality">Hoteleria</span>
             </div>
             <div class="checkbox-item checked" data-sector="Agricultura" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Agricultura
+              <span data-i18n="profile_sector_agriculture">Agricultura</span>
             </div>
             <div class="checkbox-item" data-sector="Salud" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Salud
+              <span data-i18n="profile_sector_health">Salud</span>
             </div>
             <div class="checkbox-item" data-sector="Comercio" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Comercio
+              <span data-i18n="profile_sector_commerce">Comercio</span>
             </div>
             <div class="checkbox-item" data-sector="Tecnologia" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Tecnologia
+              <span data-i18n="profile_sector_technology">Tecnologia</span>
             </div>
           </div>
         </div>
 
         <!-- PAISES DESEADOS -->
         <div class="form-group form-group--full reveal">
-          <label class="form-label">Paises deseados</label>
+          <label class="form-label" data-i18n="profile_desired_countries">Paises deseados</label>
           <div class="multi-select" id="countrySelect">
             <button class="multi-chip" type="button" data-country="Alemania" data-h>🇩🇪 Alemania</button>
             <button class="multi-chip" type="button" data-country="Reino Unido" data-h>🇬🇧 Reino Unido</button>
@@ -573,8 +573,8 @@ to{height:26px;transform:translateY(-50%)}
       </div>
 
       <div class="save-bar">
-        <button class="btn btn--outline btn--small" type="button" data-h>Cancelar</button>
-        <button class="btn btn--primary btn--small" type="button" id="savePersonal" data-h>Guardar Cambios</button>
+        <button class="btn btn--outline btn--small" type="button" data-h data-i18n="profile_cancel">Cancelar</button>
+        <button class="btn btn--primary btn--small" type="button" id="savePersonal" data-h data-i18n="profile_save_changes">Guardar Cambios</button>
       </div>
     </div>
 
@@ -583,9 +583,9 @@ to{height:26px;transform:translateY(-50%)}
       <div id="expList" class="timeline"></div>
       <div class="empty-state" id="expEmpty" style="display:none">
         <div class="empty-state__icon">&#128188;</div>
-        <div class="empty-state__text">No has agregado experiencia laboral aun</div>
+        <div class="empty-state__text" data-i18n="profile_empty_experience">No has agregado experiencia laboral aun</div>
       </div>
-      <button class="add-btn" id="addExpBtn" type="button" data-h>+ Agregar Experiencia</button>
+      <button class="add-btn" id="addExpBtn" type="button" data-h data-i18n="profile_add_experience">+ Agregar Experiencia</button>
     </div>
 
     <!-- TAB: EDUCATION -->
@@ -593,9 +593,9 @@ to{height:26px;transform:translateY(-50%)}
       <div id="eduList" class="timeline"></div>
       <div class="empty-state" id="eduEmpty" style="display:none">
         <div class="empty-state__icon">&#127891;</div>
-        <div class="empty-state__text">No has agregado educacion aun</div>
+        <div class="empty-state__text" data-i18n="profile_empty_education">No has agregado educacion aun</div>
       </div>
-      <button class="add-btn" id="addEduBtn" type="button" data-h>+ Agregar Educacion</button>
+      <button class="add-btn" id="addEduBtn" type="button" data-h data-i18n="profile_add_education">+ Agregar Educacion</button>
     </div>
 
     <!-- TAB: DOCUMENTS -->
@@ -603,54 +603,54 @@ to{height:26px;transform:translateY(-50%)}
       <div class="doc-grid">
         <div class="doc-card reveal">
           <div class="doc-card__icon">&#128274;</div>
-          <div class="doc-card__name">Pasaporte</div>
-          <div class="doc-card__status doc-card__status--uploaded">&#10003; Subido</div>
+          <div class="doc-card__name" data-i18n="profile_doc_passport">Pasaporte</div>
+          <div class="doc-card__status doc-card__status--uploaded">&#10003; <span data-i18n="profile_doc_status_uploaded">Subido</span></div>
           <br>
-          <button class="doc-upload-btn" type="button" data-h>Actualizar archivo</button>
+          <button class="doc-upload-btn" type="button" data-h data-i18n="profile_doc_update_file">Actualizar archivo</button>
           <div class="doc-card__blockchain">
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
-            Blockchain: verificado
+            <span data-i18n="profile_blockchain_verified">Blockchain: verificado</span>
           </div>
         </div>
         <div class="doc-card reveal">
           <div class="doc-card__icon">&#128196;</div>
-          <div class="doc-card__name">Curriculum (CV)</div>
-          <div class="doc-card__status doc-card__status--uploaded">&#10003; Subido</div>
+          <div class="doc-card__name" data-i18n="profile_doc_cv">Curriculum (CV)</div>
+          <div class="doc-card__status doc-card__status--uploaded">&#10003; <span data-i18n="profile_doc_status_uploaded">Subido</span></div>
           <br>
-          <button class="doc-upload-btn" type="button" data-h>Actualizar archivo</button>
+          <button class="doc-upload-btn" type="button" data-h data-i18n="profile_doc_update_file">Actualizar archivo</button>
           <div class="doc-card__blockchain">
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
-            Blockchain: pendiente
+            <span data-i18n="profile_blockchain_pending">Blockchain: pendiente</span>
           </div>
         </div>
         <div class="doc-card reveal">
           <div class="doc-card__icon">&#127891;</div>
-          <div class="doc-card__name">Certificaciones</div>
-          <div class="doc-card__status doc-card__status--verified">&#128737; Verificado</div>
+          <div class="doc-card__name" data-i18n="profile_doc_certifications">Certificaciones</div>
+          <div class="doc-card__status doc-card__status--verified">&#128737; <span data-i18n="profile_doc_status_verified">Verificado</span></div>
           <br>
-          <button class="doc-upload-btn" type="button" data-h>Actualizar archivo</button>
+          <button class="doc-upload-btn" type="button" data-h data-i18n="profile_doc_update_file">Actualizar archivo</button>
           <div class="doc-card__blockchain">
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
-            Blockchain: verificado
+            <span data-i18n="profile_blockchain_verified">Blockchain: verificado</span>
           </div>
         </div>
         <div class="doc-card reveal">
           <div class="doc-card__icon">&#128247;</div>
-          <div class="doc-card__name">Foto de Perfil</div>
-          <div class="doc-card__status doc-card__status--pending">&#9888;&#65039; Pendiente</div>
+          <div class="doc-card__name" data-i18n="profile_doc_profile_photo">Foto de Perfil</div>
+          <div class="doc-card__status doc-card__status--pending">&#9888;&#65039; <span data-i18n="profile_doc_status_pending">Pendiente</span></div>
           <br>
-          <button class="doc-upload-btn" type="button" data-h>Subir archivo</button>
+          <button class="doc-upload-btn" type="button" data-h data-i18n="profile_doc_upload_file">Subir archivo</button>
           <div class="doc-card__blockchain">
             <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v4M8 11v4M16 11v4M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
-            Blockchain: no registrado
+            <span data-i18n="profile_blockchain_not_registered">Blockchain: no registrado</span>
           </div>
         </div>
       </div>
       <!-- Upload drop zone -->
       <div class="doc-drop-zone" id="docDropZone">
         <div class="doc-drop-zone__icon">&#128228;</div>
-        <div class="doc-drop-zone__text">Arrastra archivos aqui o haz clic para subir</div>
-        <div class="doc-drop-zone__hint">PDF, JPG, PNG hasta 10MB</div>
+        <div class="doc-drop-zone__text" data-i18n="profile_drop_zone_text">Arrastra archivos aqui o haz clic para subir</div>
+        <div class="doc-drop-zone__hint" data-i18n="profile_drop_zone_hint">PDF, JPG, PNG hasta 10MB</div>
       </div>
     </div>
 
@@ -658,42 +658,42 @@ to{height:26px;transform:translateY(-50%)}
     <div class="tab-panel" id="panel-settings">
       <div class="form-grid">
         <div class="form-group form-group--full reveal">
-          <label class="form-label">Notificaciones por email</label>
+          <label class="form-label" data-i18n="profile_email_notifications">Notificaciones por email</label>
           <div class="checkbox-grid" style="grid-template-columns:1fr 1fr">
             <div class="checkbox-item checked" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Nuevos empleos compatibles
+              <span data-i18n="profile_notif_new_jobs">Nuevos empleos compatibles</span>
             </div>
             <div class="checkbox-item checked" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Estado de aplicaciones
+              <span data-i18n="profile_notif_application_status">Estado de aplicaciones</span>
             </div>
             <div class="checkbox-item" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Newsletter semanal
+              <span data-i18n="profile_notif_weekly_newsletter">Newsletter semanal</span>
             </div>
             <div class="checkbox-item checked" data-h>
               <div class="checkbox-item__box"><span class="checkbox-item__check">&#10003;</span></div>
-              Mensajes de empresas
+              <span data-i18n="profile_notif_company_messages">Mensajes de empresas</span>
             </div>
           </div>
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="flang">Idioma de la plataforma</label>
+          <label class="form-label" for="flang" data-i18n="profile_platform_language">Idioma de la plataforma</label>
           <select class="form-select" id="flang">
-            <option selected>Espanol</option><option>English</option><option>Deutsch</option><option>Francais</option>
+            <option selected data-i18n="profile_lang_spanish">Espanol</option><option>English</option><option>Deutsch</option><option>Francais</option>
           </select>
         </div>
         <div class="form-group reveal">
-          <label class="form-label" for="fvisibility">Visibilidad del perfil</label>
+          <label class="form-label" for="fvisibility" data-i18n="profile_visibility">Visibilidad del perfil</label>
           <select class="form-select" id="fvisibility">
-            <option selected>Publico para empresas</option><option>Solo con enlace</option><option>Privado</option>
+            <option selected data-i18n="profile_visibility_public">Publico para empresas</option><option data-i18n="profile_visibility_link_only">Solo con enlace</option><option data-i18n="profile_visibility_private">Privado</option>
           </select>
         </div>
       </div>
       <div class="save-bar">
-        <button class="btn btn--outline btn--small" type="button" data-h>Cancelar</button>
-        <button class="btn btn--primary btn--small" type="button" id="saveSettings" data-h>Guardar Configuracion</button>
+        <button class="btn btn--outline btn--small" type="button" data-h data-i18n="profile_cancel">Cancelar</button>
+        <button class="btn btn--primary btn--small" type="button" id="saveSettings" data-h data-i18n="profile_save_settings">Guardar Configuracion</button>
       </div>
     </div>
   </main>
@@ -701,6 +701,7 @@ to{height:26px;transform:translateY(-50%)}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 <script>
 (function(){
@@ -767,7 +768,7 @@ to{height:26px;transform:translateY(-50%)}
 
     } catch (err) {
       console.error('Profile init error:', err);
-      showToast('Error al cargar perfil. Inicia sesion.', 'error');
+      showToast(SyneriaI18n.t('profile_error_load_profile'), 'error');
       setTimeout(function(){ window.location.href = 'login.html'; }, 1500);
     }
   }
@@ -810,7 +811,7 @@ to{height:26px;transform:translateY(-50%)}
     }
 
     // Update header displays
-    var displayName = profile.full_name || 'Usuario';
+    var displayName = profile.full_name || SyneriaI18n.t('profile_default_user');
     var profileNameEl = document.getElementById('profileName');
     if (profileNameEl) profileNameEl.textContent = displayName;
     updateAvatar(displayName);
@@ -820,7 +821,7 @@ to{height:26px;transform:translateY(-50%)}
     if (profile.city) locParts.push(profile.city);
     if (profile.country) locParts.push(profile.country);
     var profileLocationEl = document.getElementById('profileLocation');
-    if (profileLocationEl) profileLocationEl.textContent = locParts.join(', ') || 'Sin ubicacion';
+    if (profileLocationEl) profileLocationEl.textContent = locParts.join(', ') || SyneriaI18n.t('profile_no_location');
 
     // Languages
     renderLangTags();
@@ -844,12 +845,12 @@ to{height:26px;transform:translateY(-50%)}
     if (badge && icon) {
       if (profile.verified) {
         badge.className = 'verification verification--verified';
-        badge.innerHTML = '&#10003; Verificado';
+        badge.innerHTML = '&#10003; ' + SyneriaI18n.t('profile_verified');
         icon.textContent = '\u2713';
         icon.classList.remove('pending');
       } else {
         badge.className = 'verification verification--pending';
-        badge.innerHTML = '&#9888;&#65039; Verificacion Pendiente';
+        badge.innerHTML = '&#9888;&#65039; ' + SyneriaI18n.t('profile_verification_pending');
         icon.textContent = '\u26A0';
         icon.classList.add('pending');
       }
@@ -1045,7 +1046,7 @@ to{height:26px;transform:translateY(-50%)}
           renderLangTags();
           await saveToSupabase();
           updateCompletion();
-          showToast('Idioma eliminado');
+          showToast(SyneriaI18n.t('profile_language_removed'));
         }, 280);
       });
       container.appendChild(div);
@@ -1072,7 +1073,7 @@ to{height:26px;transform:translateY(-50%)}
           await saveToSupabase();
           updateCompletion();
           updateStats();
-          showToast('Habilidad eliminada');
+          showToast(SyneriaI18n.t('profile_skill_removed'));
         }, 280);
       });
       container.appendChild(div);
@@ -1085,30 +1086,30 @@ to{height:26px;transform:translateY(-50%)}
 
   /* ── Add language ── */
   document.getElementById('addLangBtn').addEventListener('click', async function(){
-    var name = prompt('Nombre del idioma:');
+    var name = prompt(SyneriaI18n.t('profile_prompt_language_name'));
     if (!name || !name.trim()) return;
-    var level = prompt('Nivel (Nativo, Avanzado, Intermedio, Basico):');
+    var level = prompt(SyneriaI18n.t('profile_prompt_language_level'));
     if (!level || !level.trim()) return;
     if (!profile.languages) profile.languages = [];
     // Avoid duplicates
     if (profile.languages.some(function(l){ return l.name.toLowerCase() === name.trim().toLowerCase(); })) {
-      showToast('Este idioma ya existe', 'warning');
+      showToast(SyneriaI18n.t('profile_language_exists'), 'warning');
       return;
     }
     profile.languages.push({ name: name.trim(), level: level.trim() });
     renderLangTags();
     await saveToSupabase();
     updateCompletion();
-    showToast('Idioma agregado');
+    showToast(SyneriaI18n.t('profile_language_added'));
   });
 
   /* ── Add skill ── */
   document.getElementById('addSkillBtn').addEventListener('click', async function(){
-    var skill = prompt('Nueva habilidad:');
+    var skill = prompt(SyneriaI18n.t('profile_prompt_new_skill'));
     if (!skill || !skill.trim()) return;
     if (!profile.skills) profile.skills = [];
     if (profile.skills.some(function(s){ return s.toLowerCase() === skill.trim().toLowerCase(); })) {
-      showToast('Esta habilidad ya existe', 'warning');
+      showToast(SyneriaI18n.t('profile_skill_exists'), 'warning');
       return;
     }
     profile.skills.push(skill.trim());
@@ -1116,7 +1117,7 @@ to{height:26px;transform:translateY(-50%)}
     await saveToSupabase();
     updateCompletion();
     updateStats();
-    showToast('Habilidad agregada');
+    showToast(SyneriaI18n.t('profile_skill_added'));
   });
 
   /* ── Sector checkboxes ── */
@@ -1144,7 +1145,7 @@ to{height:26px;transform:translateY(-50%)}
   document.getElementById('savePersonal').addEventListener('click', async function(){
     // Validate first
     if (!validatePersonalForm()) {
-      showToast('Corrige los errores antes de guardar', 'error');
+      showToast(SyneriaI18n.t('profile_fix_errors'), 'error');
       // Scroll to first error
       var firstError = document.querySelector('.form-input.invalid');
       if (firstError) firstError.focus();
@@ -1182,7 +1183,7 @@ to{height:26px;transform:translateY(-50%)}
     if (profile.city) locParts.push(profile.city);
     if (profile.country) locParts.push(profile.country);
     var profileLocationEl = document.getElementById('profileLocation');
-    if (profileLocationEl) profileLocationEl.textContent = locParts.join(', ') || 'Sin ubicacion';
+    if (profileLocationEl) profileLocationEl.textContent = locParts.join(', ') || SyneriaI18n.t('profile_no_location');
     updateCompletion();
     updateStats();
 
@@ -1190,9 +1191,9 @@ to{height:26px;transform:translateY(-50%)}
     var ok = await saveToSupabase();
     btn.classList.remove('loading');
     if (ok) {
-      showToast('Perfil actualizado');
+      showToast(SyneriaI18n.t('profile_updated'));
     } else {
-      showToast('Error al guardar. Intenta de nuevo.', 'error');
+      showToast(SyneriaI18n.t('profile_error_save_retry'), 'error');
     }
   });
 
@@ -1203,9 +1204,9 @@ to{height:26px;transform:translateY(-50%)}
     var ok = await saveToSupabase();
     btn.classList.remove('loading');
     if (ok) {
-      showToast('Configuracion guardada');
+      showToast(SyneriaI18n.t('profile_settings_saved'));
     } else {
-      showToast('Error al guardar', 'error');
+      showToast(SyneriaI18n.t('profile_error_save'), 'error');
     }
   });
 
@@ -1278,11 +1279,11 @@ to{height:26px;transform:translateY(-50%)}
 
   /* ── Experience CRUD ── */
   document.getElementById('addExpBtn').addEventListener('click', async function(){
-    var title = prompt('Puesto:');
+    var title = prompt(SyneriaI18n.t('profile_prompt_position'));
     if (!title || !title.trim()) return;
-    var company = prompt('Empresa:');
-    var period = prompt('Periodo (ej: 2020 - 2022):');
-    var desc = prompt('Descripcion:');
+    var company = prompt(SyneriaI18n.t('profile_prompt_company'));
+    var period = prompt(SyneriaI18n.t('profile_prompt_period'));
+    var desc = prompt(SyneriaI18n.t('profile_prompt_description'));
     if (!profile.experience) profile.experience = [];
     profile.experience.push({
       title: title.trim(),
@@ -1293,7 +1294,7 @@ to{height:26px;transform:translateY(-50%)}
     renderExperience();
     await saveToSupabase();
     updateStats();
-    showToast('Experiencia agregada');
+    showToast(SyneriaI18n.t('profile_experience_added'));
   });
 
   function bindExpActions(){
@@ -1312,7 +1313,7 @@ to{height:26px;transform:translateY(-50%)}
             renderExperience();
             await saveToSupabase();
             updateStats();
-            showToast('Experiencia eliminada');
+            showToast(SyneriaI18n.t('profile_experience_removed'));
           }, 300);
         }
       };
@@ -1324,17 +1325,17 @@ to{height:26px;transform:translateY(-50%)}
         var idx = parseInt(card.dataset.expIdx);
         if (isNaN(idx) || !profile.experience || !profile.experience[idx]) return;
         var exp = profile.experience[idx];
-        var t = prompt('Puesto:', exp.title);
+        var t = prompt(SyneriaI18n.t('profile_prompt_position'), exp.title);
         if (t !== null) exp.title = t.trim();
-        var c = prompt('Empresa:', exp.company);
+        var c = prompt(SyneriaI18n.t('profile_prompt_company'), exp.company);
         if (c !== null) exp.company = c.trim();
-        var p = prompt('Periodo:', exp.period);
+        var p = prompt(SyneriaI18n.t('profile_prompt_period_short'), exp.period);
         if (p !== null) exp.period = p.trim();
-        var d = prompt('Descripcion:', exp.description);
+        var d = prompt(SyneriaI18n.t('profile_prompt_description'), exp.description);
         if (d !== null) exp.description = d.trim();
         renderExperience();
         await saveToSupabase();
-        showToast('Experiencia actualizada');
+        showToast(SyneriaI18n.t('profile_experience_updated'));
       };
     });
   }
@@ -1362,11 +1363,11 @@ to{height:26px;transform:translateY(-50%)}
 
   /* ── Education CRUD ── */
   document.getElementById('addEduBtn').addEventListener('click', async function(){
-    var title = prompt('Titulo / Programa:');
+    var title = prompt(SyneriaI18n.t('profile_prompt_title_program'));
     if (!title || !title.trim()) return;
-    var inst = prompt('Institucion:');
-    var period = prompt('Periodo:');
-    var desc = prompt('Descripcion:');
+    var inst = prompt(SyneriaI18n.t('profile_prompt_institution'));
+    var period = prompt(SyneriaI18n.t('profile_prompt_period_short'));
+    var desc = prompt(SyneriaI18n.t('profile_prompt_description'));
     if (!profile.education) profile.education = [];
     profile.education.push({
       title: title.trim(),
@@ -1376,7 +1377,7 @@ to{height:26px;transform:translateY(-50%)}
     });
     renderEducation();
     await saveToSupabase();
-    showToast('Educacion agregada');
+    showToast(SyneriaI18n.t('profile_education_added'));
   });
 
   function bindEduActions(){
@@ -1393,7 +1394,7 @@ to{height:26px;transform:translateY(-50%)}
             profile.education.splice(idx, 1);
             renderEducation();
             await saveToSupabase();
-            showToast('Educacion eliminada');
+            showToast(SyneriaI18n.t('profile_education_removed'));
           }, 300);
         }
       };
@@ -1405,17 +1406,17 @@ to{height:26px;transform:translateY(-50%)}
         var idx = parseInt(card.dataset.eduIdx);
         if (isNaN(idx) || !profile.education || !profile.education[idx]) return;
         var edu = profile.education[idx];
-        var t = prompt('Titulo:', edu.title);
+        var t = prompt(SyneriaI18n.t('profile_prompt_title'), edu.title);
         if (t !== null) edu.title = t.trim();
-        var c = prompt('Institucion:', edu.institution);
+        var c = prompt(SyneriaI18n.t('profile_prompt_institution'), edu.institution);
         if (c !== null) edu.institution = c.trim();
-        var p = prompt('Periodo:', edu.period);
+        var p = prompt(SyneriaI18n.t('profile_prompt_period_short'), edu.period);
         if (p !== null) edu.period = p.trim();
-        var d = prompt('Descripcion:', edu.description);
+        var d = prompt(SyneriaI18n.t('profile_prompt_description'), edu.description);
         if (d !== null) edu.description = d.trim();
         renderEducation();
         await saveToSupabase();
-        showToast('Educacion actualizada');
+        showToast(SyneriaI18n.t('profile_education_updated'));
       };
     });
   }
@@ -1427,10 +1428,10 @@ to{height:26px;transform:translateY(-50%)}
       e.preventDefault();
       try {
         await SyneriaAuth.signOut();
-        showToast('Sesion cerrada');
+        showToast(SyneriaI18n.t('profile_session_closed'));
         setTimeout(function(){ window.location.href = 'login.html'; }, 500);
       } catch (err) {
-        showToast('Error al cerrar sesion', 'error');
+        showToast(SyneriaI18n.t('profile_error_logout'), 'error');
       }
     });
   }
@@ -1450,7 +1451,7 @@ to{height:26px;transform:translateY(-50%)}
       populateForm();
       renderExperience();
       renderEducation();
-      showToast('Cambios descartados');
+      showToast(SyneriaI18n.t('profile_changes_discarded'));
     });
   });
 
@@ -1472,7 +1473,7 @@ to{height:26px;transform:translateY(-50%)}
     dropZone.addEventListener('drop', function(e){
       var files = e.dataTransfer.files;
       if (files.length > 0) {
-        showToast('Archivo recibido: ' + files[0].name);
+        showToast(SyneriaI18n.t('profile_file_received') + ': ' + files[0].name);
       }
     });
     dropZone.addEventListener('click', function(){
@@ -1481,7 +1482,7 @@ to{height:26px;transform:translateY(-50%)}
       input.accept = '.pdf,.jpg,.jpeg,.png';
       input.addEventListener('change', function(){
         if (input.files.length > 0) {
-          showToast('Archivo seleccionado: ' + input.files[0].name);
+          showToast(SyneriaI18n.t('profile_file_selected') + ': ' + input.files[0].name);
         }
       });
       input.click();
@@ -1567,7 +1568,7 @@ to{height:26px;transform:translateY(-50%)}
   // "Actualizar Curriculum" button
   document.querySelectorAll('.btn--primary.btn--small').forEach(function(btn){
     if(btn.textContent.trim().includes('Actualizar Curriculum')){
-      btn.addEventListener('click', function(){ showToast('Actualizacion de curriculum proximamente','warning'); });
+      btn.addEventListener('click', function(){ showToast(SyneriaI18n.t('profile_cv_update_coming_soon'),'warning'); });
     }
   });
   // Document upload buttons
@@ -1578,7 +1579,7 @@ to{height:26px;transform:translateY(-50%)}
       input.accept = '.pdf,.jpg,.jpeg,.png';
       input.addEventListener('change', function(){
         if(input.files.length > 0){
-          showToast('Archivo seleccionado: ' + input.files[0].name);
+          showToast(SyneriaI18n.t('profile_file_selected') + ': ' + input.files[0].name);
         }
       });
       input.click();

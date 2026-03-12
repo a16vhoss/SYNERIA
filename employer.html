@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syneria — Panel de Empleador</title>
+<title data-i18n="employer_page_title">Syneria — Panel de Empleador</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -616,45 +616,45 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
   <nav class="sidebar__nav">
     <a href="#" class="sidebar__item active" data-tab="dashboard">
       <svg fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      <span class="sidebar__label">Dashboard</span>
+      <span class="sidebar__label" data-i18n="employer_dashboard">Dashboard</span>
     </a>
     <a href="#" class="sidebar__item" data-tab="vacantes">
       <svg fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
-      <span class="sidebar__label">Mis Vacantes</span>
+      <span class="sidebar__label" data-i18n="employer_my_vacancies">Mis Vacantes</span>
       <span class="sidebar__badge">5</span>
     </a>
     <a href="#" class="sidebar__item" data-tab="candidatos">
       <svg fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.87"/></svg>
-      <span class="sidebar__label">Candidatos</span>
+      <span class="sidebar__label" data-i18n="employer_candidates">Candidatos</span>
       <span class="sidebar__badge">47</span>
     </a>
     <a href="#" class="sidebar__item" data-tab="contratos">
       <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-      <span class="sidebar__label">Contratos</span>
+      <span class="sidebar__label" data-i18n="employer_contracts">Contratos</span>
     </a>
     <a href="wallet.html" class="sidebar__item">
       <svg fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 12h.01"/></svg>
-      <span class="sidebar__label">Wallet</span>
+      <span class="sidebar__label" data-i18n="employer_wallet">Wallet</span>
     </a>
     <div class="sidebar__divider"></div>
     <a href="#" class="sidebar__item">
       <svg fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21v-1a5 5 0 0 1 10 0v1"/></svg>
-      <span class="sidebar__label">Empresa Perfil</span>
+      <span class="sidebar__label" data-i18n="employer_company_profile">Empresa Perfil</span>
     </a>
     <a href="#" class="sidebar__item">
       <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <span class="sidebar__label">Mensajes</span>
+      <span class="sidebar__label" data-i18n="employer_messages">Mensajes</span>
       <span class="sidebar__badge" style="background:var(--danger)">2</span>
     </a>
     <a href="#" class="sidebar__item">
       <svg fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      <span class="sidebar__label">Configuración</span>
+      <span class="sidebar__label" data-i18n="employer_settings">Configuración</span>
     </a>
   </nav>
   <div class="sidebar__bottom">
     <a href="#" class="sidebar__item" style="color:var(--danger)">
       <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-      <span class="sidebar__label">Cerrar Sesión</span>
+      <span class="sidebar__label" data-i18n="employer_logout">Cerrar Sesión</span>
     </a>
   </div>
 </aside>
@@ -679,20 +679,20 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
 
     <!-- Welcome Banner -->
     <div class="welcome reveal">
-      <h1>Bienvenido, Constructora Alpine</h1>
-      <p>Encuentra el talento que tu empresa necesita</p>
+      <h1 data-i18n="employer_welcome_title">Bienvenido, Constructora Alpine</h1>
+      <p data-i18n="employer_welcome_subtitle">Encuentra el talento que tu empresa necesita</p>
       <div class="welcome__stats" id="welcomeStats">
         <div class="welcome__stat">
           <div class="welcome__stat-value" data-welcome-count="5">0</div>
-          <div class="welcome__stat-label">Vacantes</div>
+          <div class="welcome__stat-label" data-i18n="employer_vacancies">Vacantes</div>
         </div>
         <div class="welcome__stat">
           <div class="welcome__stat-value" data-welcome-count="47">0</div>
-          <div class="welcome__stat-label">Candidatos</div>
+          <div class="welcome__stat-label" data-i18n="employer_candidates_label">Candidatos</div>
         </div>
         <div class="welcome__stat">
           <div class="welcome__stat-value" data-welcome-count="12">0</div>
-          <div class="welcome__stat-label">Aceptados</div>
+          <div class="welcome__stat-label" data-i18n="employer_accepted">Aceptados</div>
         </div>
       </div>
     </div>
@@ -704,61 +704,61 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
         </div>
         <div class="stat-card__value" data-count="5">0</div>
-        <div class="stat-card__label">Vacantes activas</div>
+        <div class="stat-card__label" data-i18n="employer_active_vacancies">Vacantes activas</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-card__icon blue">
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
         </div>
         <div class="stat-card__value" data-count="47">0</div>
-        <div class="stat-card__label">Candidatos recibidos</div>
+        <div class="stat-card__label" data-i18n="employer_candidates_received">Candidatos recibidos</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-card__icon warning">
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 1.5"/></svg>
         </div>
         <div class="stat-card__value" data-count="3">0</div>
-        <div class="stat-card__label">En entrevista</div>
+        <div class="stat-card__label" data-i18n="employer_in_interview">En entrevista</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-card__icon success">
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="m9 13 2 2 4-4"/></svg>
         </div>
         <div class="stat-card__value" data-count="12">0</div>
-        <div class="stat-card__label">Aceptados</div>
+        <div class="stat-card__label" data-i18n="employer_accepted_stat">Aceptados</div>
       </div>
     </div>
 
     <!-- Mis Vacantes -->
     <div class="vacancies-section reveal">
       <div class="section-header">
-        <h2>Mis Vacantes</h2>
+        <h2 data-i18n="employer_my_vacancies">Mis Vacantes</h2>
         <div class="section-header__actions">
           <button class="btn btn--primary" onclick="openModal()">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
-            Publicar Nueva Vacante
+            <span data-i18n="employer_post_vacancy">Publicar Nueva Vacante</span>
           </button>
         </div>
       </div>
       <div class="vacancies-controls">
         <select id="filterStatus" onchange="filterVacancies()">
-          <option value="all">Todos los estados</option>
-          <option value="activa">Activa</option>
-          <option value="pausada">Pausada</option>
-          <option value="cerrada">Cerrada</option>
+          <option value="all" data-i18n="employer_all_statuses">Todos los estados</option>
+          <option value="activa" data-i18n="employer_status_active">Activa</option>
+          <option value="pausada" data-i18n="employer_status_paused">Pausada</option>
+          <option value="cerrada" data-i18n="employer_status_closed">Cerrada</option>
         </select>
-        <input type="text" id="filterSearch" placeholder="Buscar vacante..." oninput="filterVacancies()">
+        <input type="text" id="filterSearch" placeholder="Buscar vacante..." data-i18n-placeholder="employer_search_vacancy" oninput="filterVacancies()">
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th onclick="sortTable(0)">Título del puesto <span class="sort-icon">&#9650;&#9660;</span></th>
-              <th onclick="sortTable(1)">Ubicación <span class="sort-icon">&#9650;&#9660;</span></th>
-              <th onclick="sortTable(2)">Aplicaciones <span class="sort-icon">&#9650;&#9660;</span></th>
-              <th onclick="sortTable(3)">Estado <span class="sort-icon">&#9650;&#9660;</span></th>
-              <th onclick="sortTable(4)">Fecha publicación <span class="sort-icon">&#9650;&#9660;</span></th>
-              <th>Acciones</th>
+              <th onclick="sortTable(0)"><span data-i18n="employer_th_job_title">Título del puesto</span> <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="sortTable(1)"><span data-i18n="employer_th_location">Ubicación</span> <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="sortTable(2)"><span data-i18n="employer_th_applications">Aplicaciones</span> <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="sortTable(3)"><span data-i18n="employer_th_status">Estado</span> <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="sortTable(4)"><span data-i18n="employer_th_publish_date">Fecha publicación</span> <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th data-i18n="employer_th_actions">Acciones</th>
             </tr>
           </thead>
           <tbody id="vacanciesBody">
@@ -770,8 +770,8 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
     <!-- Candidatos Recientes -->
     <div class="candidates-section reveal">
       <div class="section-header">
-        <h2>Candidatos Recientes</h2>
-        <button class="btn btn--outline btn--sm">Ver todos</button>
+        <h2 data-i18n="employer_recent_candidates">Candidatos Recientes</h2>
+        <button class="btn btn--outline btn--sm" data-i18n="employer_view_all">Ver todos</button>
       </div>
       <div class="candidates-grid" id="candidatesGrid">
       </div>
@@ -780,22 +780,22 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
     <!-- Contratos Activos -->
     <div class="contracts-section reveal">
       <div class="section-header">
-        <h2>Contratos Activos</h2>
-        <button class="btn btn--outline btn--sm">Ver todos</button>
+        <h2 data-i18n="employer_active_contracts">Contratos Activos</h2>
+        <button class="btn btn--outline btn--sm" data-i18n="employer_view_all_contracts">Ver todos</button>
       </div>
       <div class="contracts-table">
         <table>
           <thead>
             <tr>
-              <th>Trabajador</th>
-              <th>Puesto</th>
-              <th>Fecha inicio</th>
-              <th>Estado</th>
+              <th data-i18n="employer_th_worker">Trabajador</th>
+              <th data-i18n="employer_th_position">Puesto</th>
+              <th data-i18n="employer_th_start_date">Fecha inicio</th>
+              <th data-i18n="employer_th_contract_status">Estado</th>
             </tr>
           </thead>
           <tbody id="contractsBody">
             <tr>
-              <td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">Cargando contratos...</td>
+              <td colspan="4" style="text-align:center;padding:24px;color:var(--muted)" data-i18n="employer_loading_contracts">Cargando contratos...</td>
             </tr>
           </tbody>
         </table>
@@ -805,28 +805,28 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
     <!-- Actividad Reciente -->
     <div class="activity-section reveal">
       <div class="section-header">
-        <h2>Actividad Reciente</h2>
+        <h2 data-i18n="employer_recent_activity">Actividad Reciente</h2>
       </div>
       <div class="timeline">
         <div class="timeline__item">
           <div class="timeline__dot green"></div>
           <div>
-            <div class="timeline__text"><strong>Juan Martínez</strong> aplicó a <strong>Ayudante de Construcción</strong></div>
-            <div class="timeline__time">Hace 1 hora</div>
+            <div class="timeline__text"><strong>Juan Martínez</strong> <span data-i18n="employer_applied_to">aplicó a</span> <strong>Ayudante de Construcción</strong></div>
+            <div class="timeline__time" data-i18n="employer_time_1h_ago">Hace 1 hora</div>
           </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot blue"></div>
           <div>
-            <div class="timeline__text">Contrato firmado con <strong>Pedro Hernández</strong></div>
-            <div class="timeline__time">Hace 3 horas</div>
+            <div class="timeline__text"><span data-i18n="employer_contract_signed">Contrato firmado con</span> <strong>Pedro Hernández</strong></div>
+            <div class="timeline__time" data-i18n="employer_time_3h_ago">Hace 3 horas</div>
           </div>
         </div>
         <div class="timeline__item">
           <div class="timeline__dot orange"></div>
           <div>
-            <div class="timeline__text">Nueva solicitud de entrevista de <strong>María López</strong></div>
-            <div class="timeline__time">Hace 1 día</div>
+            <div class="timeline__text"><span data-i18n="employer_interview_request">Nueva solicitud de entrevista de</span> <strong>María López</strong></div>
+            <div class="timeline__time" data-i18n="employer_time_1d_ago">Hace 1 día</div>
           </div>
         </div>
       </div>
@@ -839,23 +839,23 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
 <div class="mobile-tabs">
   <button class="active" data-tab="dashboard">
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-    Inicio
+    <span data-i18n="employer_tab_home">Inicio</span>
   </button>
   <button data-tab="vacantes">
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
-    Vacantes
+    <span data-i18n="employer_tab_vacancies">Vacantes</span>
   </button>
   <button data-tab="candidatos">
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
-    Candidatos
+    <span data-i18n="employer_tab_candidates">Candidatos</span>
   </button>
   <button data-tab="contratos">
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-    Contratos
+    <span data-i18n="employer_tab_contracts">Contratos</span>
   </button>
   <button onclick="toggleMobileSidebar()">
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    Más
+    <span data-i18n="employer_tab_more">Más</span>
   </button>
 </div>
 
@@ -863,55 +863,55 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOverlay(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal__header">
-      <h2>Publicar Nueva Vacante</h2>
+      <h2 data-i18n="employer_modal_title">Publicar Nueva Vacante</h2>
       <button class="modal__close" onclick="closeModal()" aria-label="Cerrar">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5 5 15"/></svg>
       </button>
     </div>
     <form id="vacancyForm" onsubmit="submitVacancy(event)">
-      <div class="form-section-label">Informacion del puesto</div>
+      <div class="form-section-label" data-i18n="employer_section_job_info">Informacion del puesto</div>
       <div class="form-group" id="fgTitulo">
-        <label>Titulo del puesto <span class="req">*</span></label>
-        <input type="text" id="vTitulo" placeholder="Ej: Ayudante de Construccion">
-        <div class="error-msg">Este campo es obligatorio</div>
+        <label data-i18n="employer_label_job_title">Titulo del puesto <span class="req">*</span></label>
+        <input type="text" id="vTitulo" placeholder="Ej: Ayudante de Construccion" data-i18n-placeholder="employer_placeholder_job_title">
+        <div class="error-msg" data-i18n="employer_error_required">Este campo es obligatorio</div>
       </div>
       <div class="form-group">
-        <label>Descripcion <span class="req">*</span></label>
-        <textarea id="vDescripcion" rows="4" placeholder="Descripcion detallada del puesto..."></textarea>
-        <div class="error-msg">Este campo es obligatorio</div>
+        <label data-i18n="employer_label_description">Descripcion <span class="req">*</span></label>
+        <textarea id="vDescripcion" rows="4" placeholder="Descripcion detallada del puesto..." data-i18n-placeholder="employer_placeholder_description"></textarea>
+        <div class="error-msg" data-i18n="employer_error_required_desc">Este campo es obligatorio</div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Sector <span class="req">*</span></label>
+          <label data-i18n="employer_label_sector">Sector <span class="req">*</span></label>
           <select id="vSector">
-            <option value="">Seleccionar sector</option>
-            <option>Construccion</option>
-            <option>Hoteleria</option>
-            <option>Agricultura</option>
-            <option>Salud</option>
-            <option>Manufactura</option>
-            <option>Logistica</option>
-            <option>Limpieza</option>
+            <option value="" data-i18n="employer_select_sector">Seleccionar sector</option>
+            <option data-i18n="employer_sector_construction">Construccion</option>
+            <option data-i18n="employer_sector_hospitality">Hoteleria</option>
+            <option data-i18n="employer_sector_agriculture">Agricultura</option>
+            <option data-i18n="employer_sector_health">Salud</option>
+            <option data-i18n="employer_sector_manufacturing">Manufactura</option>
+            <option data-i18n="employer_sector_logistics">Logistica</option>
+            <option data-i18n="employer_sector_cleaning">Limpieza</option>
           </select>
-          <div class="error-msg">Selecciona un sector</div>
+          <div class="error-msg" data-i18n="employer_error_select_sector">Selecciona un sector</div>
         </div>
         <div class="form-group">
-          <label>Tipo de contrato</label>
+          <label data-i18n="employer_label_contract_type">Tipo de contrato</label>
           <select id="vContrato">
-            <option>Jornada Completa</option>
-            <option>Media Jornada</option>
-            <option>Temporal</option>
+            <option data-i18n="employer_contract_full_time">Jornada Completa</option>
+            <option data-i18n="employer_contract_part_time">Media Jornada</option>
+            <option data-i18n="employer_contract_temporary">Temporal</option>
           </select>
         </div>
       </div>
 
-      <div class="form-section-label">Ubicacion y salario</div>
+      <div class="form-section-label" data-i18n="employer_section_location_salary">Ubicacion y salario</div>
       <div class="form-row">
         <div class="form-group">
-          <label>Pais <span class="req">*</span></label>
+          <label data-i18n="employer_label_country">Pais <span class="req">*</span></label>
           <select id="vPais">
-            <option value="">Seleccionar pais</option>
-            <optgroup label="Europa">
+            <option value="" data-i18n="employer_select_country">Seleccionar pais</option>
+            <optgroup label="Europa" data-i18n="employer_region_europe">
               <option>Alemania</option>
               <option>Reino Unido</option>
               <option>Francia</option>
@@ -925,7 +925,7 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
               <option>Austria</option>
               <option>Republica Checa</option>
             </optgroup>
-            <optgroup label="America">
+            <optgroup label="America" data-i18n="employer_region_america">
               <option>Estados Unidos</option>
               <option>Canada</option>
               <option>Mexico</option>
@@ -945,62 +945,62 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
               <option>Qatar</option>
             </optgroup>
           </select>
-          <div class="error-msg">Selecciona un pais</div>
+          <div class="error-msg" data-i18n="employer_error_select_country">Selecciona un pais</div>
         </div>
         <div class="form-group">
-          <label>Ciudad <span class="req">*</span></label>
-          <input type="text" id="vCiudad" placeholder="Ej: Zurich">
-          <div class="error-msg">Ingresa la ciudad</div>
+          <label data-i18n="employer_label_city">Ciudad <span class="req">*</span></label>
+          <input type="text" id="vCiudad" placeholder="Ej: Zurich" data-i18n-placeholder="employer_placeholder_city">
+          <div class="error-msg" data-i18n="employer_error_enter_city">Ingresa la ciudad</div>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Salario minimo (EUR/mes)</label>
-          <input type="number" id="vSalarioMin" placeholder="2500">
+          <label data-i18n="employer_label_salary_min">Salario minimo (EUR/mes)</label>
+          <input type="number" id="vSalarioMin" placeholder="2500" data-i18n-placeholder="employer_placeholder_salary_min">
         </div>
         <div class="form-group">
-          <label>Salario maximo (EUR/mes)</label>
-          <input type="number" id="vSalarioMax" placeholder="4000">
+          <label data-i18n="employer_label_salary_max">Salario maximo (EUR/mes)</label>
+          <input type="number" id="vSalarioMax" placeholder="4000" data-i18n-placeholder="employer_placeholder_salary_max">
         </div>
       </div>
 
-      <div class="form-section-label">Requisitos y beneficios</div>
+      <div class="form-section-label" data-i18n="employer_section_requirements">Requisitos y beneficios</div>
       <div class="form-group">
-        <label>Habilidades requeridas</label>
+        <label data-i18n="employer_label_skills">Habilidades requeridas</label>
         <div class="tag-input-wrap" id="skillsTagInput">
-          <input type="text" id="vSkillsInput" placeholder="Escribe y presiona Enter...">
+          <input type="text" id="vSkillsInput" placeholder="Escribe y presiona Enter..." data-i18n-placeholder="employer_placeholder_skills">
         </div>
         <input type="hidden" id="vSkills">
       </div>
       <div class="form-group">
-        <label>Requisitos adicionales</label>
-        <textarea id="vRequisitos" rows="3" placeholder="Experiencia, certificaciones..."></textarea>
+        <label data-i18n="employer_label_additional_req">Requisitos adicionales</label>
+        <textarea id="vRequisitos" rows="3" placeholder="Experiencia, certificaciones..." data-i18n-placeholder="employer_placeholder_requirements"></textarea>
       </div>
       <div class="form-group">
-        <label>Beneficios incluidos</label>
+        <label data-i18n="employer_label_benefits">Beneficios incluidos</label>
         <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Visa"> Visa</label>
-          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Alojamiento"> Alojamiento</label>
-          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Seguro"> Seguro</label>
-          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Vuelo"> Vuelo</label>
-          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Capacitacion"> Capacitacion</label>
+          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Visa"> <span data-i18n="employer_benefit_visa">Visa</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Alojamiento"> <span data-i18n="employer_benefit_housing">Alojamiento</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Seguro"> <span data-i18n="employer_benefit_insurance">Seguro</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Vuelo"> <span data-i18n="employer_benefit_flight">Vuelo</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="beneficios" value="Capacitacion"> <span data-i18n="employer_benefit_training">Capacitacion</span></label>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Idiomas requeridos</label>
-          <input type="text" id="vIdiomas" placeholder="Ej: Espanol, Aleman basico">
+          <label data-i18n="employer_label_languages">Idiomas requeridos</label>
+          <input type="text" id="vIdiomas" placeholder="Ej: Espanol, Aleman basico" data-i18n-placeholder="employer_placeholder_languages">
         </div>
         <div class="form-group">
-          <label>Fecha de inicio</label>
+          <label data-i18n="employer_label_start_date">Fecha de inicio</label>
           <input type="date" id="vFechaInicio">
         </div>
       </div>
       <div class="modal__footer">
-        <button type="button" class="btn btn--outline" onclick="closeModal()">Cancelar</button>
+        <button type="button" class="btn btn--outline" onclick="closeModal()" data-i18n="employer_btn_cancel">Cancelar</button>
         <button type="submit" class="btn btn--primary">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
-          Publicar Vacante
+          <span data-i18n="employer_btn_publish">Publicar Vacante</span>
         </button>
       </div>
     </form>
@@ -1010,6 +1010,7 @@ label.checkbox-item,.sidebar__item,.topnav__user,.topnav__notif,
 <!-- Supabase SDK + shared config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 
 <script>
@@ -1055,7 +1056,7 @@ function renderVacancies(data){
   if(!tbody) return;
   if(!Array.isArray(data)) data = Array.isArray(vacancies) ? vacancies : [];
   if(data.length === 0){
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">No hay vacantes publicadas aún. ¡Publica tu primera vacante!</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">' + SyneriaI18n.t('employer_no_vacancies') + '</td></tr>';
     return;
   }
   tbody.innerHTML = data.map(v => {
@@ -1074,9 +1075,9 @@ function renderVacancies(data){
       <td>${formatDate(date)}</td>
       <td>
         <div class="td-actions">
-          <button class="btn btn--outline btn--sm" onclick="editVacancy('${v.id}')">Editar</button>
-          ${status !== 'cerrada' && status !== 'closed' ? `<button class="btn btn--sm ${status === 'activa' || status === 'active' ? 'btn--warning' : 'btn--primary'}" onclick="toggleStatus('${v.id}')">${status === 'activa' || status === 'active' ? 'Pausar' : 'Activar'}</button>` : ''}
-          <button class="btn btn--outline btn--sm" onclick="viewCandidatesForJob('${v.id}')">Ver candidatos</button>
+          <button class="btn btn--outline btn--sm" onclick="editVacancy('${v.id}')">${SyneriaI18n.t('employer_btn_edit')}</button>
+          ${status !== 'cerrada' && status !== 'closed' ? `<button class="btn btn--sm ${status === 'activa' || status === 'active' ? 'btn--warning' : 'btn--primary'}" onclick="toggleStatus('${v.id}')">${status === 'activa' || status === 'active' ? SyneriaI18n.t('employer_btn_pause') : SyneriaI18n.t('employer_btn_activate')}</button>` : ''}
+          <button class="btn btn--outline btn--sm" onclick="viewCandidatesForJob('${v.id}')">${SyneriaI18n.t('employer_btn_view_candidates')}</button>
         </div>
       </td>
     </tr>`;
@@ -1093,10 +1094,10 @@ async function toggleStatus(id){
     await SyneriaJobs.update(id, { status: next });
     v.status = next;
     filterVacancies();
-    showToast(next === 'activa' ? 'Vacante activada' : 'Vacante pausada');
+    showToast(next === 'activa' ? SyneriaI18n.t('employer_toast_vacancy_activated') : SyneriaI18n.t('employer_toast_vacancy_paused'));
   } catch(err){
     console.error(err);
-    showToast('Error al cambiar estado', 'error');
+    showToast(SyneriaI18n.t('employer_toast_error_status'), 'error');
   }
 }
 
@@ -1173,22 +1174,22 @@ function renderCandidatesFromApps(apps){
   const grid = document.getElementById('candidatesGrid');
   if(!grid) return;
   if(!Array.isArray(apps) || apps.length === 0){
-    grid.innerHTML = '<div style="padding:32px;text-align:center;color:var(--muted);grid-column:1/-1">No hay candidatos aun.</div>';
+    grid.innerHTML = '<div style="padding:32px;text-align:center;color:var(--muted);grid-column:1/-1">' + SyneriaI18n.t('employer_no_candidates') + '</div>';
     return;
   }
   grid.innerHTML = apps.map((app, i) => {
     const profile = app.profiles || {};
-    const name = profile.full_name || profile.email || 'Candidato';
+    const name = profile.full_name || profile.email || SyneriaI18n.t('employer_candidate_default');
     const country = profile.country || '—';
     const sector = profile.sector || '—';
     const matchScore = app.match_score || Math.floor(Math.random()*20 + 75);
     const color = colorForId(app.id || String(i));
     const initials = getInitials(name);
-    const bio = profile.bio || profile.experience || 'Sin información adicional disponible.';
+    const bio = profile.bio || profile.experience || SyneriaI18n.t('employer_no_additional_info');
     const circumference = 2 * Math.PI * 22;
     const offset = circumference - (matchScore / 100) * circumference;
     const statusClass = app.status === 'accepted' ? 'activa' : app.status === 'rejected' ? 'cerrada' : 'pausada';
-    const statusLabel = app.status === 'accepted' ? 'Aceptado' : app.status === 'rejected' ? 'Rechazado' : app.status === 'interview' ? 'Entrevista' : 'Pendiente';
+    const statusLabel = app.status === 'accepted' ? SyneriaI18n.t('employer_status_accepted') : app.status === 'rejected' ? SyneriaI18n.t('employer_status_rejected') : app.status === 'interview' ? SyneriaI18n.t('employer_status_interview') : SyneriaI18n.t('employer_status_pending');
     return `
     <div class="candidate-card">
       <div class="candidate-card__top">
@@ -1211,18 +1212,18 @@ function renderCandidatesFromApps(apps){
           <div class="match-ring__text">${matchScore}%</div>
         </div>
         <div>
-          <div style="font-size:.8rem;color:var(--muted)">Compatibilidad</div>
-          <div style="font-weight:700;font-size:.95rem">${matchScore >= 90 ? 'Excelente' : matchScore >= 80 ? 'Muy buena' : 'Buena'}</div>
+          <div style="font-size:.8rem;color:var(--muted)">${SyneriaI18n.t('employer_compatibility')}</div>
+          <div style="font-weight:700;font-size:.95rem">${matchScore >= 90 ? SyneriaI18n.t('employer_match_excellent') : matchScore >= 80 ? SyneriaI18n.t('employer_match_very_good') : SyneriaI18n.t('employer_match_good')}</div>
         </div>
       </div>
       <div class="candidate-card__detail" id="candidateDetail${i}">
         <p>${bio}</p>
       </div>
       <div class="candidate-card__actions">
-        <button class="btn btn--outline btn--sm" onclick="toggleCandidateDetail(${i})">Ver Perfil</button>
+        <button class="btn btn--outline btn--sm" onclick="toggleCandidateDetail(${i})">${SyneriaI18n.t('employer_btn_view_profile')}</button>
         ${app.status !== 'accepted' && app.status !== 'rejected' ? `
-        <button class="btn btn--primary btn--sm" onclick="updateAppStatus('${app.id}','accepted',this)">Aceptar</button>
-        <button class="btn btn--danger btn--sm" onclick="updateAppStatus('${app.id}','rejected',this)">Rechazar</button>
+        <button class="btn btn--primary btn--sm" onclick="updateAppStatus('${app.id}','accepted',this)">${SyneriaI18n.t('employer_btn_accept')}</button>
+        <button class="btn btn--danger btn--sm" onclick="updateAppStatus('${app.id}','rejected',this)">${SyneriaI18n.t('employer_btn_reject')}</button>
         ` : ''}
       </div>
     </div>`;
@@ -1240,13 +1241,13 @@ function toggleCandidateDetail(i){
 async function updateAppStatus(appId, newStatus, btnEl){
   try {
     await SyneriaApplications.updateStatus(appId, newStatus);
-    showToast(newStatus === 'accepted' ? 'Candidato aceptado' : 'Candidato rechazado');
+    showToast(newStatus === 'accepted' ? SyneriaI18n.t('employer_toast_candidate_accepted') : SyneriaI18n.t('employer_toast_candidate_rejected'));
     // Reload all applications
     await loadAllApplications();
     renderCandidatesFromApps(allApplications);
   } catch(err){
     console.error(err);
-    showToast('Error al actualizar estado', 'error');
+    showToast(SyneriaI18n.t('employer_toast_error_update_status'), 'error');
   }
 }
 
@@ -1420,7 +1421,7 @@ async function submitVacancy(e){
   if(!valid) return;
 
   if(!currentUser || !currentUser.id){
-    showToast('Sesion no valida. Inicia sesion de nuevo.', 'error');
+    showToast(SyneriaI18n.t('employer_toast_invalid_session'), 'error');
     return;
   }
 
@@ -1431,7 +1432,7 @@ async function submitVacancy(e){
   const editId = document.getElementById('vacancyForm').dataset.editId;
   const submitBtn = e.target.querySelector('button[type="submit"]');
   const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="20 12"/></svg> Guardando...';
+  submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="20 12"/></svg> ' + SyneriaI18n.t('employer_saving');
   submitBtn.disabled = true;
 
   const jobData = {
@@ -1456,10 +1457,10 @@ async function submitVacancy(e){
   try {
     if(editId){
       await SyneriaJobs.update(editId, jobData);
-      showToast('Vacante actualizada correctamente');
+      showToast(SyneriaI18n.t('employer_toast_vacancy_updated'));
     } else {
       await SyneriaJobs.create(jobData);
-      showToast('Vacante publicada correctamente');
+      showToast(SyneriaI18n.t('employer_toast_vacancy_published'));
     }
     // Reload jobs from Supabase
     await loadJobs();
@@ -1467,7 +1468,7 @@ async function submitVacancy(e){
     closeModal();
   } catch(err){
     console.error('Error saving job:', err);
-    showToast('Error al guardar la vacante: ' + (err.message || 'Intenta de nuevo'), 'error');
+    showToast(SyneriaI18n.t('employer_toast_error_save') + ': ' + (err.message || SyneriaI18n.t('employer_try_again')), 'error');
   } finally {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
@@ -1511,11 +1512,11 @@ function initSidebarLinks(){
   items.forEach(item => {
     const label = (item.querySelector('.sidebar__label')?.textContent || '').trim();
     if(label === 'Empresa Perfil'){
-      item.addEventListener('click', e => { e.preventDefault(); showToast('Perfil de empresa — Próximamente', 'warning'); });
+      item.addEventListener('click', e => { e.preventDefault(); showToast(SyneriaI18n.t('employer_toast_company_profile_soon'), 'warning'); });
     } else if(label === 'Mensajes'){
-      item.addEventListener('click', e => { e.preventDefault(); showToast('Mensajes — Próximamente', 'warning'); });
+      item.addEventListener('click', e => { e.preventDefault(); showToast(SyneriaI18n.t('employer_toast_messages_soon'), 'warning'); });
     } else if(label === 'Configuración'){
-      item.addEventListener('click', e => { e.preventDefault(); showToast('Configuración — Próximamente', 'warning'); });
+      item.addEventListener('click', e => { e.preventDefault(); showToast(SyneriaI18n.t('employer_toast_settings_soon'), 'warning'); });
     }
   });
   // Cerrar Sesion (sidebar bottom)
@@ -1527,7 +1528,7 @@ function initSidebarLinks(){
         await SyneriaAuth.signOut();
         window.location.href = 'login.html';
       } catch(err){
-        showToast('Error al cerrar sesión', 'error');
+        showToast(SyneriaI18n.t('employer_toast_error_logout'), 'error');
       }
     });
   }
@@ -1542,10 +1543,10 @@ function initUserDropdownLinks(){
     const text = link.textContent.trim();
     if(text === 'Mi Perfil'){
       link.href = '#';
-      link.addEventListener('click', e => { e.preventDefault(); showToast('Mi Perfil — Próximamente', 'warning'); });
+      link.addEventListener('click', e => { e.preventDefault(); showToast(SyneriaI18n.t('employer_toast_profile_soon'), 'warning'); });
     } else if(text === 'Configuración'){
       link.href = '#';
-      link.addEventListener('click', e => { e.preventDefault(); showToast('Configuración — Próximamente', 'warning'); });
+      link.addEventListener('click', e => { e.preventDefault(); showToast(SyneriaI18n.t('employer_toast_settings_soon'), 'warning'); });
     } else if(text === 'Cerrar Sesión'){
       link.href = '#';
       link.addEventListener('click', async e => {
@@ -1554,7 +1555,7 @@ function initUserDropdownLinks(){
           await SyneriaAuth.signOut();
           window.location.href = 'login.html';
         } catch(err){
-          showToast('Error al cerrar sesión', 'error');
+          showToast(SyneriaI18n.t('employer_toast_error_logout'), 'error');
         }
       });
     }
@@ -1570,9 +1571,9 @@ function initViewAllButtons(){
       if(sectionTitle.includes('Candidatos')){
         // Show all applications
         renderCandidatesFromApps(allApplications);
-        showToast('Mostrando todos los candidatos');
+        showToast(SyneriaI18n.t('employer_toast_showing_all_candidates'));
       } else if(sectionTitle.includes('Contratos')){
-        showToast('Vista completa de contratos — Próximamente', 'warning');
+        showToast(SyneriaI18n.t('employer_toast_contracts_soon'), 'warning');
       }
     });
   });
@@ -1588,7 +1589,7 @@ function initNotificationActions(){
       if(currentUser){
         try {
           await SyneriaNotifications.markAllRead(currentUser.id);
-          showToast('Notificaciones marcadas como leídas');
+          showToast(SyneriaI18n.t('employer_toast_notif_read'));
           const badge = document.querySelector('.topnav__notif-badge');
           if(badge) badge.style.display = 'none';
         } catch(err){ console.error(err); }
@@ -1742,8 +1743,8 @@ function updateStats(){
 
 function updateWelcomeBanner(){
   const h1 = document.querySelector('.welcome h1');
-  const companyName = currentCompany?.name || 'tu Empresa';
-  if(h1) h1.textContent = `Bienvenido, ${companyName}`;
+  const companyName = currentCompany?.name || SyneriaI18n.t('employer_your_company');
+  if(h1) h1.textContent = SyneriaI18n.t('employer_welcome_greeting') + ', ' + companyName;
 }
 
 function updateUserUI(){
@@ -1767,12 +1768,12 @@ function renderActivityTimeline(){
   const dots = ['green','blue','orange'];
   timeline.innerHTML = recent.map((app, i) => {
     const profile = app.profiles || {};
-    const name = profile.full_name || profile.email || 'Candidato';
-    const jobTitle = app._jobTitle || 'una vacante';
-    const statusText = app.status === 'accepted' ? 'fue aceptado en' :
-                       app.status === 'rejected' ? 'fue rechazado de' :
-                       app.status === 'interview' ? 'tiene entrevista para' :
-                       'aplicó a';
+    const name = profile.full_name || profile.email || SyneriaI18n.t('employer_candidate_default');
+    const jobTitle = app._jobTitle || SyneriaI18n.t('employer_a_vacancy');
+    const statusText = app.status === 'accepted' ? SyneriaI18n.t('employer_timeline_accepted') :
+                       app.status === 'rejected' ? SyneriaI18n.t('employer_timeline_rejected') :
+                       app.status === 'interview' ? SyneriaI18n.t('employer_timeline_interview') :
+                       SyneriaI18n.t('employer_timeline_applied');
     const timeAgo = getTimeAgo(app.created_at);
     return `
     <div class="timeline__item">
@@ -1789,11 +1790,11 @@ function getTimeAgo(dateStr){
   if(!dateStr) return '';
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if(mins < 60) return `Hace ${mins} min`;
+  if(mins < 60) return SyneriaI18n.t('employer_time_ago_prefix') + ' ' + mins + ' min';
   const hrs = Math.floor(mins / 60);
-  if(hrs < 24) return `Hace ${hrs} hora${hrs > 1 ? 's' : ''}`;
+  if(hrs < 24) return SyneriaI18n.t('employer_time_ago_prefix') + ' ' + hrs + ' ' + (hrs > 1 ? SyneriaI18n.t('employer_time_hours') : SyneriaI18n.t('employer_time_hour'));
   const days = Math.floor(hrs / 24);
-  return `Hace ${days} día${days > 1 ? 's' : ''}`;
+  return SyneriaI18n.t('employer_time_ago_prefix') + ' ' + days + ' ' + (days > 1 ? SyneriaI18n.t('employer_time_days') : SyneriaI18n.t('employer_time_day'));
 }
 
 /* ========== RENDER CONTRACTS TABLE ========== */
@@ -1804,25 +1805,25 @@ async function loadAndRenderContracts(){
     // Load accepted applications as "contracts"
     const accepted = allApplications.filter(a => a.status === 'accepted');
     if(accepted.length === 0){
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">No hay contratos activos aún.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">' + SyneriaI18n.t('employer_no_active_contracts') + '</td></tr>';
       return;
     }
     tbody.innerHTML = accepted.map(app => {
       const profile = app.profiles || {};
-      const name = profile.full_name || profile.email || 'Trabajador';
-      const jobTitle = app._jobTitle || 'Puesto';
+      const name = profile.full_name || profile.email || SyneriaI18n.t('employer_worker_default');
+      const jobTitle = app._jobTitle || SyneriaI18n.t('employer_position_default');
       const date = formatDate(app.updated_at || app.created_at);
       return `
       <tr>
         <td>${name}</td>
         <td>${jobTitle}</td>
         <td>${date}</td>
-        <td><span class="status-badge activa">Activo</span></td>
+        <td><span class="status-badge activa">${SyneriaI18n.t('employer_contract_active')}</span></td>
       </tr>`;
     }).join('');
   } catch(err){
     console.error('Error loading contracts:', err);
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">Error al cargar contratos.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted)">' + SyneriaI18n.t('employer_error_loading_contracts') + '</td></tr>';
   }
 }
 

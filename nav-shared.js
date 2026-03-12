@@ -133,6 +133,27 @@ const SyneriaNav = {
       html += `<a href="${this.config.ctaHref}" class="syneria-nav__cta" data-magnetic><span${ctaI18nAttr}>${ctaLabel}</span></a>`;
     }
 
+    // Language switcher
+    if (typeof SyneriaI18n !== 'undefined') {
+      const currentLang = SyneriaI18n.currentLang || 'es';
+      html += `<div class="syneria-nav__lang-switcher">`;
+      html += `<button class="syneria-nav__lang-btn" aria-label="Change language">${currentLang.toUpperCase()}</button>`;
+      html += `<div class="syneria-nav__lang-dropdown">`;
+      const langs = [
+        { code: 'es', label: 'Español' },
+        { code: 'en', label: 'English' },
+        { code: 'pt', label: 'Português' },
+        { code: 'fr', label: 'Français' },
+        { code: 'de', label: 'Deutsch' },
+        { code: 'ar', label: 'العربية' },
+      ];
+      langs.forEach(l => {
+        const active = l.code === currentLang ? ' active' : '';
+        html += `<button class="syneria-nav__lang-option${active}" data-lang="${l.code}">${l.label}</button>`;
+      });
+      html += `</div></div>`;
+    }
+
     // Burger for mobile
     html += `<button class="syneria-nav__burger" aria-label="Menu" aria-expanded="false">`;
     html += `<span></span><span></span><span></span>`;
@@ -303,6 +324,40 @@ const SyneriaNav = {
         btn.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
       });
     });
+
+    // Language switcher toggle + selection
+    const langSwitcher = this.navEl.querySelector('.syneria-nav__lang-switcher');
+    if (langSwitcher) {
+      const langBtn = langSwitcher.querySelector('.syneria-nav__lang-btn');
+      const langDropdown = langSwitcher.querySelector('.syneria-nav__lang-dropdown');
+
+      langBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langDropdown.classList.toggle('open');
+      });
+
+      langDropdown.querySelectorAll('.syneria-nav__lang-option').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const lang = opt.dataset.lang;
+          localStorage.setItem('syneria_lang', lang);
+          if (typeof SyneriaI18n !== 'undefined') {
+            SyneriaI18n.apply(lang);
+          }
+          langBtn.textContent = lang.toUpperCase();
+          langDropdown.querySelectorAll('.syneria-nav__lang-option').forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          langDropdown.classList.remove('open');
+          // Re-render nav to update translated labels
+          this.render();
+          this.bindEvents();
+          this.updateBlob();
+        });
+      });
+
+      // Close dropdown on outside click
+      document.addEventListener('click', () => langDropdown.classList.remove('open'));
+    }
 
     // Window resize: update blob
     window.addEventListener('resize', () => this.updateBlob());
