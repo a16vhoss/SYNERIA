@@ -305,6 +305,29 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 /* ═══ MAGNETIC BUTTON HELPER ═══ */
 .magnetic{transition:transform 0.4s var(--spring)}
+
+/* ═══ LANGUAGE SELECTOR MODAL ═══ */
+.lang-overlay{position:fixed;inset:0;z-index:99998;background:rgba(245,245,240,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s var(--ease)}
+.lang-overlay.active{opacity:1;pointer-events:auto}
+.lang-overlay.exit{opacity:0;pointer-events:none;transition:opacity 0.6s var(--ease)}
+.lang-modal{text-align:center;max-width:560px;width:90%;transform:translateY(30px) scale(0.97);transition:transform 0.6s var(--spring),opacity 0.5s var(--ease);opacity:0}
+.lang-overlay.active .lang-modal{transform:translateY(0) scale(1);opacity:1;transition-delay:0.15s}
+.lang-modal__logo{font-family:var(--font-d);font-size:1.6rem;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:0.02em}
+.lang-modal__logo span{color:var(--accent)}
+.lang-modal__title{font-family:var(--font-d);font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:var(--text);margin-bottom:6px}
+.lang-modal__sub{font-size:0.95rem;color:var(--muted);margin-bottom:32px;line-height:1.5}
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px}
+@media(max-width:500px){.lang-grid{grid-template-columns:repeat(2,1fr)}}
+.lang-btn{display:flex;align-items:center;gap:10px;padding:14px 16px;border:1.5px solid var(--border);border-radius:14px;background:var(--card);font-family:var(--font-b);font-size:0.9rem;font-weight:500;color:var(--text);cursor:pointer;transition:all 0.3s var(--ease);position:relative;overflow:hidden}
+.lang-btn:hover{border-color:var(--accent);background:rgba(58,125,92,0.04);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.lang-btn.selected{border-color:var(--accent);background:rgba(58,125,92,0.08);box-shadow:0 0 0 2px rgba(58,125,92,0.15)}
+.lang-btn__flag{font-size:1.4rem;line-height:1;flex-shrink:0}
+.lang-btn__name{text-align:left;line-height:1.2}
+.lang-btn__native{display:block;font-size:0.75rem;color:var(--muted);font-weight:400;margin-top:1px}
+.lang-confirm{display:inline-flex;align-items:center;gap:8px;padding:14px 40px;border:none;border-radius:60px;background:var(--text);color:#fff;font-family:var(--font-d);font-size:1rem;font-weight:600;letter-spacing:0.02em;cursor:pointer;transition:all 0.4s var(--ease);opacity:0.4;pointer-events:none;transform:scale(0.95)}
+.lang-confirm.ready{opacity:1;pointer-events:auto;transform:scale(1)}
+.lang-confirm:hover{background:var(--accent);transform:scale(1.03)}
+.lang-confirm svg{width:18px;height:18px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
@@ -340,6 +363,45 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Language Selector Modal -->
+<div class="lang-overlay" id="langOverlay">
+  <div class="lang-modal">
+    <div class="lang-modal__logo">Syneria<span>.</span></div>
+    <h2 class="lang-modal__title">Choose your language</h2>
+    <p class="lang-modal__sub">Elige tu idioma principal / Choose your preferred language</p>
+    <div class="lang-grid" id="langGrid">
+      <button class="lang-btn" data-lang="es">
+        <span class="lang-btn__flag">&#127466;&#127480;</span>
+        <span class="lang-btn__name">Español<span class="lang-btn__native">Spanish</span></span>
+      </button>
+      <button class="lang-btn" data-lang="en">
+        <span class="lang-btn__flag">&#127468;&#127463;</span>
+        <span class="lang-btn__name">English<span class="lang-btn__native">Inglés</span></span>
+      </button>
+      <button class="lang-btn" data-lang="pt">
+        <span class="lang-btn__flag">&#127463;&#127479;</span>
+        <span class="lang-btn__name">Português<span class="lang-btn__native">Portuguese</span></span>
+      </button>
+      <button class="lang-btn" data-lang="fr">
+        <span class="lang-btn__flag">&#127467;&#127479;</span>
+        <span class="lang-btn__name">Français<span class="lang-btn__native">French</span></span>
+      </button>
+      <button class="lang-btn" data-lang="de">
+        <span class="lang-btn__flag">&#127465;&#127466;</span>
+        <span class="lang-btn__name">Deutsch<span class="lang-btn__native">German</span></span>
+      </button>
+      <button class="lang-btn" data-lang="ar">
+        <span class="lang-btn__flag">&#127480;&#127462;</span>
+        <span class="lang-btn__name">العربية<span class="lang-btn__native">Arabic</span></span>
+      </button>
+    </div>
+    <button class="lang-confirm" id="langConfirm">
+      Continuar
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
 
 <!-- Navigation is now rendered by nav-shared.js -->
 
@@ -716,6 +778,61 @@ function updatePreloader(now){
   }
 }
 requestAnimationFrame(updatePreloader);
+
+// ─── Language Selector Modal ───
+const langOverlay=document.getElementById('langOverlay');
+const langGrid=document.getElementById('langGrid');
+const langConfirm=document.getElementById('langConfirm');
+let selectedLang=null;
+
+function showLangModal(){
+  if(!langOverlay)return;
+  langOverlay.classList.add('active');
+  document.body.classList.remove('loaded');
+  document.body.style.overflow='hidden';
+}
+
+function hideLangModal(){
+  if(!langOverlay)return;
+  langOverlay.classList.remove('active');
+  langOverlay.classList.add('exit');
+  document.body.classList.add('loaded');
+  document.body.style.overflow='';
+}
+
+// Check if user already selected a language
+if(!localStorage.getItem('syneria_lang')){
+  // Wait for preloader to finish, then show language modal
+  const origPreDone=function(){
+    const checkLoaded=setInterval(()=>{
+      if(document.body.classList.contains('loaded')){
+        clearInterval(checkLoaded);
+        setTimeout(()=>showLangModal(),400);
+      }
+    },100);
+  };
+  origPreDone();
+}
+
+if(langGrid){
+  langGrid.addEventListener('click',e=>{
+    const btn=e.target.closest('.lang-btn');
+    if(!btn)return;
+    langGrid.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedLang=btn.dataset.lang;
+    if(langConfirm)langConfirm.classList.add('ready');
+  });
+}
+
+if(langConfirm){
+  langConfirm.addEventListener('click',()=>{
+    if(!selectedLang)return;
+    localStorage.setItem('syneria_lang',selectedLang);
+    document.documentElement.lang=selectedLang;
+    hideLangModal();
+  });
+}
 
 // ─── Lenis Smooth Scroll ───
 let lenis;
