@@ -331,6 +331,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="translations.js"></script>
 <script src="nav-shared.js"></script>
 </head>
 <body>
@@ -351,7 +352,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
   <div class="pre__logo">Syneria<span>.</span></div>
   <div class="pre__count" id="preCount">0</div>
   <div class="pre__bar"><div class="pre__fill" id="preFill"></div></div>
-  <div class="pre__text">Cargando experiencia</div>
+  <div class="pre__text" data-i18n="preloader_text">Cargando experiencia</div>
 </div>
 
 <!-- Grain Overlay -->
@@ -397,7 +398,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
       </button>
     </div>
     <button class="lang-confirm" id="langConfirm">
-      Continuar
+      <span data-i18n="lang_confirm">Continuar</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
   </div>
@@ -411,9 +412,9 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
   <div class="hero__aurora-extra" aria-hidden="true"></div>
   <div class="hero__grid" aria-hidden="true"></div>
   <div class="hero__content">
-    <div class="hero__badge"><span></span>Plataforma Global de Empleo</div>
-    <h1>El Futuro del Trabajo es Global.<br>Y Empieza <em>Aquí.</em></h1>
-    <p class="hero__sub">Tu talento, tu mundo, tu economía. Conectamos trabajadores verificados con empleadores que necesitan su talento — sin fronteras.</p>
+    <div class="hero__badge"><span></span><span data-i18n="hero_badge">Plataforma Global de Empleo</span></div>
+    <h1><span data-i18n="hero_title_1">El Futuro del Trabajo es Global.</span><br><span data-i18n="hero_title_2">Y Empieza </span><em data-i18n="hero_title_em">Aquí.</em></h1>
+    <p class="hero__sub" data-i18n="hero_sub">Tu talento, tu mundo, tu economía. Conectamos trabajadores verificados con empleadores que necesitan su talento — sin fronteras.</p>
 
     <div class="hero__routes" aria-label="Rutas de empleo">
       <span class="hero__route-from" id="routeFrom">México</span>
@@ -424,12 +425,12 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
     </div>
 
     <div class="hero__ctas">
-      <a href="dashboard.html" class="btn-primary magnetic" data-magnetic>Explorar Empleos <span aria-hidden="true">&rarr;</span></a>
-      <a href="login.html" class="btn-secondary magnetic" data-magnetic id="heroEmployerBtn">Publicar Empleo</a>
+      <a href="dashboard.html" class="btn-primary magnetic" data-magnetic><span data-i18n="hero_cta_1">Explorar Empleos</span> <span aria-hidden="true">&rarr;</span></a>
+      <a href="login.html" class="btn-secondary magnetic" data-magnetic id="heroEmployerBtn" data-i18n="hero_cta_2">Publicar Empleo</a>
     </div>
   </div>
   <div class="hero__scroll" aria-hidden="true">
-    <span>Scroll</span>
+    <span data-i18n="hero_scroll">Scroll</span>
     <div class="hero__scroll-line"></div>
   </div>
 </section>
@@ -438,47 +439,47 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 <div class="stats" role="region" aria-label="Estadísticas clave">
   <div class="stat reveal">
     <div class="stat__num"><span class="counter" data-target="50">0</span><span class="accent">M</span></div>
-    <div class="stat__label">Trabajadores Migrantes</div>
+    <div class="stat__label" data-i18n="stat_1">Trabajadores Migrantes</div>
   </div>
   <div class="stat reveal">
     <div class="stat__num"><span class="counter" data-target="8">0</span><span class="accent">M</span></div>
-    <div class="stat__label">Empleos Sin Cubrir</div>
+    <div class="stat__label" data-i18n="stat_2">Empleos Sin Cubrir</div>
   </div>
   <div class="stat reveal">
     <div class="stat__num">$<span class="counter" data-target="480">0</span><span class="accent">B</span></div>
-    <div class="stat__label">Mercado Global</div>
+    <div class="stat__label" data-i18n="stat_3">Mercado Global</div>
   </div>
   <div class="stat reveal">
     <div class="stat__num"><span class="counter" data-target="40">0</span><span class="accent">+</span></div>
-    <div class="stat__label">Países Conectados</div>
+    <div class="stat__label" data-i18n="stat_4">Países Conectados</div>
   </div>
 </div>
 
 <!-- PROBLEM -->
 <section class="section-pad problem" id="problema">
-  <div class="section-label reveal">El Problema</div>
-  <h2 class="section-title reveal">La Crisis que Nadie Está Resolviendo Correctamente</h2>
+  <div class="section-label reveal" data-i18n="problem_label">El Problema</div>
+  <h2 class="section-title reveal" data-i18n="problem_title">La Crisis que Nadie Está Resolviendo Correctamente</h2>
   <div class="problem__grid">
     <blockquote class="problem__quote reveal">
-      "Millones de personas tienen el talento. Miles de empresas tienen la necesidad. Pero el sistema entre ambos está roto."
-      <cite>— Insight del mercado laboral global, OIT 2025</cite>
+      <span data-i18n="problem_quote">"Millones de personas tienen el talento. Miles de empresas tienen la necesidad. Pero el sistema entre ambos está roto."</span>
+      <cite data-i18n="problem_cite">— Insight del mercado laboral global, OIT 2025</cite>
     </blockquote>
     <div class="problem__points">
       <div class="problem__point reveal">
-        <h4>Europa</h4>
-        <p>Necesita <span class="problem__point-accent">8 millones</span> de trabajadores para 2030. Sectores como construcción y salud enfrentan escasez crítica.</p>
+        <h4 data-i18n="problem_h_europe">Europa</h4>
+        <p data-i18n="problem_p_europe">Necesita <span class="problem__point-accent">8 millones</span> de trabajadores para 2030. Sectores como construcción y salud enfrentan escasez crítica.</p>
       </div>
       <div class="problem__point reveal">
-        <h4>América del Norte</h4>
-        <p>Déficit del <span class="problem__point-accent">20%</span> en fuerza laboral agrícola y hotelera. La demanda supera la oferta cada trimestre.</p>
+        <h4 data-i18n="problem_h_namerica">América del Norte</h4>
+        <p data-i18n="problem_p_namerica">Déficit del <span class="problem__point-accent">20%</span> en fuerza laboral agrícola y hotelera. La demanda supera la oferta cada trimestre.</p>
       </div>
       <div class="problem__point reveal">
-        <h4>América Latina</h4>
-        <p><span class="problem__point-accent">50 millones</span> de trabajadores buscan oportunidades dignas fuera de sus fronteras, sin acceso a canales formales.</p>
+        <h4 data-i18n="problem_h_latam">América Latina</h4>
+        <p data-i18n="problem_p_latam"><span class="problem__point-accent">50 millones</span> de trabajadores buscan oportunidades dignas fuera de sus fronteras, sin acceso a canales formales.</p>
       </div>
       <div class="problem__point reveal">
-        <h4>El Problema Real</h4>
-        <p>Procesos manuales, fraude, costos excesivos. <span class="problem__point-accent">Sin tecnología</span> que conecte oferta y demanda de forma segura y escalable.</p>
+        <h4 data-i18n="problem_h_real">El Problema Real</h4>
+        <p data-i18n="problem_p_real">Procesos manuales, fraude, costos excesivos. <span class="problem__point-accent">Sin tecnología</span> que conecte oferta y demanda de forma segura y escalable.</p>
       </div>
     </div>
   </div>
@@ -486,107 +487,107 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 <!-- FEATURES -->
 <section class="section-pad features" id="plataforma">
-  <div class="section-label reveal">La Plataforma</div>
-  <h2 class="section-title reveal">Todo lo que Necesitas. En un Solo Lugar.</h2>
-  <p class="section-sub reveal">Tecnología de clase mundial diseñada para conectar talento con oportunidad — de forma segura, rápida y verificada.</p>
+  <div class="section-label reveal" data-i18n="features_label">La Plataforma</div>
+  <h2 class="section-title reveal" data-i18n="features_title">Todo lo que Necesitas. En un Solo Lugar.</h2>
+  <p class="section-sub reveal" data-i18n="features_sub">Tecnología de clase mundial diseñada para conectar talento con oportunidad — de forma segura, rápida y verificada.</p>
   <div class="features__grid">
     <div class="feature-card reveal" data-tilt>
       <div class="feature-card__icon">&#9889;</div>
-      <h3>Empleos en Tiempo Real</h3>
-      <p>Ofertas verificadas de +40 países, actualizadas al instante con inteligencia artificial que prioriza tu perfil.</p>
+      <h3 data-i18n="feat_1_h">Empleos en Tiempo Real</h3>
+      <p data-i18n="feat_1_p">Ofertas verificadas de +40 países, actualizadas al instante con inteligencia artificial que prioriza tu perfil.</p>
     </div>
     <div class="feature-card reveal" data-tilt>
       <div class="feature-card__icon">&#128737;&#65039;</div>
-      <h3>Perfiles Verificados</h3>
-      <p>Verificación de identidad, experiencia y certificaciones con tecnología blockchain. Confianza desde el primer contacto.</p>
+      <h3 data-i18n="feat_2_h">Perfiles Verificados</h3>
+      <p data-i18n="feat_2_p">Verificación de identidad, experiencia y certificaciones con tecnología blockchain. Confianza desde el primer contacto.</p>
     </div>
     <div class="feature-card reveal" data-tilt>
       <div class="feature-card__icon">&#128196;</div>
-      <h3>Contratos Digitales</h3>
-      <p>Contratos inteligentes con firma electrónica legal. Transparencia total en términos, salario y beneficios.</p>
+      <h3 data-i18n="feat_3_h">Contratos Digitales</h3>
+      <p data-i18n="feat_3_p">Contratos inteligentes con firma electrónica legal. Transparencia total en términos, salario y beneficios.</p>
     </div>
     <div class="feature-card reveal" data-tilt>
       <div class="feature-card__icon">&#128179;</div>
-      <h3>Wallet Integrada</h3>
-      <p>Recibe pagos, envía remesas y administra tus finanzas desde cualquier lugar. Sin comisiones ocultas.</p>
+      <h3 data-i18n="feat_4_h">Wallet Integrada</h3>
+      <p data-i18n="feat_4_p">Recibe pagos, envía remesas y administra tus finanzas desde cualquier lugar. Sin comisiones ocultas.</p>
     </div>
     <div class="feature-card reveal" data-tilt>
       <div class="feature-card__icon">&#127760;</div>
-      <h3>Multilingüe</h3>
-      <p>Plataforma disponible en 12 idiomas con traducción automática en tiempo real para comunicación sin barreras.</p>
+      <h3 data-i18n="feat_5_h">Multilingüe</h3>
+      <p data-i18n="feat_5_p">Plataforma disponible en 12 idiomas con traducción automática en tiempo real para comunicación sin barreras.</p>
     </div>
     <div class="feature-card reveal" data-tilt>
       <div class="feature-card__icon">&#127959;&#65039;</div>
-      <h3>Ecosistema Completo</h3>
-      <p>Desde la búsqueda hasta la integración: visa, vivienda, capacitación y soporte continuo en tu destino.</p>
+      <h3 data-i18n="feat_6_h">Ecosistema Completo</h3>
+      <p data-i18n="feat_6_p">Desde la búsqueda hasta la integración: visa, vivienda, capacitación y soporte continuo en tu destino.</p>
     </div>
   </div>
 </section>
 
 <!-- SECTORS -->
 <section class="section-pad sectors" id="sectores">
-  <div class="section-label reveal">Sectores</div>
-  <h2 class="section-title reveal">Donde el Talento se Encuentra con la Demanda</h2>
-  <p class="section-sub reveal">Cinco industrias con escasez crítica de mano de obra. Syneria conecta el talento exacto con la necesidad correcta.</p>
+  <div class="section-label reveal" data-i18n="sectors_label">Sectores</div>
+  <h2 class="section-title reveal" data-i18n="sectors_title">Donde el Talento se Encuentra con la Demanda</h2>
+  <p class="section-sub reveal" data-i18n="sectors_sub">Cinco industrias con escasez crítica de mano de obra. Syneria conecta el talento exacto con la necesidad correcta.</p>
   <div class="sectors__track" id="sectorsTrack">
     <div class="sector-card">
       <span class="sector-card__emoji">&#127959;&#65039;</span>
-      <h3>Construcción</h3>
-      <div class="sector-card__demand">&#8593; Alta Demanda</div>
-      <p>Europa y Medio Oriente necesitan 3.2M de trabajadores de construcción para 2028. Salarios competitivos y contratos estables.</p>
+      <h3 data-i18n="sector_construction_h">Construcción</h3>
+      <div class="sector-card__demand" data-i18n="sector_construction_demand">&#8593; Alta Demanda</div>
+      <p data-i18n="sector_construction_p">Europa y Medio Oriente necesitan 3.2M de trabajadores de construcción para 2028. Salarios competitivos y contratos estables.</p>
       <div class="sector-card__regions">
-        <span class="sector-card__region">Alemania</span>
-        <span class="sector-card__region">EAU</span>
-        <span class="sector-card__region">Canadá</span>
-        <span class="sector-card__region">Australia</span>
+        <span class="sector-card__region" data-i18n="region_germany">Alemania</span>
+        <span class="sector-card__region" data-i18n="region_uae">EAU</span>
+        <span class="sector-card__region" data-i18n="region_canada">Canadá</span>
+        <span class="sector-card__region" data-i18n="region_australia">Australia</span>
       </div>
     </div>
     <div class="sector-card">
       <span class="sector-card__emoji">&#127976;</span>
-      <h3>Hotelería</h3>
-      <div class="sector-card__demand">&#8593; Alta Demanda</div>
-      <p>La industria turística global enfrenta un déficit del 15%. Oportunidades en hoteles, restaurantes y servicios premium.</p>
+      <h3 data-i18n="sector_hospitality_h">Hotelería</h3>
+      <div class="sector-card__demand" data-i18n="sector_hospitality_demand">&#8593; Alta Demanda</div>
+      <p data-i18n="sector_hospitality_p">La industria turística global enfrenta un déficit del 15%. Oportunidades en hoteles, restaurantes y servicios premium.</p>
       <div class="sector-card__regions">
-        <span class="sector-card__region">Suiza</span>
-        <span class="sector-card__region">España</span>
-        <span class="sector-card__region">Qatar</span>
-        <span class="sector-card__region">Canadá</span>
+        <span class="sector-card__region" data-i18n="region_switzerland">Suiza</span>
+        <span class="sector-card__region" data-i18n="region_spain">España</span>
+        <span class="sector-card__region" data-i18n="region_qatar">Qatar</span>
+        <span class="sector-card__region" data-i18n="region_canada">Canadá</span>
       </div>
     </div>
     <div class="sector-card">
       <span class="sector-card__emoji">&#127806;</span>
-      <h3>Agricultura</h3>
-      <div class="sector-card__demand">&#8593; Crítica</div>
-      <p>Norteamérica y Europa dependen de trabajadores migrantes para el 40% de su producción agrícola. Programas estacionales y permanentes.</p>
+      <h3 data-i18n="sector_agriculture_h">Agricultura</h3>
+      <div class="sector-card__demand" data-i18n="sector_agriculture_demand">&#8593; Crítica</div>
+      <p data-i18n="sector_agriculture_p">Norteamérica y Europa dependen de trabajadores migrantes para el 40% de su producción agrícola. Programas estacionales y permanentes.</p>
       <div class="sector-card__regions">
-        <span class="sector-card__region">EE.UU.</span>
-        <span class="sector-card__region">Francia</span>
-        <span class="sector-card__region">Australia</span>
-        <span class="sector-card__region">Italia</span>
+        <span class="sector-card__region" data-i18n="region_usa">EE.UU.</span>
+        <span class="sector-card__region" data-i18n="region_france">Francia</span>
+        <span class="sector-card__region" data-i18n="region_australia">Australia</span>
+        <span class="sector-card__region" data-i18n="region_italy">Italia</span>
       </div>
     </div>
     <div class="sector-card">
       <span class="sector-card__emoji">&#127973;</span>
-      <h3>Salud</h3>
-      <div class="sector-card__demand">&#8593; Urgente</div>
-      <p>El sector salud necesita 18M de profesionales adicionales globalmente. Enfermería, cuidado de mayores y asistencia médica.</p>
+      <h3 data-i18n="sector_health_h">Salud</h3>
+      <div class="sector-card__demand" data-i18n="sector_health_demand">&#8593; Urgente</div>
+      <p data-i18n="sector_health_p">El sector salud necesita 18M de profesionales adicionales globalmente. Enfermería, cuidado de mayores y asistencia médica.</p>
       <div class="sector-card__regions">
-        <span class="sector-card__region">Reino Unido</span>
-        <span class="sector-card__region">Alemania</span>
-        <span class="sector-card__region">Japón</span>
-        <span class="sector-card__region">Canadá</span>
+        <span class="sector-card__region" data-i18n="region_uk">Reino Unido</span>
+        <span class="sector-card__region" data-i18n="region_germany">Alemania</span>
+        <span class="sector-card__region" data-i18n="region_japan">Japón</span>
+        <span class="sector-card__region" data-i18n="region_canada">Canadá</span>
       </div>
     </div>
     <div class="sector-card">
       <span class="sector-card__emoji">&#128722;</span>
-      <h3>Comercio</h3>
-      <div class="sector-card__demand">&#8593; En Crecimiento</div>
-      <p>Retail, logística y e-commerce demandan millones de trabajadores. Roles operativos y de gestión con movilidad internacional.</p>
+      <h3 data-i18n="sector_commerce_h">Comercio</h3>
+      <div class="sector-card__demand" data-i18n="sector_commerce_demand">&#8593; En Crecimiento</div>
+      <p data-i18n="sector_commerce_p">Retail, logística y e-commerce demandan millones de trabajadores. Roles operativos y de gestión con movilidad internacional.</p>
       <div class="sector-card__regions">
-        <span class="sector-card__region">Países Bajos</span>
-        <span class="sector-card__region">EAU</span>
-        <span class="sector-card__region">Chile</span>
-        <span class="sector-card__region">Singapur</span>
+        <span class="sector-card__region" data-i18n="region_netherlands">Países Bajos</span>
+        <span class="sector-card__region" data-i18n="region_uae">EAU</span>
+        <span class="sector-card__region" data-i18n="region_chile">Chile</span>
+        <span class="sector-card__region" data-i18n="region_singapore">Singapur</span>
       </div>
     </div>
   </div>
@@ -601,39 +602,39 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 
 <!-- HOW IT WORKS -->
 <section class="section-pad how" id="como-funciona">
-  <div class="section-label reveal">Cómo Funciona</div>
-  <h2 class="section-title reveal">De tu Talento al Mundo. En 5 Pasos.</h2>
-  <p class="section-sub reveal">Un proceso diseñado para ser simple, seguro y completamente digital.</p>
+  <div class="section-label reveal" data-i18n="how_label">Cómo Funciona</div>
+  <h2 class="section-title reveal" data-i18n="how_title">De tu Talento al Mundo. En 5 Pasos.</h2>
+  <p class="section-sub reveal" data-i18n="how_sub">Un proceso diseñado para ser simple, seguro y completamente digital.</p>
   <div class="how__container">
     <div class="how__step" style="top:100px">
       <div class="how__step-num">01</div>
-      <h3>Perfil Verificado</h3>
-      <p>Crea tu perfil profesional con verificación de identidad, experiencia laboral y certificaciones. Tu identidad digital segura y confiable.</p>
-      <div class="how__step-tag">&#128737;&#65039; Verificación Blockchain</div>
+      <h3 data-i18n="how_1_h">Perfil Verificado</h3>
+      <p data-i18n="how_1_p">Crea tu perfil profesional con verificación de identidad, experiencia laboral y certificaciones. Tu identidad digital segura y confiable.</p>
+      <div class="how__step-tag" data-i18n="how_1_tag">&#128737;&#65039; Verificación Blockchain</div>
     </div>
     <div class="how__step" style="top:120px">
       <div class="how__step-num">02</div>
-      <h3>AI Matching</h3>
-      <p>Nuestra inteligencia artificial analiza tu perfil, habilidades e idiomas para conectarte con las oportunidades perfectas en tiempo real.</p>
-      <div class="how__step-tag">&#129302; Algoritmo Propietario</div>
+      <h3 data-i18n="how_2_h">AI Matching</h3>
+      <p data-i18n="how_2_p">Nuestra inteligencia artificial analiza tu perfil, habilidades e idiomas para conectarte con las oportunidades perfectas en tiempo real.</p>
+      <div class="how__step-tag" data-i18n="how_2_tag">&#129302; Algoritmo Propietario</div>
     </div>
     <div class="how__step" style="top:140px">
       <div class="how__step-num">03</div>
-      <h3>Contratos Digitales</h3>
-      <p>Revisa y firma contratos digitales con protección legal completa. Términos claros, salario garantizado, beneficios transparentes.</p>
-      <div class="how__step-tag">&#128196; Firma Electrónica Legal</div>
+      <h3 data-i18n="how_3_h">Contratos Digitales</h3>
+      <p data-i18n="how_3_p">Revisa y firma contratos digitales con protección legal completa. Términos claros, salario garantizado, beneficios transparentes.</p>
+      <div class="how__step-tag" data-i18n="how_3_tag">&#128196; Firma Electrónica Legal</div>
     </div>
     <div class="how__step" style="top:160px">
       <div class="how__step-num">04</div>
-      <h3>Wallet Integrada</h3>
-      <p>Recibe tu salario, envía remesas a tu familia y gestiona tus finanzas globales desde una sola plataforma sin comisiones ocultas.</p>
-      <div class="how__step-tag">&#128179; Fintech Integrado</div>
+      <h3 data-i18n="how_4_h">Wallet Integrada</h3>
+      <p data-i18n="how_4_p">Recibe tu salario, envía remesas a tu familia y gestiona tus finanzas globales desde una sola plataforma sin comisiones ocultas.</p>
+      <div class="how__step-tag" data-i18n="how_4_tag">&#128179; Fintech Integrado</div>
     </div>
     <div class="how__step" style="top:180px">
       <div class="how__step-num">05</div>
-      <h3>Ecosistema Completo</h3>
-      <p>Soporte integral: gestión de visa, alojamiento, capacitación en idioma y cultura, y asistencia continua en tu país de destino.</p>
-      <div class="how__step-tag">&#127757; Soporte 360°</div>
+      <h3 data-i18n="how_5_h">Ecosistema Completo</h3>
+      <p data-i18n="how_5_p">Soporte integral: gestión de visa, alojamiento, capacitación en idioma y cultura, y asistencia continua en tu país de destino.</p>
+      <div class="how__step-tag" data-i18n="how_5_tag">&#127757; Soporte 360°</div>
     </div>
   </div>
 </section>
@@ -641,49 +642,49 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
 <!-- SPOTLIGHT / X-RAY -->
 <section class="spotlight" id="spotlight">
   <div class="spotlight__base">
-    <h2>Un Mercado de $480 Mil Millones.<br>Sin una Solución Real.</h2>
-    <p>Mueve tu cursor para revelar la oportunidad que Syneria está capturando.</p>
+    <h2 data-i18n="spotlight_base_h">Un Mercado de $480 Mil Millones.<br>Sin una Solución Real.</h2>
+    <p data-i18n="spotlight_base_p">Mueve tu cursor para revelar la oportunidad que Syneria está capturando.</p>
   </div>
   <div class="spotlight__reveal" id="spotlightReveal" aria-hidden="true">
     <div>
-      <h2>Syneria es <span>la Solución.</span><br>$47M ARR Proyectado Año 3.</h2>
-      <p>12,000 perfiles verificados. 340 empresas conectadas. 47 contratos firmados. La tracción es real.</p>
+      <h2 data-i18n="spotlight_reveal_h">Syneria es <span>la Solución.</span><br>$47M ARR Proyectado Año 3.</h2>
+      <p data-i18n="spotlight_reveal_p">12,000 perfiles verificados. 340 empresas conectadas. 47 contratos firmados. La tracción es real.</p>
     </div>
   </div>
-  <div class="spotlight__hint">&#8596; Mueve el cursor</div>
+  <div class="spotlight__hint" data-i18n="spotlight_hint">&#8596; Mueve el cursor</div>
 </section>
 
 <!-- IMPACT -->
 <section class="section-pad impact" id="impacto">
-  <div class="section-label reveal">Impacto</div>
-  <h2 class="section-title reveal">Tracción que Habla por Sí Misma</h2>
-  <p class="section-sub reveal">Números reales de una plataforma que ya está transformando el mercado laboral global.</p>
+  <div class="section-label reveal" data-i18n="impact_label">Impacto</div>
+  <h2 class="section-title reveal" data-i18n="impact_title">Tracción que Habla por Sí Misma</h2>
+  <p class="section-sub reveal" data-i18n="impact_sub">Números reales de una plataforma que ya está transformando el mercado laboral global.</p>
   <div class="impact__grid">
     <div class="impact-card reveal">
       <div class="impact-card__num"><span class="counter" data-target="12000">0</span><span class="accent">+</span></div>
-      <div class="impact-card__label">Perfiles Verificados</div>
-      <div class="impact-card__desc">Trabajadores listos con identidad y experiencia confirmada</div>
+      <div class="impact-card__label" data-i18n="impact_1_label">Perfiles Verificados</div>
+      <div class="impact-card__desc" data-i18n="impact_1_desc">Trabajadores listos con identidad y experiencia confirmada</div>
     </div>
     <div class="impact-card reveal">
       <div class="impact-card__num"><span class="counter" data-target="340">0</span><span class="accent">+</span></div>
-      <div class="impact-card__label">Empresas Conectadas</div>
-      <div class="impact-card__desc">Empleadores verificados en +40 países buscando talento</div>
+      <div class="impact-card__label" data-i18n="impact_2_label">Empresas Conectadas</div>
+      <div class="impact-card__desc" data-i18n="impact_2_desc">Empleadores verificados en +40 países buscando talento</div>
     </div>
     <div class="impact-card reveal">
       <div class="impact-card__num"><span class="counter" data-target="89">0</span></div>
-      <div class="impact-card__label">NPS Score</div>
-      <div class="impact-card__desc">Satisfacción excepcional entre usuarios activos</div>
+      <div class="impact-card__label" data-i18n="impact_3_label">NPS Score</div>
+      <div class="impact-card__desc" data-i18n="impact_3_desc">Satisfacción excepcional entre usuarios activos</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section">
-  <h2>Tu Talento es tu <span>Mundo.</span></h2>
-  <p>Unete a miles de trabajadores y empresas que ya estan construyendo el futuro del empleo global.</p>
+  <h2><span data-i18n="cta_title_1">Tu Talento es tu </span><span data-i18n="cta_title_span">Mundo.</span></h2>
+  <p data-i18n="cta_sub">Unete a miles de trabajadores y empresas que ya estan construyendo el futuro del empleo global.</p>
   <div class="hero__ctas" style="justify-content:center;margin-top:40px;position:relative;z-index:1">
-    <a href="dashboard.html" class="cta__btn magnetic" data-magnetic style="text-decoration:none;display:inline-flex;align-items:center;gap:8px">Ver Oportunidades &rarr;</a>
-    <a href="login.html" class="btn-secondary magnetic" data-magnetic style="border-color:rgba(255,255,255,0.2);color:#fff;cursor:pointer">Comenzar Gratis</a>
+    <a href="dashboard.html" class="cta__btn magnetic" data-magnetic style="text-decoration:none;display:inline-flex;align-items:center;gap:8px"><span data-i18n="cta_btn_1">Ver Oportunidades</span> &rarr;</a>
+    <a href="login.html" class="btn-secondary magnetic" data-magnetic style="border-color:rgba(255,255,255,0.2);color:#fff;cursor:pointer" data-i18n="cta_btn_2">Comenzar Gratis</a>
   </div>
 </section>
 
@@ -692,7 +693,7 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
   <div class="footer__top">
     <div class="footer__brand">
       <div class="footer__logo">Syneria<span>.</span></div>
-      <p class="footer__tagline">Tu talento, tu mundo, tu economía. Conectamos el futuro del trabajo global con tecnología, confianza y propósito.</p>
+      <p class="footer__tagline" data-i18n="footer_tagline">Tu talento, tu mundo, tu economía. Conectamos el futuro del trabajo global con tecnología, confianza y propósito.</p>
       <div class="footer__socials">
         <a href="#" class="footer__social" aria-label="LinkedIn">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -706,32 +707,32 @@ section{content-visibility:auto;contain-intrinsic-size:auto 100vh}
       </div>
     </div>
     <div class="footer__col">
-      <h4>Plataforma</h4>
-      <a href="dashboard.html">Buscar Empleos</a>
-      <a href="employer.html">Para Empresas</a>
-      <a href="login.html">Iniciar Sesión</a>
-      <a href="login.html">Crear Cuenta</a>
+      <h4 data-i18n="footer_h_plataforma">Plataforma</h4>
+      <a href="dashboard.html" data-i18n="footer_buscar">Buscar Empleos</a>
+      <a href="employer.html" data-i18n="footer_empresas">Para Empresas</a>
+      <a href="login.html" data-i18n="footer_login">Iniciar Sesión</a>
+      <a href="login.html" data-i18n="footer_crear">Crear Cuenta</a>
     </div>
     <div class="footer__col">
-      <h4>Sectores</h4>
-      <a href="#sectores">Construcción</a>
-      <a href="#sectores">Hotelería</a>
-      <a href="#sectores">Agricultura</a>
-      <a href="#sectores">Salud</a>
-      <a href="#sectores">Comercio</a>
+      <h4 data-i18n="footer_h_sectores">Sectores</h4>
+      <a href="#sectores" data-i18n="footer_construccion">Construcción</a>
+      <a href="#sectores" data-i18n="footer_hoteleria">Hotelería</a>
+      <a href="#sectores" data-i18n="footer_agricultura">Agricultura</a>
+      <a href="#sectores" data-i18n="footer_salud">Salud</a>
+      <a href="#sectores" data-i18n="footer_comercio">Comercio</a>
     </div>
     <div class="footer__col">
-      <h4>Compania</h4>
-      <a href="#problema">Sobre Nosotros</a>
-      <a href="#impacto">Impacto</a>
-      <a href="login.html">Registrate</a>
-      <a href="login.html">Contacto</a>
+      <h4 data-i18n="footer_h_compania">Compania</h4>
+      <a href="#problema" data-i18n="footer_sobre">Sobre Nosotros</a>
+      <a href="#impacto" data-i18n="footer_impacto">Impacto</a>
+      <a href="login.html" data-i18n="footer_registrate">Registrate</a>
+      <a href="login.html" data-i18n="footer_contacto">Contacto</a>
     </div>
   </div>
   <div class="footer__divider"></div>
   <div class="footer__bottom">
-    <span>&copy; 2026 Syneria. Todos los derechos reservados.</span>
-    <span>Hecho con propósito desde LATAM para el mundo.</span>
+    <span data-i18n="footer_copy">&copy; 2026 Syneria. Todos los derechos reservados.</span>
+    <span data-i18n="footer_made">Hecho con propósito desde LATAM para el mundo.</span>
   </div>
 </footer>
 
@@ -829,10 +830,36 @@ if(langConfirm){
   langConfirm.addEventListener('click',()=>{
     if(!selectedLang)return;
     localStorage.setItem('syneria_lang',selectedLang);
-    document.documentElement.lang=selectedLang;
+    // Apply translations via the i18n engine
+    if(typeof SyneriaI18n!=='undefined'){
+      SyneriaI18n.apply(selectedLang);
+    }
     hideLangModal();
   });
 }
+
+// Also update nav labels when language changes
+window.addEventListener('syneria-lang-changed',e=>{
+  const lang=e.detail.lang;
+  if(typeof SyneriaI18n==='undefined')return;
+  // Re-init nav with translated labels
+  if(typeof SyneriaNav!=='undefined'&&SyneriaNav.navEl){
+    const navLinks=SyneriaNav.navEl.querySelectorAll('.synav__link');
+    const navKeys=['nav_plataforma','nav_empleos','nav_trabajadores','nav_empleadores'];
+    navLinks.forEach((link,i)=>{
+      if(navKeys[i]){
+        const span=link.querySelector('span')||link;
+        span.textContent=SyneriaI18n.t(navKeys[i]);
+      }
+    });
+    // Update CTA button
+    const ctaBtn=SyneriaNav.navEl.querySelector('.synav__cta');
+    if(ctaBtn){
+      const session=localStorage.getItem('syneria_session');
+      ctaBtn.textContent=session?SyneriaI18n.t('nav_mi_panel'):SyneriaI18n.t('nav_cta');
+    }
+  }
+});
 
 // ─── Lenis Smooth Scroll ───
 let lenis;
@@ -922,13 +949,14 @@ document.querySelectorAll('[data-magnetic]').forEach(el=>{
 SyneriaNav.init({
   mode: 'public',
   items: [
-    { label: 'Plataforma', href: '#plataforma', scroll: true },
-    { label: 'Empleos', href: '#sectores', scroll: true },
-    { label: 'Trabajadores', href: '#como-funciona', scroll: true },
-    { label: 'Empleadores', href: '#impacto', scroll: true },
+    { label: 'Plataforma', href: '#plataforma', scroll: true, i18nKey: 'nav_plataforma' },
+    { label: 'Empleos', href: '#sectores', scroll: true, i18nKey: 'nav_empleos' },
+    { label: 'Trabajadores', href: '#como-funciona', scroll: true, i18nKey: 'nav_trabajadores' },
+    { label: 'Empleadores', href: '#impacto', scroll: true, i18nKey: 'nav_empleadores' },
   ],
   ctaText: 'Iniciar Sesion',
-  ctaHref: 'login.html'
+  ctaHref: 'login.html',
+  ctaI18nKey: 'nav_cta'
 });
 
 // ─── Hero Route Morphing ───

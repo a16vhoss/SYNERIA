@@ -62,6 +62,7 @@ const SyneriaNav = {
       showAvatar: opts.showAvatar !== undefined ? opts.showAvatar : (opts.mode !== 'public'),
       ctaText: opts.ctaText || (opts.mode === 'public' ? 'Iniciar Sesion' : ''),
       ctaHref: opts.ctaHref || (opts.mode === 'public' ? 'login.html' : ''),
+      ctaI18nKey: opts.ctaI18nKey || '',
       userName: opts.userName || '',
       userInitials: opts.userInitials || '',
       unreadCount: opts.unreadCount || 0,
@@ -104,7 +105,9 @@ const SyneriaNav = {
       const isActive = this.isActive(item);
       const iconHtml = item.icon ? this.icons[item.icon] || '' : '';
       const scrollAttr = item.scroll ? `data-scroll="${item.href}"` : '';
-      html += `<a href="${item.href}" class="syneria-nav__item${isActive ? ' active' : ''}" data-nav-index="${i}" ${scrollAttr}>${iconHtml}${item.label}</a>`;
+      const i18nAttr = item.i18nKey ? ` data-i18n="${item.i18nKey}"` : '';
+      const label = (item.i18nKey && typeof SyneriaI18n !== 'undefined') ? SyneriaI18n.t(item.i18nKey) : item.label;
+      html += `<a href="${item.href}" class="syneria-nav__item${isActive ? ' active' : ''}" data-nav-index="${i}" ${scrollAttr}${i18nAttr}>${iconHtml}${label}</a>`;
     });
 
     html += `</div>`; // close items
@@ -124,7 +127,10 @@ const SyneriaNav = {
     }
 
     if (this.config.ctaText) {
-      html += `<a href="${this.config.ctaHref}" class="syneria-nav__cta" data-magnetic><span>${this.config.ctaText}</span></a>`;
+      const ctaI18n = this.config.ctaI18nKey || '';
+      const ctaLabel = (ctaI18n && typeof SyneriaI18n !== 'undefined') ? SyneriaI18n.t(ctaI18n) : this.config.ctaText;
+      const ctaI18nAttr = ctaI18n ? ` data-i18n="${ctaI18n}"` : '';
+      html += `<a href="${this.config.ctaHref}" class="syneria-nav__cta" data-magnetic><span${ctaI18nAttr}>${ctaLabel}</span></a>`;
     }
 
     // Burger for mobile
@@ -148,10 +154,15 @@ const SyneriaNav = {
       const isActive = this.isActive(item);
       const iconHtml = item.icon ? this.icons[item.icon] || '' : '';
       const scrollAttr = item.scroll ? `data-scroll="${item.href}"` : '';
-      mobileHtml += `<a href="${item.href}" class="syneria-nav__item${isActive ? ' active' : ''}" ${scrollAttr}>${iconHtml}${item.label}</a>`;
+      const i18nAttr = item.i18nKey ? ` data-i18n="${item.i18nKey}"` : '';
+      const label = (item.i18nKey && typeof SyneriaI18n !== 'undefined') ? SyneriaI18n.t(item.i18nKey) : item.label;
+      mobileHtml += `<a href="${item.href}" class="syneria-nav__item${isActive ? ' active' : ''}" ${scrollAttr}${i18nAttr}>${iconHtml}${label}</a>`;
     });
     if (this.config.ctaText) {
-      mobileHtml += `<a href="${this.config.ctaHref}" class="syneria-nav__cta">${this.config.ctaText}</a>`;
+      const ctaI18n = this.config.ctaI18nKey || '';
+      const ctaLabel = (ctaI18n && typeof SyneriaI18n !== 'undefined') ? SyneriaI18n.t(ctaI18n) : this.config.ctaText;
+      const ctaI18nAttr = ctaI18n ? ` data-i18n="${ctaI18n}"` : '';
+      mobileHtml += `<a href="${this.config.ctaHref}" class="syneria-nav__cta"${ctaI18nAttr}>${ctaLabel}</a>`;
     }
     mobile.innerHTML = mobileHtml;
     document.body.prepend(mobile);
@@ -337,8 +348,9 @@ const SyneriaNav = {
         if (cta) {
           cta.href = panelHref;
           const ctaSpan = cta.querySelector('span');
-          if (ctaSpan) ctaSpan.textContent = 'Mi Panel';
-          else cta.textContent = 'Mi Panel';
+          const panelText = (typeof SyneriaI18n !== 'undefined') ? SyneriaI18n.t('nav_mi_panel') : 'Mi Panel';
+          if (ctaSpan) { ctaSpan.textContent = panelText; ctaSpan.setAttribute('data-i18n', 'nav_mi_panel'); }
+          else cta.textContent = panelText;
         }
 
         // Add avatar if not already present
@@ -357,7 +369,7 @@ const SyneriaNav = {
           const mobileCta = this.mobileEl.querySelector('.syneria-nav__cta');
           if (mobileCta) {
             mobileCta.href = panelHref;
-            mobileCta.textContent = 'Mi Panel';
+            mobileCta.textContent = (typeof SyneriaI18n !== 'undefined') ? SyneriaI18n.t('nav_mi_panel') : 'Mi Panel';
           }
         }
       }
